@@ -410,6 +410,115 @@
     }
     .placeholder { color:#bbb; font-style:italic; }
 
+    /* ─── Add-to-Cart Button ───────────────────────── */
+    .item-actions { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+    .add-btn {
+      background:var(--sunset); color:#fff; border:none; border-radius:6px;
+      padding:5px 14px; font-size:0.78rem; font-weight:700; cursor:pointer;
+      transition:var(--transition); font-family:var(--font-body);
+    }
+    .add-btn:hover { background:var(--coral); transform:scale(1.05); }
+    .qty-controls { display:flex; align-items:center; gap:2px; }
+    .qty-btn {
+      width:28px; height:28px; border-radius:6px; border:none; cursor:pointer;
+      font-size:1rem; font-weight:700; display:flex; align-items:center;
+      justify-content:center; transition:var(--transition); font-family:var(--font-body);
+    }
+    .qty-minus { background:#ffe0cc; color:var(--coral); }
+    .qty-minus:hover { background:#ffcbb0; }
+    .qty-plus { background:#ffe0cc; color:var(--coral); }
+    .qty-plus:hover { background:#ffcbb0; }
+    .qty-num {
+      width:28px; text-align:center; font-weight:800; font-size:0.85rem;
+      color:var(--ocean); line-height:28px;
+    }
+    .menu-item.in-cart { background:rgba(224,123,57,0.06); }
+
+    /* ─── Sticky Cart Bar ──────────────────────────── */
+    .cart-bar {
+      position:sticky; bottom:0; z-index:10;
+      background:linear-gradient(135deg, var(--ocean) 0%, var(--ocean-mid) 100%);
+      color:#fff; padding:16px 24px;
+      display:flex; align-items:center; justify-content:space-between;
+      border-radius:0 0 20px 20px;
+      box-shadow:0 -4px 24px rgba(10,79,110,0.25);
+      transition:var(--transition);
+    }
+    .cart-bar.empty { display:none; }
+    .cart-bar-left { display:flex; align-items:center; gap:14px; }
+    .cart-icon-wrap {
+      width:42px; height:42px; background:rgba(255,255,255,0.15);
+      border-radius:10px; display:flex; align-items:center; justify-content:center;
+      font-size:1.2rem; position:relative;
+    }
+    .cart-badge-count {
+      position:absolute; top:-6px; right:-6px;
+      background:var(--sunset); color:#fff; font-size:0.65rem; font-weight:800;
+      width:20px; height:20px; border-radius:50%; display:flex;
+      align-items:center; justify-content:center; border:2px solid var(--ocean);
+    }
+    .cart-summary-text { line-height:1.4; }
+    .cart-summary-text strong { font-size:0.92rem; display:block; }
+    .cart-summary-text span { font-size:0.78rem; opacity:0.8; }
+    .cart-bar-right { display:flex; align-items:center; gap:12px; }
+    .cart-total { text-align:right; }
+    .cart-total .subtotal { font-size:0.75rem; opacity:0.7; }
+    .cart-total .grand { font-size:1.15rem; font-weight:800; }
+    .order-btn {
+      background:var(--sunset); color:#fff; border:none; border-radius:50px;
+      padding:12px 24px; font-size:0.88rem; font-weight:700; cursor:pointer;
+      display:flex; align-items:center; gap:8px; font-family:var(--font-body);
+      transition:var(--transition);
+    }
+    .order-btn:hover { background:var(--coral); transform:translateY(-2px); box-shadow:0 6px 20px rgba(217,95,59,0.4); }
+    .order-btn i { font-size:1.1rem; }
+
+    /* ─── Cart Drawer ──────────────────────────────── */
+    .cart-drawer-overlay {
+      display:none; position:fixed; inset:0; z-index:10001;
+      background:rgba(0,0,0,0.5); backdrop-filter:blur(4px);
+    }
+    .cart-drawer-overlay.open { display:flex; justify-content:flex-end; }
+    .cart-drawer {
+      width:min(420px,90vw); background:var(--off-white);
+      height:100vh; overflow-y:auto; display:flex; flex-direction:column;
+      animation:slideIn 0.3s ease;
+    }
+    @keyframes slideIn { from { transform:translateX(100%); } to { transform:translateX(0); } }
+    .cart-drawer-header {
+      background:linear-gradient(135deg, var(--ocean) 0%, var(--ocean-mid) 100%);
+      color:#fff; padding:20px 24px; display:flex; align-items:center;
+      justify-content:space-between; flex-shrink:0;
+    }
+    .cart-drawer-header h3 { font-family:var(--font-display); font-size:1.4rem; font-weight:700; }
+    .cart-drawer-close {
+      background:rgba(255,255,255,0.15); border:none; color:#fff;
+      width:36px; height:36px; border-radius:50%; cursor:pointer;
+      font-size:1.1rem; display:flex; align-items:center; justify-content:center;
+    }
+    .cart-drawer-body { flex:1; padding:16px 20px; overflow-y:auto; }
+    .cart-drawer-item {
+      display:flex; align-items:center; gap:12px; padding:12px 0;
+      border-bottom:1px dashed rgba(10,79,110,0.1);
+    }
+    .cart-drawer-item-info { flex:1; }
+    .cart-drawer-item-name { font-weight:600; font-size:0.9rem; color:var(--text); }
+    .cart-drawer-item-price { font-size:0.8rem; color:var(--text-light); margin-top:2px; }
+    .cart-drawer-item-qty { display:flex; align-items:center; gap:2px; }
+    .cart-drawer-item-total { font-weight:800; color:var(--coral); font-size:0.95rem; min-width:60px; text-align:right; }
+    .cart-drawer-footer {
+      background:var(--white); border-top:2px solid rgba(10,79,110,0.08);
+      padding:20px; flex-shrink:0;
+    }
+    .cart-bill-row { display:flex; justify-content:space-between; font-size:0.88rem; color:var(--text-light); margin-bottom:8px; }
+    .cart-bill-row.grand-total { font-size:1.1rem; font-weight:800; color:var(--ocean); border-top:2px solid var(--ocean-mid); padding-top:10px; margin-top:4px; }
+    .cart-clear-btn {
+      background:none; border:1px solid rgba(10,79,110,0.2); color:var(--text-light);
+      padding:8px 16px; border-radius:8px; font-size:0.8rem; cursor:pointer;
+      margin-top:12px; font-family:var(--font-body); transition:var(--transition);
+    }
+    .cart-clear-btn:hover { border-color:var(--coral); color:var(--coral); }
+
     @media (max-width:600px) {
       .menu-modal-box { margin:10px 0; border-radius:14px; }
       .menu-body { padding:16px 16px 40px; }
@@ -418,6 +527,9 @@
       .menu-grid { grid-template-columns:1fr; }
       .menu-cat-title { font-size:1.2rem; }
       .menu-nav-link { padding:12px 12px; font-size:0.78rem; }
+      .cart-bar { padding:12px 16px; }
+      .order-btn { padding:10px 16px; font-size:0.8rem; }
+      .cart-total .grand { font-size:1rem; }
     }
 
     /* ══════════════════════════════════════════════════
@@ -1228,28 +1340,40 @@
           <div class="menu-item" style="flex-direction:column;align-items:flex-start;gap:6px;padding:14px 12px;">
             <div style="display:flex;justify-content:space-between;width:100%;align-items:center">
               <span class="item-name" style="font-weight:700;">Gujarati Thali</span>
-              <span class="item-price">₹149</span>
+              <div style="display:flex;align-items:center;gap:10px">
+                <span class="item-price">₹149</span>
+                <div class="item-actions" data-key="Gujarati Thali||149"><button class="add-btn" data-key="Gujarati Thali||149" data-name="Gujarati Thali" data-price="149" onclick="addToCart(this)">ADD</button></div>
+              </div>
             </div>
             <div class="variant-tags"><span class="variant-tag">One Veg. Kathol Dal, Rice, Butter Milk, Papad, Four Chapathi</span></div>
           </div>
           <div class="menu-item" style="flex-direction:column;align-items:flex-start;gap:6px;padding:14px 12px;">
             <div style="display:flex;justify-content:space-between;width:100%;align-items:center">
               <span class="item-name" style="font-weight:700;">Punjabi Thali</span>
-              <span class="item-price">₹219</span>
+              <div style="display:flex;align-items:center;gap:10px">
+                <span class="item-price">₹219</span>
+                <div class="item-actions" data-key="Punjabi Thali||219"><button class="add-btn" data-key="Punjabi Thali||219" data-name="Punjabi Thali" data-price="219" onclick="addToCart(this)">ADD</button></div>
+              </div>
             </div>
             <div class="variant-tags"><span class="variant-tag">One Paneer, One Veg., Dal, Rice, Papad, Butter Milk, Two Tand. Roti, Ice Cream</span></div>
           </div>
           <div class="menu-item" style="flex-direction:column;align-items:flex-start;gap:6px;padding:14px 12px;">
             <div style="display:flex;justify-content:space-between;width:100%;align-items:center">
               <span class="item-name" style="font-weight:700;">Spl. Gujarati Thali <span class="badge signature">Signature</span></span>
-              <span class="item-price">₹179</span>
+              <div style="display:flex;align-items:center;gap:10px">
+                <span class="item-price">₹179</span>
+                <div class="item-actions" data-key="Spl. Gujarati Thali||179"><button class="add-btn" data-key="Spl. Gujarati Thali||179" data-name="Spl. Gujarati Thali" data-price="179" onclick="addToCart(this)">ADD</button></div>
+              </div>
             </div>
             <div class="variant-tags"><span class="variant-tag">Farsan, One Veg. Kathol Dal, Rice, Butter Milk, Papad, Four Chapathi, Ice Cream</span></div>
           </div>
           <div class="menu-item" style="flex-direction:column;align-items:flex-start;gap:6px;padding:14px 12px;">
             <div style="display:flex;justify-content:space-between;width:100%;align-items:center">
               <span class="item-name" style="font-weight:700;">Spl. Punjabi Thali <span class="badge signature">Signature</span></span>
-              <span class="item-price">₹249</span>
+              <div style="display:flex;align-items:center;gap:10px">
+                <span class="item-price">₹249</span>
+                <div class="item-actions" data-key="Spl. Punjabi Thali||249"><button class="add-btn" data-key="Spl. Punjabi Thali||249" data-name="Spl. Punjabi Thali" data-price="249" onclick="addToCart(this)">ADD</button></div>
+              </div>
             </div>
             <div class="variant-tags"><span class="variant-tag">Soup, One Paneer, One Veg., Dal, Rice, Papad, Butter Milk, Two Tand. Roti, Ice Cream</span></div>
           </div>
@@ -1275,8 +1399,52 @@
       </div>
 
     </div><!-- /menu-body -->
+    <!-- Cart Bar -->
+    <div class="cart-bar empty" id="cartBar">
+      <div class="cart-bar-left">
+        <div class="cart-icon-wrap">
+          <i class="fas fa-shopping-bag"></i>
+          <span class="cart-badge-count" id="cartCount">0</span>
+        </div>
+        <div class="cart-summary-text">
+          <strong id="cartItemText">0 items added</strong>
+          <span>Tap to view cart</span>
+        </div>
+      </div>
+      <div class="cart-bar-right">
+        <div class="cart-total">
+          <div class="subtotal" id="cartSubtotal">Subtotal: ₹0</div>
+          <div class="grand" id="cartGrand">₹0</div>
+        </div>
+        <button class="order-btn" onclick="openCartDrawer()"><i class="fab fa-whatsapp"></i> Order</button>
+      </div>
+    </div>
   </div><!-- /menu-modal-box -->
 </div><!-- /menuModal -->
+
+<!-- Cart Drawer -->
+<div class="cart-drawer-overlay" id="cartDrawerOverlay" onclick="if(event.target===this)closeCartDrawer()">
+  <div class="cart-drawer">
+    <div class="cart-drawer-header">
+      <h3><i class="fas fa-shopping-bag" style="margin-right:8px"></i> Your Order</h3>
+      <button class="cart-drawer-close" onclick="closeCartDrawer()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="cart-drawer-body" id="cartDrawerBody">
+      <p style="text-align:center;color:var(--text-light);padding:40px 0;">Your cart is empty</p>
+    </div>
+    <div class="cart-drawer-footer" id="cartDrawerFooter">
+      <div class="cart-bill-row"><span>Subtotal</span><span id="drawerSubtotal">₹0</span></div>
+      <div class="cart-bill-row"><span>GST (18%)</span><span id="drawerGst">₹0</span></div>
+      <div class="cart-bill-row grand-total"><span>Total</span><span id="drawerTotal">₹0</span></div>
+      <button class="order-btn" style="width:100%;justify-content:center;margin-top:14px" onclick="sendOrderToWhatsApp()">
+        <i class="fab fa-whatsapp"></i> Confirm Order on WhatsApp
+      </button>
+      <button class="cart-clear-btn" onclick="clearCart()" style="width:100%;text-align:center;margin-top:8px">
+        <i class="fas fa-trash-alt" style="margin-right:4px"></i> Clear Cart
+      </button>
+    </div>
+  </div>
+</div>
 
 <!-- ─── FLOATING BUTTONS ───────────────────────────────── -->
 <a href="https://wa.me/917574033599" id="whatsapp-btn" target="_blank" rel="noopener" aria-label="WhatsApp us">
@@ -1431,6 +1599,202 @@
       }
     });
   });
+
+  /* ══════════════════════════════════════════════════
+     CART SYSTEM
+  ══════════════════════════════════════════════════ */
+  const cart = {}; // { itemName: { price, qty } }
+
+  /* Parse price from ₹XX string */
+  function parsePrice(str) {
+    return parseInt(str.replace(/[^\d]/g, ''), 10) || 0;
+  }
+
+  /* Inject Add buttons into every .menu-item that doesn't already have one */
+  function initCartButtons() {
+    document.querySelectorAll('.menu-item').forEach(function(item, idx) {
+      // Skip if already has item-actions (e.g., manually added for thali items)
+      if (item.querySelector('.item-actions')) return;
+
+      var nameEl = item.querySelector('.item-name');
+      var priceEl = item.querySelector('.item-price');
+      if (!nameEl || !priceEl) return;
+
+      var name = nameEl.childNodes[0].textContent.trim();
+      var price = parsePrice(priceEl.textContent);
+      var key = name + '||' + price;
+
+      var actionsDiv = document.createElement('div');
+      actionsDiv.className = 'item-actions';
+      actionsDiv.setAttribute('data-key', key);
+
+      actionsDiv.innerHTML =
+        '<button class="add-btn" data-key="'+key+'" data-name="'+name.replace(/"/g,'&quot;')+'" data-price="'+price+'" onclick="addToCart(this)">ADD</button>';
+
+      item.appendChild(actionsDiv);
+    });
+  }
+
+  function addToCart(btn) {
+    var key = btn.getAttribute('data-key');
+    var name = btn.getAttribute('data-name');
+    var price = parseInt(btn.getAttribute('data-price'), 10);
+
+    if (!cart[key]) {
+      cart[key] = { name: name, price: price, qty: 1 };
+    } else {
+      cart[key].qty++;
+    }
+    updateCartItemUI(key, btn.parentElement);
+    updateCartBar();
+  }
+
+  function updateCartItemUI(key, actionsDiv) {
+    var item = cart[key];
+    if (!item) {
+      actionsDiv.innerHTML =
+        '<button class="add-btn" data-key="'+key+'" onclick="addToCart(this)">ADD</button>';
+      var menuItem = actionsDiv.closest('.menu-item');
+      if (menuItem) menuItem.classList.remove('in-cart');
+      return;
+    }
+    actionsDiv.innerHTML =
+      '<div class="qty-controls">' +
+        '<button class="qty-btn qty-minus" onclick="changeQty(\''+key.replace(/'/g,"\\'")+'\',-1,this)">−</button>' +
+        '<span class="qty-num">' + item.qty + '</span>' +
+        '<button class="qty-btn qty-plus" onclick="changeQty(\''+key.replace(/'/g,"\\'")+'\',1,this)">+</button>' +
+      '</div>';
+    var menuItem = actionsDiv.closest('.menu-item');
+    if (menuItem) menuItem.classList.add('in-cart');
+  }
+
+  function changeQty(key, delta, btn) {
+    if (!cart[key]) return;
+    cart[key].qty += delta;
+    if (cart[key].qty <= 0) {
+      delete cart[key];
+    }
+    var actionsDiv = btn.closest('.item-actions');
+    if (actionsDiv) updateCartItemUI(key, actionsDiv);
+    updateCartBar();
+    updateCartDrawer();
+  }
+
+  function getCartTotals() {
+    var subtotal = 0;
+    var totalItems = 0;
+    for (var k in cart) {
+      subtotal += cart[k].price * cart[k].qty;
+      totalItems += cart[k].qty;
+    }
+    var gst = Math.round(subtotal * 0.18);
+    var grand = subtotal + gst;
+    return { subtotal: subtotal, gst: gst, grand: grand, totalItems: totalItems };
+  }
+
+  function updateCartBar() {
+    var t = getCartTotals();
+    var bar = document.getElementById('cartBar');
+    if (t.totalItems === 0) {
+      bar.classList.add('empty');
+    } else {
+      bar.classList.remove('empty');
+    }
+    document.getElementById('cartCount').textContent = t.totalItems;
+    document.getElementById('cartItemText').textContent = t.totalItems + ' item' + (t.totalItems > 1 ? 's' : '') + ' added';
+    document.getElementById('cartSubtotal').textContent = 'Subtotal: ₹' + t.subtotal;
+    document.getElementById('cartGrand').textContent = '₹' + t.grand;
+  }
+
+  function openCartDrawer() {
+    updateCartDrawer();
+    document.getElementById('cartDrawerOverlay').classList.add('open');
+  }
+
+  function closeCartDrawer() {
+    document.getElementById('cartDrawerOverlay').classList.remove('open');
+  }
+
+  function updateCartDrawer() {
+    var body = document.getElementById('cartDrawerBody');
+    var keys = Object.keys(cart);
+    if (keys.length === 0) {
+      body.innerHTML = '<p style="text-align:center;color:var(--text-light);padding:40px 0;">Your cart is empty</p>';
+    } else {
+      var html = '';
+      for (var k in cart) {
+        var item = cart[k];
+        var lineTotal = item.price * item.qty;
+        html +=
+          '<div class="cart-drawer-item">' +
+            '<div class="cart-drawer-item-info">' +
+              '<div class="cart-drawer-item-name">' + item.name + '</div>' +
+              '<div class="cart-drawer-item-price">₹' + item.price + ' each</div>' +
+            '</div>' +
+            '<div class="cart-drawer-item-qty">' +
+              '<button class="qty-btn qty-minus" onclick="drawerChangeQty(\''+k.replace(/'/g,"\\'")+'\',-1)">−</button>' +
+              '<span class="qty-num">' + item.qty + '</span>' +
+              '<button class="qty-btn qty-plus" onclick="drawerChangeQty(\''+k.replace(/'/g,"\\'")+'\',1)">+</button>' +
+            '</div>' +
+            '<div class="cart-drawer-item-total">₹' + lineTotal + '</div>' +
+          '</div>';
+      }
+      body.innerHTML = html;
+    }
+    var t = getCartTotals();
+    document.getElementById('drawerSubtotal').textContent = '₹' + t.subtotal;
+    document.getElementById('drawerGst').textContent = '₹' + t.gst;
+    document.getElementById('drawerTotal').textContent = '₹' + t.grand;
+  }
+
+  function drawerChangeQty(key, delta) {
+    if (!cart[key]) return;
+    cart[key].qty += delta;
+    if (cart[key].qty <= 0) {
+      delete cart[key];
+    }
+    // Also update the menu-item UI if visible
+    var actionsDiv = document.querySelector('.item-actions[data-key="'+key+'"]');
+    if (actionsDiv) updateCartItemUI(key, actionsDiv);
+    updateCartBar();
+    updateCartDrawer();
+  }
+
+  function clearCart() {
+    for (var k in cart) delete cart[k];
+    // Reset all menu-item UIs
+    document.querySelectorAll('.item-actions').forEach(function(el) {
+      var key = el.getAttribute('data-key');
+      if (key) updateCartItemUI(key, el);
+    });
+    updateCartBar();
+    updateCartDrawer();
+  }
+
+  function sendOrderToWhatsApp() {
+    var t = getCartTotals();
+    if (t.totalItems === 0) {
+      alert('Your cart is empty! Please add items to your order.');
+      return;
+    }
+    var msg = '🛒 *Food Order – Kankeshwari*\n\n';
+    var idx = 1;
+    for (var k in cart) {
+      var item = cart[k];
+      msg += idx + '. ' + item.name + '  x' + item.qty + '  = ₹' + (item.price * item.qty) + '\n';
+      idx++;
+    }
+    msg += '\n───────────────\n';
+    msg += '📦 Subtotal: ₹' + t.subtotal + '\n';
+    msg += '📋 GST (18%): ₹' + t.gst + '\n';
+    msg += '💰 *Total: ₹' + t.grand + '*\n';
+    msg += '\nPlease confirm my order. Thank you! 🙏';
+    var waUrl = 'https://wa.me/917574033599?text=' + encodeURIComponent(msg);
+    window.open(waUrl, '_blank');
+  }
+
+  /* Initialize cart buttons on load */
+  initCartButtons();
 </script>
 </body>
 </html>

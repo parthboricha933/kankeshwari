@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Sea Cafe & Food Destination, Diu – Fresh Flavors, Coastal Vibes, Unforgettable Memories. Seafood, Indian, Chinese, Fast Food & more at Diu's finest beachside restaurant."/>
+  <meta name="keywords" content="Sea Cafe Diu, restaurant Diu, seafood Diu, beachside dining Diu, best restaurant Diu"/>
+  <title>Sea Cafe & Food Destination – Diu</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,400;1,600&display=swap" rel="stylesheet"/>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <style>
+    /* ─── CSS Variables ──────────────────────────────── */
+    :root {
+      --ocean:       #0a4f6e;
+      --ocean-mid:   #1a7a9c;
+      --ocean-light: #4ab4d8;
+      --sand:        #f0e8d5;
+      --sand-dark:   #d9c9a8;
+      --sunset:      #e07b39;
+      --sunset-warm: #f4a35a;
+      --coral:       #d95f3b;
+      --white:       #ffffff;
+      --off-white:   #faf8f4;
+      --dark:        #1a1a2e;
+      --text:        #3a3a3a;
+      --text-light:  #6b6b6b;
+      --font-display: 'Cormorant Garamond', serif;
+      --font-body:    'DM Sans', sans-serif;
+      --radius:       12px;
+      --shadow:       0 8px 40px rgba(10,79,110,0.12);
+      --transition:   0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    /* ─── Reset ──────────────────────────────────────── */
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); color: var(--text); background: var(--off-white); overflow-x:hidden; }
+    img { max-width:100%; display:block; }
+    a { text-decoration:none; color:inherit; }
+    ul { list-style:none; }
+
+    /* ─── Scrollbar ──────────────────────────────────── */
+    ::-webkit-scrollbar { width:6px; }
+    ::-webkit-scrollbar-track { background: var(--sand); }
+    ::-webkit-scrollbar-thumb { background: var(--ocean-mid); border-radius:10px; }
+
+    /* ─── Utility ────────────────────────────────────── */
+    .container { max-width:1180px; margin:0 auto; padding:0 24px; }
+    .section-tag { display:inline-block; font-family:var(--font-body); font-size:0.72rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:var(--sunset); margin-bottom:12px; }
+    .section-title { font-family:var(--font-display); font-size:clamp(2rem,4vw,3rem); font-weight:600; color:var(--ocean); line-height:1.15; }
+    .section-subtitle { font-size:1rem; color:var(--text-light); margin-top:14px; max-width:560px; line-height:1.7; }
+    .btn { display:inline-flex; align-items:center; gap:8px; padding:14px 30px; border-radius:50px; font-family:var(--font-body); font-size:0.92rem; font-weight:600; cursor:pointer; transition:var(--transition); border:none; }
+    .btn-primary { background:var(--sunset); color:var(--white); }
+    .btn-primary:hover { background:var(--coral); transform:translateY(-2px); box-shadow:0 10px 30px rgba(224,123,57,0.4); }
+    .btn-outline { background:transparent; color:var(--white); border:2px solid rgba(255,255,255,0.7); backdrop-filter:blur(4px); }
+    .btn-outline:hover { background:rgba(255,255,255,0.15); transform:translateY(-2px); }
+    .btn-ocean { background:var(--ocean); color:var(--white); }
+    .btn-ocean:hover { background:var(--ocean-mid); transform:translateY(-2px); box-shadow:0 10px 30px rgba(10,79,110,0.3); }
+
+    /* ─── Fade-in on Scroll ───────────────────────────── */
+    .reveal { opacity:0; transform:translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+    .reveal-left { opacity:0; transform:translateX(-40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal-left.visible { opacity:1; transform:translateX(0); }
+    .reveal-right { opacity:0; transform:translateX(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal-right.visible { opacity:1; transform:translateX(0); }
+
+    /* ══════════════════════════════════════════════════
+       NAVBAR
+    ══════════════════════════════════════════════════ */
+    #navbar {
+      position:fixed; top:0; left:0; right:0; z-index:1000;
+      padding:20px 0;
+      transition:background 0.4s ease, padding 0.4s ease, box-shadow 0.4s ease;
+    }
+    #navbar.scrolled {
+      background:rgba(255,255,255,0.97);
+      padding:12px 0;
+      box-shadow:0 4px 30px rgba(10,79,110,0.1);
+      backdrop-filter:blur(10px);
+    }
+    #navbar .nav-inner { display:flex; align-items:center; justify-content:space-between; }
+    .nav-logo { display:flex; flex-direction:column; }
+    .nav-logo-name {
+      font-family:var(--font-display);
+      font-size:1.45rem;
+      font-weight:700;
+      color:var(--white);
+      transition:color 0.4s;
+      line-height:1.1;
+    }
+    .nav-logo-sub { font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.7); transition:color 0.4s; }
+    #navbar.scrolled .nav-logo-name { color:var(--ocean); }
+    #navbar.scrolled .nav-logo-sub { color:var(--text-light); }
+
+    .nav-links { display:flex; align-items:center; gap:32px; }
+    .nav-links a {
+      font-size:0.875rem; font-weight:500; color:rgba(255,255,255,0.9);
+      transition:color 0.3s; position:relative; padding-bottom:3px;
+    }
+    .nav-links a::after {
+      content:''; position:absolute; bottom:0; left:0; width:0; height:2px;
+      background:var(--sunset); transition:width 0.3s;
+    }
+    .nav-links a:hover::after { width:100%; }
+    .nav-links a:hover { color:var(--white); }
+    #navbar.scrolled .nav-links a { color:var(--text); }
+    #navbar.scrolled .nav-links a:hover { color:var(--ocean); }
+
+    .nav-reserve { background:var(--sunset); color:var(--white) !important; padding:10px 22px; border-radius:50px; font-weight:600 !important; }
+    .nav-reserve:hover { background:var(--coral) !important; }
+    .nav-reserve::after { display:none !important; }
+
+    .nav-hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:4px; }
+    .nav-hamburger span { display:block; width:24px; height:2px; background:var(--white); transition:var(--transition); border-radius:2px; }
+    #navbar.scrolled .nav-hamburger span { background:var(--ocean); }
+    .nav-hamburger.open span:nth-child(1) { transform:rotate(45deg) translate(5px,5px); }
+    .nav-hamburger.open span:nth-child(2) { opacity:0; }
+    .nav-hamburger.open span:nth-child(3) { transform:rotate(-45deg) translate(5px,-5px); }
+
+    .mobile-menu {
+      display:none; position:fixed; inset:0; background:var(--white);
+      z-index:999; flex-direction:column; align-items:center; justify-content:center; gap:36px;
+    }
+    .mobile-menu.open { display:flex; }
+    .mobile-menu a { font-family:var(--font-display); font-size:2rem; font-weight:600; color:var(--ocean); }
+    .mobile-menu a:hover { color:var(--sunset); }
+    .mobile-menu-close { position:absolute; top:24px; right:24px; font-size:1.5rem; background:none; border:none; cursor:pointer; color:var(--ocean); }
+
+    /* ══════════════════════════════════════════════════
+       HERO
+    ══════════════════════════════════════════════════ */
+    #hero {
+      position:relative; height:100vh; min-height:640px;
+      display:flex; align-items:center; justify-content:center;
+      overflow:hidden;
+    }
+    .hero-bg {
+      position:absolute; inset:0;
+      background:
+        linear-gradient(160deg, rgba(10,79,110,0.72) 0%, rgba(26,26,46,0.55) 50%, rgba(224,123,57,0.35) 100%),
+        url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1800&q=80') center/cover no-repeat;
+      transform:scale(1.03);
+      animation:heroZoom 18s ease-in-out infinite alternate;
+    }
+    @keyframes heroZoom { from { transform:scale(1.03); } to { transform:scale(1.08); } }
+
+    .hero-waves {
+      position:absolute; bottom:0; left:0; right:0;
+      height:100px; overflow:hidden;
+    }
+    .hero-waves svg { position:absolute; bottom:0; width:100%; }
+
+    .hero-content { position:relative; z-index:2; text-align:center; padding:0 24px; }
+    .hero-badge {
+      display:inline-flex; align-items:center; gap:8px;
+      background:rgba(255,255,255,0.12); backdrop-filter:blur(8px);
+      border:1px solid rgba(255,255,255,0.25); border-radius:50px;
+      padding:8px 20px; color:rgba(255,255,255,0.9);
+      font-size:0.75rem; letter-spacing:0.18em; text-transform:uppercase; font-weight:500;
+      margin-bottom:28px; animation:fadeDown 0.8s ease both;
+    }
+    .hero-badge i { color:var(--sunset-warm); }
+    .hero-title {
+      font-family:var(--font-display); font-size:clamp(2.8rem,7vw,5.5rem);
+      color:var(--white); line-height:1.08; font-weight:700;
+      animation:fadeUp 0.9s 0.2s ease both;
+    }
+    .hero-title em { font-style:italic; color:var(--sunset-warm); }
+    .hero-tagline {
+      font-size:clamp(1rem,2vw,1.2rem); color:rgba(255,255,255,0.85);
+      margin:20px auto 36px; max-width:500px; line-height:1.6; font-weight:300;
+      animation:fadeUp 0.9s 0.4s ease both;
+    }
+    .hero-cta { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; animation:fadeUp 0.9s 0.6s ease both; }
+
+    .hero-scroll {
+      position:absolute; bottom:130px; left:50%; transform:translateX(-50%);
+      display:flex; flex-direction:column; align-items:center; gap:8px;
+      color:rgba(255,255,255,0.6); font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;
+      animation:bounce 2s ease-in-out infinite;
+    }
+    .hero-scroll-line { width:1px; height:40px; background:linear-gradient(to bottom, rgba(255,255,255,0.6), transparent); }
+
+    @keyframes fadeDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes fadeUp   { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes bounce   { 0%,100% { transform:translateX(-50%) translateY(0); } 50% { transform:translateX(-50%) translateY(8px); } }
+
+    /* ══════════════════════════════════════════════════
+       ABOUT
+    ══════════════════════════════════════════════════ */
+    #about { padding:100px 0; background:var(--off-white); }
+    .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:72px; align-items:center; }
+    .about-images { position:relative; }
+    .about-img-main {
+      width:100%; height:460px; object-fit:cover; border-radius:16px;
+      box-shadow:var(--shadow);
+    }
+    .about-img-accent {
+      position:absolute; bottom:-28px; right:-28px;
+      width:200px; height:200px; object-fit:cover;
+      border-radius:12px; border:6px solid var(--white);
+      box-shadow:var(--shadow);
+    }
+    .about-badge-float {
+      position:absolute; top:24px; left:-24px;
+      background:var(--white); border-radius:12px; padding:14px 18px;
+      box-shadow:var(--shadow); display:flex; align-items:center; gap:10px;
+    }
+    .about-badge-float i { font-size:1.4rem; color:var(--sunset); }
+    .about-badge-float strong { font-size:1.3rem; color:var(--ocean); font-family:var(--font-display); }
+    .about-badge-float span { font-size:0.72rem; color:var(--text-light); font-weight:500; display:block; }
+
+    .about-content { }
+    .about-content .section-subtitle { max-width:100%; }
+    .about-features { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:32px; }
+    .about-feature {
+      display:flex; align-items:center; gap:10px;
+      font-size:0.88rem; font-weight:500; color:var(--text);
+    }
+    .about-feature i { color:var(--ocean-mid); font-size:1rem; }
+
+    /* ══════════════════════════════════════════════════
+       SPECIALTIES
+    ══════════════════════════════════════════════════ */
+    #specialties { padding:100px 0; background:var(--white); }
+    .specialties-header { text-align:center; margin-bottom:60px; }
+    .specialties-header .section-subtitle { margin:0 auto; }
+    .specialties-grid {
+      display:grid; grid-template-columns:repeat(3,1fr); gap:28px;
+    }
+    .specialty-card {
+      position:relative; border-radius:16px; overflow:hidden;
+      height:300px; cursor:pointer; group:true;
+    }
+    .specialty-card img {
+      width:100%; height:100%; object-fit:cover;
+      transition:transform 0.6s ease;
+    }
+    .specialty-card:hover img { transform:scale(1.08); }
+    .specialty-card-overlay {
+      position:absolute; inset:0;
+      background:linear-gradient(to top, rgba(10,79,110,0.85) 0%, rgba(10,79,110,0.1) 60%);
+      transition:var(--transition);
+    }
+    .specialty-card:hover .specialty-card-overlay {
+      background:linear-gradient(to top, rgba(224,123,57,0.88) 0%, rgba(10,79,110,0.25) 60%);
+    }
+    .specialty-card-content {
+      position:absolute; bottom:0; left:0; right:0; padding:28px;
+    }
+    .specialty-icon {
+      width:44px; height:44px; background:rgba(255,255,255,0.15);
+      backdrop-filter:blur(8px); border-radius:10px;
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.3rem; color:var(--white); margin-bottom:10px;
+      transition:var(--transition);
+    }
+    .specialty-card:hover .specialty-icon { background:rgba(255,255,255,0.3); }
+    .specialty-title { font-family:var(--font-display); font-size:1.45rem; color:var(--white); font-weight:600; }
+    .specialty-desc { font-size:0.8rem; color:rgba(255,255,255,0.8); margin-top:4px; }
+
+    /* ══════════════════════════════════════════════════
+       MENU SECTION
+    ══════════════════════════════════════════════════ */
+    #menu {
+      padding:100px 0;
+      background:linear-gradient(135deg, var(--sand) 0%, var(--off-white) 100%);
+      position:relative; overflow:hidden;
+    }
+    #menu::before {
+      content:''; position:absolute; top:-80px; right:-80px;
+      width:300px; height:300px;
+      background:radial-gradient(circle, rgba(74,180,216,0.12) 0%, transparent 70%);
+      border-radius:50%;
+    }
+    #menu::after {
+      content:''; position:absolute; bottom:-60px; left:-60px;
+      width:250px; height:250px;
+      background:radial-gradient(circle, rgba(224,123,57,0.1) 0%, transparent 70%);
+      border-radius:50%;
+    }
+    .menu-header { text-align:center; margin-bottom:60px; }
+    .menu-header .section-subtitle { margin:0 auto; }
+    .menu-divider {
+      display:flex; align-items:center; gap:16px;
+      justify-content:center; margin:20px 0 0;
+    }
+    .menu-divider-line { width:60px; height:1px; background:var(--sand-dark); }
+    .menu-divider i { color:var(--sunset); font-size:1rem; }
+
+    #custom-menu-container {
+      position:relative; z-index:1;
+      min-height:200px;
+      background:var(--white);
+      border-radius:20px;
+      border:2px dashed var(--sand-dark);
+      padding:48px;
+      display:flex; align-items:center; justify-content:center;
+      box-shadow:var(--shadow);
+    }
+    .menu-placeholder-inner { text-align:center; }
+    .menu-placeholder-inner i { font-size:2.5rem; color:var(--sand-dark); margin-bottom:16px; }
+    .menu-placeholder-inner h3 { font-family:var(--font-display); font-size:1.5rem; color:var(--text-light); margin-bottom:8px; }
+    .menu-placeholder-inner p { font-size:0.85rem; color:var(--sand-dark); font-weight:500; letter-spacing:0.05em; }
+
+    /* ══════════════════════════════════════════════════
+       GALLERY
+    ══════════════════════════════════════════════════ */
+    #gallery { padding:100px 0; background:var(--dark); }
+    .gallery-header { text-align:center; margin-bottom:60px; }
+    .gallery-header .section-title { color:var(--white); }
+    .gallery-header .section-subtitle { color:rgba(255,255,255,0.55); margin:0 auto; }
+    .gallery-header .section-tag { color:var(--sunset-warm); }
+
+    .gallery-masonry {
+      columns:3; column-gap:16px;
+    }
+    .gallery-item {
+      break-inside:avoid; margin-bottom:16px;
+      border-radius:12px; overflow:hidden; position:relative; cursor:pointer;
+    }
+    .gallery-item img { width:100%; display:block; transition:transform 0.5s ease; }
+    .gallery-item:hover img { transform:scale(1.05); }
+    .gallery-item-overlay {
+      position:absolute; inset:0; background:rgba(10,79,110,0);
+      transition:var(--transition); display:flex; align-items:center; justify-content:center;
+    }
+    .gallery-item:hover .gallery-item-overlay { background:rgba(10,79,110,0.45); }
+    .gallery-item-overlay i {
+      font-size:1.6rem; color:var(--white); opacity:0; transform:scale(0.8);
+      transition:var(--transition);
+    }
+    .gallery-item:hover .gallery-item-overlay i { opacity:1; transform:scale(1); }
+
+    /* Lightbox */
+    #lightbox {
+      display:none; position:fixed; inset:0; z-index:9999;
+      background:rgba(0,0,0,0.92); align-items:center; justify-content:center;
+    }
+    #lightbox.active { display:flex; }
+    #lightbox img { max-width:90vw; max-height:90vh; border-radius:8px; }
+    #lightbox-close {
+      position:absolute; top:24px; right:32px; font-size:2rem;
+      color:var(--white); cursor:pointer; background:none; border:none;
+    }
+
+    /* ══════════════════════════════════════════════════
+       WHY CHOOSE US
+    ══════════════════════════════════════════════════ */
+    #why { padding:100px 0; background:var(--off-white); }
+    .why-header { text-align:center; margin-bottom:64px; }
+    .why-header .section-subtitle { margin:0 auto; }
+    .why-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
+    .why-card {
+      background:var(--white); border-radius:16px; padding:36px 28px;
+      border:1px solid rgba(10,79,110,0.08); transition:var(--transition);
+      position:relative; overflow:hidden;
+    }
+    .why-card::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:3px;
+      background:linear-gradient(90deg,var(--ocean-mid),var(--ocean-light));
+      transform:scaleX(0); transform-origin:left; transition:var(--transition);
+    }
+    .why-card:hover { transform:translateY(-6px); box-shadow:var(--shadow); }
+    .why-card:hover::before { transform:scaleX(1); }
+    .why-icon {
+      width:56px; height:56px; border-radius:14px;
+      background:linear-gradient(135deg, var(--ocean-light), var(--ocean));
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.4rem; color:var(--white); margin-bottom:20px;
+    }
+    .why-card h3 { font-family:var(--font-display); font-size:1.25rem; color:var(--ocean); margin-bottom:10px; font-weight:600; }
+    .why-card p { font-size:0.88rem; color:var(--text-light); line-height:1.7; }
+
+    /* ══════════════════════════════════════════════════
+       TESTIMONIALS
+    ══════════════════════════════════════════════════ */
+    #reviews {
+      padding:100px 0;
+      background:linear-gradient(135deg, var(--ocean) 0%, var(--ocean-mid) 100%);
+      position:relative; overflow:hidden;
+    }
+    #reviews::before {
+      content:''; position:absolute; top:-120px; right:-120px;
+      width:400px; height:400px; border-radius:50%;
+      background:rgba(255,255,255,0.05);
+    }
+    .reviews-header { text-align:center; margin-bottom:60px; }
+    .reviews-header .section-title { color:var(--white); }
+    .reviews-header .section-subtitle { color:rgba(255,255,255,0.65); margin:0 auto; }
+    .reviews-header .section-tag { color:var(--sunset-warm); }
+
+    .reviews-carousel { position:relative; overflow:hidden; }
+    .reviews-track {
+      display:flex; gap:24px;
+      transition:transform 0.5s ease;
+    }
+    .review-card {
+      flex:0 0 calc(33.33% - 16px);
+      background:rgba(255,255,255,0.1); backdrop-filter:blur(10px);
+      border:1px solid rgba(255,255,255,0.15); border-radius:16px;
+      padding:32px; position:relative;
+    }
+    .review-stars { color:var(--sunset-warm); font-size:0.9rem; margin-bottom:16px; letter-spacing:2px; }
+    .review-text { font-size:0.95rem; color:rgba(255,255,255,0.9); line-height:1.75; font-style:italic; margin-bottom:24px; }
+    .review-text::before { content:'\201C'; font-family:var(--font-display); font-size:3rem; color:rgba(255,255,255,0.25); line-height:0; vertical-align:-0.6em; margin-right:4px; }
+    .review-author { display:flex; align-items:center; gap:14px; }
+    .review-avatar {
+      width:46px; height:46px; border-radius:50%; object-fit:cover;
+      border:2px solid rgba(255,255,255,0.25);
+    }
+    .review-name { font-weight:600; font-size:0.9rem; color:var(--white); }
+    .review-location { font-size:0.75rem; color:rgba(255,255,255,0.55); margin-top:2px; }
+
+    .reviews-controls {
+      display:flex; align-items:center; justify-content:center; gap:16px; margin-top:40px;
+    }
+    .reviews-btn {
+      width:44px; height:44px; border-radius:50%;
+      background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.25);
+      color:var(--white); font-size:1rem; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      transition:var(--transition);
+    }
+    .reviews-btn:hover { background:rgba(255,255,255,0.3); }
+    .reviews-dots { display:flex; gap:8px; }
+    .reviews-dot {
+      width:8px; height:8px; border-radius:50%;
+      background:rgba(255,255,255,0.3); cursor:pointer;
+      transition:var(--transition); border:none;
+    }
+    .reviews-dot.active { background:var(--white); width:24px; border-radius:4px; }
+
+    /* ══════════════════════════════════════════════════
+       RESERVATION
+    ══════════════════════════════════════════════════ */
+    #reservation { padding:100px 0; background:var(--white); }
+    .reservation-inner {
+      display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start;
+    }
+    .reservation-info {}
+    .reservation-info p { font-size:0.95rem; color:var(--text-light); line-height:1.7; margin-top:16px; }
+    .reservation-details { margin-top:32px; display:flex; flex-direction:column; gap:20px; }
+    .res-detail { display:flex; align-items:flex-start; gap:16px; }
+    .res-detail-icon {
+      width:44px; height:44px; border-radius:10px;
+      background:linear-gradient(135deg,var(--ocean),var(--ocean-mid));
+      color:var(--white); display:flex; align-items:center; justify-content:center;
+      font-size:1rem; flex-shrink:0;
+    }
+    .res-detail-text strong { display:block; font-size:0.9rem; color:var(--ocean); margin-bottom:2px; }
+    .res-detail-text span { font-size:0.85rem; color:var(--text-light); }
+
+    .reservation-form { background:var(--off-white); border-radius:20px; padding:40px; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .form-group { display:flex; flex-direction:column; gap:7px; margin-bottom:16px; }
+    .form-group label { font-size:0.78rem; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-light); }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      padding:12px 16px; border-radius:10px;
+      border:1.5px solid rgba(10,79,110,0.12);
+      background:var(--white); font-family:var(--font-body);
+      font-size:0.9rem; color:var(--text);
+      transition:border-color 0.3s, box-shadow 0.3s;
+      outline:none;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color:var(--ocean-mid);
+      box-shadow:0 0 0 3px rgba(26,122,156,0.1);
+    }
+    .form-group textarea { resize:vertical; min-height:100px; }
+    .form-submit { width:100%; padding:15px; font-size:1rem; font-weight:600; }
+    .form-success {
+      display:none; background:rgba(10,79,110,0.08); border:1px solid rgba(10,79,110,0.2);
+      border-radius:10px; padding:16px; text-align:center; color:var(--ocean);
+      font-size:0.9rem; margin-top:12px;
+    }
+    .form-success.show { display:block; }
+
+    /* ══════════════════════════════════════════════════
+       CONTACT
+    ══════════════════════════════════════════════════ */
+    #contact { padding:100px 0; background:var(--off-white); }
+    .contact-header { text-align:center; margin-bottom:60px; }
+    .contact-header .section-subtitle { margin:0 auto; }
+    .contact-grid { display:grid; grid-template-columns:1fr 2fr; gap:48px; }
+    .contact-cards { display:flex; flex-direction:column; gap:20px; }
+    .contact-card {
+      background:var(--white); border-radius:14px; padding:24px;
+      border:1px solid rgba(10,79,110,0.08);
+      display:flex; align-items:flex-start; gap:16px;
+      transition:var(--transition);
+    }
+    .contact-card:hover { box-shadow:var(--shadow); transform:translateY(-3px); }
+    .contact-card-icon {
+      width:46px; height:46px; border-radius:12px; flex-shrink:0;
+      background:linear-gradient(135deg,var(--sunset),var(--coral));
+      color:var(--white); display:flex; align-items:center; justify-content:center; font-size:1.1rem;
+    }
+    .contact-card h4 { font-size:0.8rem; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-light); margin-bottom:5px; }
+    .contact-card p, .contact-card a { font-size:0.92rem; color:var(--text); font-weight:500; display:block; }
+    .contact-card a:hover { color:var(--ocean); }
+    .map-container {
+      border-radius:16px; overflow:hidden; height:100%; min-height:400px;
+      border:1px solid rgba(10,79,110,0.08);
+      background:var(--sand);
+      display:flex; align-items:center; justify-content:center; flex-direction:column; gap:16px;
+      box-shadow:var(--shadow);
+    }
+    .map-container iframe { width:100%; height:100%; border:none; min-height:400px; display:block; }
+
+    /* ══════════════════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════════════════ */
+    #footer {
+      background:var(--dark); padding:72px 0 0;
+    }
+    .footer-grid { display:grid; grid-template-columns:1.5fr 1fr 1fr 1fr; gap:48px; padding-bottom:48px; }
+    .footer-brand-name {
+      font-family:var(--font-display); font-size:1.6rem; font-weight:700; color:var(--white);
+      line-height:1.1;
+    }
+    .footer-brand-sub { font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.4); }
+    .footer-brand p { font-size:0.88rem; color:rgba(255,255,255,0.5); line-height:1.7; margin-top:16px; }
+    .footer-social { display:flex; gap:12px; margin-top:24px; }
+    .footer-social a {
+      width:38px; height:38px; border-radius:10px;
+      background:rgba(255,255,255,0.07); color:rgba(255,255,255,0.6);
+      display:flex; align-items:center; justify-content:center; font-size:0.95rem;
+      transition:var(--transition); border:1px solid rgba(255,255,255,0.08);
+    }
+    .footer-social a:hover { background:var(--sunset); color:var(--white); border-color:transparent; transform:translateY(-3px); }
+    .footer-col h4 { font-size:0.8rem; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:rgba(255,255,255,0.4); margin-bottom:20px; }
+    .footer-col ul { display:flex; flex-direction:column; gap:12px; }
+    .footer-col ul li a { font-size:0.88rem; color:rgba(255,255,255,0.6); transition:color 0.3s; }
+    .footer-col ul li a:hover { color:var(--white); }
+    .footer-hours { display:flex; flex-direction:column; gap:10px; }
+    .footer-hour-row { display:flex; justify-content:space-between; align-items:center; font-size:0.83rem; color:rgba(255,255,255,0.6); }
+    .footer-hour-row strong { color:rgba(255,255,255,0.85); }
+
+    .footer-bottom {
+      border-top:1px solid rgba(255,255,255,0.06);
+      padding:20px 0; display:flex; align-items:center; justify-content:space-between;
+      flex-wrap:wrap; gap:12px;
+    }
+    .footer-bottom p { font-size:0.8rem; color:rgba(255,255,255,0.35); }
+    .footer-bottom a { color:rgba(255,255,255,0.5); }
+    .footer-bottom a:hover { color:var(--white); }
+
+    /* ══════════════════════════════════════════════════
+       FLOATING ELEMENTS
+    ══════════════════════════════════════════════════ */
+    #whatsapp-btn {
+      position:fixed; bottom:88px; right:24px; z-index:900;
+      width:56px; height:56px; border-radius:50%;
+      background:#25D366; color:var(--white);
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.5rem; box-shadow:0 4px 20px rgba(37,211,102,0.45);
+      transition:var(--transition);
+      animation:pulse 2s ease-in-out infinite;
+    }
+    #whatsapp-btn:hover { transform:scale(1.1); box-shadow:0 6px 30px rgba(37,211,102,0.6); }
+    @keyframes pulse {
+      0%,100% { box-shadow:0 4px 20px rgba(37,211,102,0.45); }
+      50% { box-shadow:0 4px 30px rgba(37,211,102,0.7), 0 0 0 8px rgba(37,211,102,0.1); }
+    }
+
+    #scroll-top {
+      position:fixed; bottom:24px; right:24px; z-index:900;
+      width:44px; height:44px; border-radius:50%;
+      background:var(--ocean); color:var(--white);
+      display:none; align-items:center; justify-content:center;
+      font-size:1rem; cursor:pointer; border:none;
+      box-shadow:0 4px 16px rgba(10,79,110,0.35);
+      transition:var(--transition);
+    }
+    #scroll-top.visible { display:flex; }
+    #scroll-top:hover { background:var(--ocean-mid); transform:translateY(-3px); }
+
+    /* ══════════════════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════════════════ */
+    @media (max-width:1024px) {
+      .specialties-grid { grid-template-columns:repeat(2,1fr); }
+      .why-grid { grid-template-columns:repeat(2,1fr); }
+      .footer-grid { grid-template-columns:1fr 1fr; gap:36px; }
+      .review-card { flex:0 0 calc(50% - 12px); }
+    }
+    @media (max-width:768px) {
+      .nav-links { display:none; }
+      .nav-hamburger { display:flex; }
+      .about-grid { grid-template-columns:1fr; gap:48px; }
+      .about-img-accent { width:140px; height:140px; right:-12px; }
+      .about-badge-float { left:12px; }
+      .specialties-grid { grid-template-columns:1fr; }
+      .why-grid { grid-template-columns:1fr; }
+      .gallery-masonry { columns:2; }
+      .reservation-inner { grid-template-columns:1fr; }
+      .contact-grid { grid-template-columns:1fr; }
+      .footer-grid { grid-template-columns:1fr; }
+      .footer-bottom { flex-direction:column; text-align:center; }
+      .review-card { flex:0 0 calc(100% - 0px); }
+      .form-row { grid-template-columns:1fr; }
+    }
+    @media (max-width:480px) {
+      .gallery-masonry { columns:1; }
+      .hero-cta { flex-direction:column; align-items:center; }
+      .about-features { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAVBAR ────────────────────────────────────────── -->
+<nav id="navbar">
+  <div class="container nav-inner">
+    <a href="#hero" class="nav-logo">
+      <span class="nav-logo-name">Sea Cafe</span>
+      <span class="nav-logo-sub">Food Destination · Diu</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#specialties">Specialties</a></li>
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#reviews">Reviews</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#reservation" class="nav-reserve">Reserve Table</a></li>
+    </ul>
+    <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-menu-close" id="mobileClose"><i class="fas fa-times"></i></button>
+  <a href="#about" onclick="closeMobile()">About</a>
+  <a href="#specialties" onclick="closeMobile()">Specialties</a>
+  <a href="#menu" onclick="closeMobile()">Menu</a>
+  <a href="#gallery" onclick="closeMobile()">Gallery</a>
+  <a href="#reviews" onclick="closeMobile()">Reviews</a>
+  <a href="#contact" onclick="closeMobile()">Contact</a>
+  <a href="#reservation" onclick="closeMobile()" style="color:var(--sunset)">Reserve a Table</a>
+</div>
+
+<!-- ─── HERO ──────────────────────────────────────────── -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-badge"><i class="fas fa-anchor"></i> Diu's Finest Coastal Dining</div>
+    <h1 class="hero-title">Sea Cafe &amp;<br><em>Food Destination</em></h1>
+    <p class="hero-tagline">Fresh Flavors, Coastal Vibes, Unforgettable Memories.</p>
+    <div class="hero-cta">
+      <a href="#menu" class="btn btn-primary"><i class="fas fa-utensils"></i> View Menu</a>
+      <a href="#reservation" class="btn btn-outline"><i class="fas fa-calendar-alt"></i> Reserve a Table</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+  <div class="hero-waves">
+    <svg viewBox="0 0 1440 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path fill="#faf8f4" d="M0,60 C240,100 480,20 720,60 C960,100 1200,20 1440,60 L1440,100 L0,100 Z"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ─── ABOUT ──────────────────────────────────────────── -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-images reveal-left">
+        <img class="about-img-main"
+          src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80"
+          alt="Sea Cafe interior dining" loading="lazy"/>
+        <img class="about-img-accent"
+          src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80"
+          alt="Fresh seafood dish" loading="lazy"/>
+        <div class="about-badge-float">
+          <i class="fas fa-star" style="color:var(--sunset)"></i>
+          <div>
+            <strong>4.9</strong>
+            <span>1,200+ Reviews</span>
+          </div>
+        </div>
+      </div>
+      <div class="about-content reveal-right">
+        <span class="section-tag"><i class="fas fa-fish"></i> &nbsp;Our Story</span>
+        <h2 class="section-title">Where Every Meal Feels Like<br>a Seaside Getaway</h2>
+        <p class="section-subtitle">
+          Nestled in the heart of the beautiful Union Territory of Diu, Sea Cafe & Food Destination is more than a restaurant — it's a culinary landmark. Born from a passion for fresh ingredients and warm hospitality, we have been welcoming families, tourists, and food lovers from across India and beyond.
+        </p>
+        <p class="section-subtitle" style="margin-top:14px">
+          From our freshly-caught seafood specials to fragrant Indian curries, crispy fast food bites, and refreshing beverages — every plate tells a story of love, tradition, and coastal flavour. Our relaxed beachside ambiance, hygienic open kitchen, and attentive service make us the go-to dining destination in Diu.
+        </p>
+        <div class="about-features">
+          <div class="about-feature"><i class="fas fa-check-circle"></i> Fresh Daily Catch</div>
+          <div class="about-feature"><i class="fas fa-check-circle"></i> Hygienic Open Kitchen</div>
+          <div class="about-feature"><i class="fas fa-check-circle"></i> Beachside Ambiance</div>
+          <div class="about-feature"><i class="fas fa-check-circle"></i> Family &amp; Group Dining</div>
+          <div class="about-feature"><i class="fas fa-check-circle"></i> Vegetarian Friendly</div>
+          <div class="about-feature"><i class="fas fa-check-circle"></i> Live Seafood Counter</div>
+        </div>
+        <a href="#reservation" class="btn btn-ocean" style="margin-top:36px"><i class="fas fa-calendar-check"></i> Book Your Table</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SPECIALTIES ────────────────────────────────────── -->
+<section id="specialties">
+  <div class="container">
+    <div class="specialties-header reveal">
+      <span class="section-tag"><i class="fas fa-award"></i> &nbsp;What We Serve</span>
+      <h2 class="section-title">Our Culinary Specialties</h2>
+      <p class="section-subtitle">A feast for every palate — from the ocean to the mountains, we bring the world's flavours to your table.</p>
+    </div>
+    <div class="specialties-grid">
+      <div class="specialty-card reveal">
+        <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=700&q=80" alt="Seafood Delicacies" loading="lazy"/>
+        <div class="specialty-card-overlay"></div>
+        <div class="specialty-card-content">
+          <div class="specialty-icon"><i class="fas fa-fish"></i></div>
+          <div class="specialty-title">Seafood Delicacies</div>
+          <div class="specialty-desc">Fresh catch, grilled, fried &amp; curried to perfection</div>
+        </div>
+      </div>
+      <div class="specialty-card reveal">
+        <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=700&q=80" alt="Indian Cuisine" loading="lazy"/>
+        <div class="specialty-card-overlay"></div>
+        <div class="specialty-card-content">
+          <div class="specialty-icon"><i class="fas fa-pepper-hot"></i></div>
+          <div class="specialty-title">Indian Cuisine</div>
+          <div class="specialty-desc">Authentic flavours, traditional recipes &amp; rich curries</div>
+        </div>
+      </div>
+      <div class="specialty-card reveal">
+        <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?w=700&q=80" alt="Chinese Cuisine" loading="lazy"/>
+        <div class="specialty-card-overlay"></div>
+        <div class="specialty-card-content">
+          <div class="specialty-icon"><i class="fas fa-drumstick-bite"></i></div>
+          <div class="specialty-title">Chinese Cuisine</div>
+          <div class="specialty-desc">Wok-tossed noodles, momos &amp; stir-fry favourites</div>
+        </div>
+      </div>
+      <div class="specialty-card reveal">
+        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=700&q=80" alt="Fast Food" loading="lazy"/>
+        <div class="specialty-card-overlay"></div>
+        <div class="specialty-card-content">
+          <div class="specialty-icon"><i class="fas fa-hamburger"></i></div>
+          <div class="specialty-title">Fast Food</div>
+          <div class="specialty-desc">Crispy burgers, loaded fries &amp; quick bites</div>
+        </div>
+      </div>
+      <div class="specialty-card reveal">
+        <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=700&q=80" alt="Beverages & Mocktails" loading="lazy"/>
+        <div class="specialty-card-overlay"></div>
+        <div class="specialty-card-content">
+          <div class="specialty-icon"><i class="fas fa-glass-martini-alt"></i></div>
+          <div class="specialty-title">Beverages &amp; Mocktails</div>
+          <div class="specialty-desc">Fresh juices, mocktails &amp; cold brews</div>
+        </div>
+      </div>
+      <div class="specialty-card reveal">
+        <img src="https://images.unsplash.com/photo-1551024601-bec78aea704b?w=700&q=80" alt="Desserts" loading="lazy"/>
+        <div class="specialty-card-overlay"></div>
+        <div class="specialty-card-content">
+          <div class="specialty-icon"><i class="fas fa-ice-cream"></i></div>
+          <div class="specialty-title">Desserts</div>
+          <div class="specialty-desc">Sweet endings — cakes, ice creams &amp; more</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── MENU ──────────────────────────────────────────── -->
+<section id="menu">
+  <div class="container">
+    <div class="menu-header reveal">
+      <span class="section-tag"><i class="fas fa-book-open"></i> &nbsp;Explore</span>
+      <h2 class="section-title">Our Full Menu</h2>
+      <p class="section-subtitle">Handcrafted dishes made from the freshest local ingredients, served with warmth and love.</p>
+      <div class="menu-divider">
+        <div class="menu-divider-line"></div>
+        <i class="fas fa-anchor"></i>
+        <div class="menu-divider-line"></div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════
+         YOUR EXISTING MENU CODE GOES HERE
+         Replace the placeholder content below with your
+         custom menu component or HTML code.
+    ════════════════════════════════════════════════════ -->
+    <div id="custom-menu-container">
+      <div class="menu-placeholder-inner">
+        <i class="fas fa-utensils"></i>
+        <h3>Menu Coming Soon</h3>
+        <p><!-- PASTE YOUR EXISTING MENU CODE HERE --></p>
+      </div>
+    </div>
+    <!-- ════════════════════════════════════════════════════
+         END OF MENU INTEGRATION AREA
+    ════════════════════════════════════════════════════ -->
+
+  </div>
+</section>
+
+<!-- ─── GALLERY ────────────────────────────────────────── -->
+<section id="gallery">
+  <div class="container">
+    <div class="gallery-header reveal">
+      <span class="section-tag"><i class="fas fa-camera"></i> &nbsp;Moments</span>
+      <h2 class="section-title">A Taste of Our World</h2>
+      <p class="section-subtitle">From ocean breezes to sizzling plates — a glimpse into life at Sea Cafe.</p>
+    </div>
+    <div class="gallery-masonry">
+      <div class="gallery-item reveal" onclick="openLightbox(this)">
+        <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?w=600&q=80" alt="Restaurant interior" loading="lazy"/>
+        <div class="gallery-item-overlay"><i class="fas fa-search-plus"></i></div>
+      </div>
+      <div class="gallery-item reveal" onclick="openLightbox(this)">
+        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80" alt="Food plate" loading="lazy"/>
+        <div class="gallery-item-overlay"><i class="fas fa-search-plus"></i></div>
+      </div>
+      <div class="gallery-item reveal" onclick="openLightbox(this)">
+        <img src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=600&q=80" alt="Seafood dish" loading="lazy"/>
+        <div class="gallery-item-overlay"><i class="fas fa-search-plus"></i></div>
+      </div>
+      <div class="gallery-item reveal" onclick="openLightbox(this)">
+        <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=600&q=80" alt="Healthy meal" loading="lazy"/>
+        <div class="gallery-item-overlay"><i class="fas fa-search-plus"></i></div>
+      </div>
+      <div class="gallery-item reveal" onclick="openLightbox(this)">
+        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80" alt="Dining atmosphere" loading="lazy"/>
+        <div class="gallery-item-overlay"><i class="fas fa-search-plus"></i></div>
+      </div>
+      <div class="gallery-item reveal" onclick="openLightbox(this)">
+        <img src="https://images.unsplash.com/photo-1502301103665-0b95cc738daf?w=600&q=80" alt="Beachside view" loading="lazy"/>
+        <div class="gallery-item-overlay"><i class="fas fa-search-plus"></i></div>
+      </div>
+      <div class="gallery-item reveal" onclick="openLightbox(this)">
+        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&q=80" alt="Pizza dish" loading="lazy"/>
+        <div class="gallery-item-overlay"><i class="fas fa-search-plus"></i></div>
+      </div>
+      <div class="gallery-item reveal" onclick="openLightbox(this)">
+        <img src="https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=600&q=80" alt="Grilled seafood" loading="lazy"/>
+        <div class="gallery-item-overlay"><i class="fas fa-search-plus"></i></div>
+      </div>
+      <div class="gallery-item reveal" onclick="openLightbox(this)">
+        <img src="https://images.unsplash.com/photo-1551024601-bec78aea704b?w=600&q=80" alt="Dessert" loading="lazy"/>
+        <div class="gallery-item-overlay"><i class="fas fa-search-plus"></i></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Lightbox -->
+<div id="lightbox">
+  <button id="lightbox-close" onclick="closeLightbox()"><i class="fas fa-times"></i></button>
+  <img id="lightbox-img" src="" alt="Gallery image"/>
+</div>
+
+<!-- ─── WHY CHOOSE US ──────────────────────────────────── -->
+<section id="why">
+  <div class="container">
+    <div class="why-header reveal">
+      <span class="section-tag"><i class="fas fa-heart"></i> &nbsp;Our Promise</span>
+      <h2 class="section-title">Why Guests Love Sea Cafe</h2>
+      <p class="section-subtitle">Every visit is crafted to delight — from the first sip to the last bite.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card reveal">
+        <div class="why-icon"><i class="fas fa-leaf"></i></div>
+        <h3>Fresh Ingredients</h3>
+        <p>We source only the freshest produce, straight from local farms and daily seafood markets to ensure every dish is vibrant and nutritious.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-icon"><i class="fas fa-shield-alt"></i></div>
+        <h3>Hygienic Kitchen</h3>
+        <p>Our open-concept kitchen follows the highest hygiene standards. Cleanliness is our culture — from the prep table to your plate.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-icon" style="background:linear-gradient(135deg,var(--sunset-warm),var(--sunset))"><i class="fas fa-umbrella-beach"></i></div>
+        <h3>Beachside Ambience</h3>
+        <p>Dine with the sound of waves and the scent of the sea breeze. Our outdoor and semi-alfresco seating creates a truly magical atmosphere.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-icon" style="background:linear-gradient(135deg,var(--sunset-warm),var(--coral))"><i class="fas fa-users"></i></div>
+        <h3>Family Friendly</h3>
+        <p>A welcoming space for everyone — from toddlers to grandparents. Our menu, seating, and staff are all designed with families in mind.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-icon"><i class="fas fa-bolt"></i></div>
+        <h3>Fast Service</h3>
+        <p>We respect your time. Our trained team ensures prompt, cheerful service so your dining experience is seamless and enjoyable.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-icon" style="background:linear-gradient(135deg,#e8b86d,var(--sunset))"><i class="fas fa-medal"></i></div>
+        <h3>Quality Food</h3>
+        <p>From the spice blend to the garnish, every element is carefully considered. We never compromise on taste, quality, or presentation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── REVIEWS ────────────────────────────────────────── -->
+<section id="reviews">
+  <div class="container">
+    <div class="reviews-header reveal">
+      <span class="section-tag"><i class="fas fa-star"></i> &nbsp;Guest Reviews</span>
+      <h2 class="section-title">What Our Guests Say</h2>
+      <p class="section-subtitle">Real stories from real food lovers who've experienced Sea Cafe.</p>
+    </div>
+    <div class="reviews-carousel">
+      <div class="reviews-track" id="reviewsTrack">
+
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">Hands down the best seafood I've had in Diu. The grilled pomfret was absolutely divine, and the beachside ambiance made the whole experience magical. Will definitely return on my next visit!</p>
+          <div class="review-author">
+            <img class="review-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Priya&backgroundColor=b6e3f4" alt="Priya S"/>
+            <div>
+              <div class="review-name">Priya Sharma</div>
+              <div class="review-location"><i class="fas fa-map-marker-alt"></i> Ahmedabad, Gujarat</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">Visited Sea Cafe with my family during our Diu trip. The kids loved the fast food section while we enjoyed the coastal seafood. The staff were incredibly warm and service was super fast.</p>
+          <div class="review-author">
+            <img class="review-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Rahul&backgroundColor=ffd5dc" alt="Rahul M"/>
+            <div>
+              <div class="review-name">Rahul Mehta</div>
+              <div class="review-location"><i class="fas fa-map-marker-alt"></i> Mumbai, Maharashtra</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">The Chinese cuisine here surprised me the most — the hakka noodles and momos were incredible. Paired with a fresh mocktail and the sea breeze, it was the perfect dinner. Highly recommended!</p>
+          <div class="review-author">
+            <img class="review-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Ananya&backgroundColor=c0aede" alt="Ananya K"/>
+            <div>
+              <div class="review-name">Ananya Krishnan</div>
+              <div class="review-location"><i class="fas fa-map-marker-alt"></i> Bangalore, Karnataka</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-stars">★★★★☆</div>
+          <p class="review-text">Lovely restaurant with a great atmosphere. The butter garlic prawns were absolutely mouthwatering. Slightly busy on weekends, but worth the wait. The desserts section is a hidden gem!</p>
+          <div class="review-author">
+            <img class="review-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Vikram&backgroundColor=d1d4f9" alt="Vikram P"/>
+            <div>
+              <div class="review-name">Vikram Patel</div>
+              <div class="review-location"><i class="fas fa-map-marker-alt"></i> Surat, Gujarat</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">A wonderful coastal dining experience. The Indian thali was packed with authentic Gujarati flavours. Beautiful restaurant, clean space, and genuinely caring staff. Sea Cafe is a must-visit in Diu!</p>
+          <div class="review-author">
+            <img class="review-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Meera&backgroundColor=b6e3f4" alt="Meera N"/>
+            <div>
+              <div class="review-name">Meera Nair</div>
+              <div class="review-location"><i class="fas fa-map-marker-alt"></i> Pune, Maharashtra</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="reviews-controls">
+      <button class="reviews-btn" id="prevReview"><i class="fas fa-arrow-left"></i></button>
+      <div class="reviews-dots" id="reviewDots"></div>
+      <button class="reviews-btn" id="nextReview"><i class="fas fa-arrow-right"></i></button>
+    </div>
+  </div>
+</section>
+
+<!-- ─── RESERVATION ────────────────────────────────────── -->
+<section id="reservation">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:56px" class="reveal">
+      <span class="section-tag"><i class="fas fa-calendar-check"></i> &nbsp;Book a Table</span>
+      <h2 class="section-title">Reserve Your Spot</h2>
+      <p class="section-subtitle" style="margin:0 auto">Secure your table and let us prepare an unforgettable dining experience just for you.</p>
+    </div>
+    <div class="reservation-inner">
+      <div class="reservation-info reveal-left">
+        <span class="section-tag">Get in Touch</span>
+        <h3 class="section-title" style="font-size:2rem">We'd Love to<br>Have You Over</h3>
+        <p>Whether it's a family celebration, a romantic dinner, or a group outing — we make every occasion special. Call us directly or fill in the form.</p>
+        <div class="reservation-details">
+          <div class="res-detail">
+            <div class="res-detail-icon"><i class="fas fa-clock"></i></div>
+            <div class="res-detail-text">
+              <strong>Opening Hours</strong>
+              <span>Mon – Sun: 11:00 AM – 11:00 PM</span>
+            </div>
+          </div>
+          <div class="res-detail">
+            <div class="res-detail-icon"><i class="fas fa-phone"></i></div>
+            <div class="res-detail-text">
+              <strong>Call Us</strong>
+              <span>+91 XXXXX XXXXX</span>
+            </div>
+          </div>
+          <div class="res-detail">
+            <div class="res-detail-icon"><i class="fab fa-whatsapp"></i></div>
+            <div class="res-detail-text">
+              <strong>WhatsApp</strong>
+              <span>+91 XXXXX XXXXX</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="reservation-form reveal-right">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="res-name" placeholder="Your full name"/>
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" id="res-phone" placeholder="+91 XXXXX XXXXX"/>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Date</label>
+            <input type="date" id="res-date"/>
+          </div>
+          <div class="form-group">
+            <label>Time</label>
+            <input type="time" id="res-time"/>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Guests</label>
+            <select id="res-guests">
+              <option>1 Guest</option>
+              <option>2 Guests</option>
+              <option selected>3–4 Guests</option>
+              <option>5–6 Guests</option>
+              <option>7–10 Guests</option>
+              <option>10+ Guests</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Occasion</label>
+            <select id="res-occasion">
+              <option>Regular Dining</option>
+              <option>Birthday</option>
+              <option>Anniversary</option>
+              <option>Family Gathering</option>
+              <option>Business Lunch</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Special Requests</label>
+          <textarea id="res-notes" placeholder="Any dietary requirements, seating preferences, or special arrangements…"></textarea>
+        </div>
+        <button class="btn btn-ocean form-submit" onclick="submitReservation()"><i class="fas fa-check"></i> Confirm Reservation</button>
+        <div class="form-success" id="formSuccess">
+          <i class="fas fa-check-circle" style="color:var(--ocean);margin-right:8px"></i>
+          Thank you! Your reservation request has been received. We'll confirm via WhatsApp shortly.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONTACT ────────────────────────────────────────── -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-header reveal">
+      <span class="section-tag"><i class="fas fa-location-dot"></i> &nbsp;Find Us</span>
+      <h2 class="section-title">Visit Sea Cafe in Diu</h2>
+      <p class="section-subtitle">We're located in the heart of the island — easy to find, impossible to forget.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-cards reveal-left">
+        <div class="contact-card">
+          <div class="contact-card-icon"><i class="fas fa-map-marker-alt"></i></div>
+          <div>
+            <h4>Address</h4>
+            <p>Sea Cafe &amp; Food Destination<br>Diu, Daman &amp; Diu – 362520<br>India</p>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-card-icon"><i class="fas fa-phone"></i></div>
+          <div>
+            <h4>Phone</h4>
+            <a href="tel:+91XXXXXXXXXX">+91 XXXXX XXXXX</a>
+            <a href="tel:+91XXXXXXXXXX" style="margin-top:4px">+91 XXXXX XXXXX</a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-card-icon"><i class="fas fa-envelope"></i></div>
+          <div>
+            <h4>Email</h4>
+            <a href="mailto:hello@seacafediu.com">hello@seacafediu.com</a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-card-icon"><i class="fas fa-clock"></i></div>
+          <div>
+            <h4>Opening Hours</h4>
+            <p>Monday – Sunday</p>
+            <p style="color:var(--ocean);font-weight:600;margin-top:4px">11:00 AM – 11:00 PM</p>
+          </div>
+        </div>
+      </div>
+      <div class="map-container reveal-right">
+        <!-- Replace the src with your actual Google Maps embed URL -->
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14931.91540697899!2d70.9284!3d20.7144!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be28e8e3bc0f5b7%3A0x9a97c01cb4f85b6a!2sDiu!5e0!3m2!1sen!2sin!4v1680000000000"
+          allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          title="Sea Cafe Location Map"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─────────────────────────────────────────── -->
+<footer id="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-brand-name">Sea Cafe</div>
+        <div class="footer-brand-sub">Food Destination · Diu</div>
+        <p>A coastal haven for food lovers. Fresh seafood, warm hospitality, and unforgettable views on the beautiful island of Diu.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+          <a href="#" aria-label="Google"><i class="fab fa-google"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#specialties">Specialties</a></li>
+          <li><a href="#menu">Our Menu</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#reviews">Reviews</a></li>
+          <li><a href="#reservation">Reserve a Table</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Cuisines</h4>
+        <ul>
+          <li><a href="#menu">Seafood Delicacies</a></li>
+          <li><a href="#menu">Indian Cuisine</a></li>
+          <li><a href="#menu">Chinese Cuisine</a></li>
+          <li><a href="#menu">Fast Food</a></li>
+          <li><a href="#menu">Beverages &amp; Mocktails</a></li>
+          <li><a href="#menu">Desserts</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Opening Hours</h4>
+        <div class="footer-hours">
+          <div class="footer-hour-row"><strong>Mon – Fri</strong><span>11 AM – 11 PM</span></div>
+          <div class="footer-hour-row"><strong>Saturday</strong><span>11 AM – 11:30 PM</span></div>
+          <div class="footer-hour-row"><strong>Sunday</strong><span>10 AM – 11:30 PM</span></div>
+          <div style="margin-top:12px;padding:10px 14px;background:rgba(255,255,255,0.06);border-radius:8px;font-size:0.8rem;color:rgba(255,255,255,0.5);">
+            <i class="fas fa-info-circle" style="color:var(--sunset-warm);margin-right:6px"></i>
+            Last order 30 min before closing
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Sea Cafe &amp; Food Destination, Diu. All rights reserved.</p>
+      <p>Designed with <i class="fas fa-heart" style="color:var(--sunset)"></i> for the love of good food &amp; coastal living</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ─── FLOATING BUTTONS ───────────────────────────────── -->
+<a href="https://wa.me/91XXXXXXXXXX" id="whatsapp-btn" target="_blank" rel="noopener" aria-label="WhatsApp us">
+  <i class="fab fa-whatsapp"></i>
+</a>
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">
+  <i class="fas fa-arrow-up"></i>
+</button>
+
+<!-- ─── SCRIPTS ───────────────────────────────────────────── -->
+<script>
+  /* ── Navbar scroll ── */
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 60) navbar.classList.add('scrolled');
+    else navbar.classList.remove('scrolled');
+    document.getElementById('scroll-top').classList.toggle('visible', window.scrollY > 400);
+  });
+
+  /* ── Mobile menu ── */
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+  });
+  document.getElementById('mobileClose').addEventListener('click', closeMobile);
+  function closeMobile() {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  /* ── Scroll reveal ── */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => observer.observe(el));
+
+  /* ── Lightbox ── */
+  function openLightbox(card) {
+    const src = card.querySelector('img').src;
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('lightbox').addEventListener('click', function(e) {
+    if (e.target === this) closeLightbox();
+  });
+
+  /* ── Reviews carousel ── */
+  const track = document.getElementById('reviewsTrack');
+  const cards = track.querySelectorAll('.review-card');
+  const dotsContainer = document.getElementById('reviewDots');
+  let currentIndex = 0;
+  let perView = window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 3;
+
+  function buildDots() {
+    dotsContainer.innerHTML = '';
+    const total = cards.length - perView + 1;
+    for (let i = 0; i < Math.max(total, 1); i++) {
+      const dot = document.createElement('button');
+      dot.className = 'reviews-dot' + (i === 0 ? ' active' : '');
+      dot.addEventListener('click', () => goTo(i));
+      dotsContainer.appendChild(dot);
+    }
+  }
+
+  function goTo(index) {
+    const total = cards.length - perView + 1;
+    currentIndex = Math.max(0, Math.min(index, total - 1));
+    const cardWidth = cards[0].offsetWidth + 24;
+    track.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
+    dotsContainer.querySelectorAll('.reviews-dot').forEach((d, i) => d.classList.toggle('active', i === currentIndex));
+  }
+
+  document.getElementById('prevReview').addEventListener('click', () => goTo(currentIndex - 1));
+  document.getElementById('nextReview').addEventListener('click', () => goTo(currentIndex + 1));
+
+  buildDots();
+  window.addEventListener('resize', () => {
+    perView = window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 3;
+    goTo(0);
+    buildDots();
+  });
+
+  // Auto-play
+  setInterval(() => goTo(currentIndex + 1 >= cards.length - perView + 1 ? 0 : currentIndex + 1), 5000);
+
+  /* ── Reservation form ── */
+  function submitReservation() {
+    const name = document.getElementById('res-name').value.trim();
+    const phone = document.getElementById('res-phone').value.trim();
+    const date = document.getElementById('res-date').value;
+    const time = document.getElementById('res-time').value;
+    if (!name || !phone || !date || !time) {
+      alert('Please fill in your name, phone number, date and time to proceed.');
+      return;
+    }
+    document.getElementById('formSuccess').classList.add('show');
+    setTimeout(() => document.getElementById('formSuccess').classList.remove('show'), 6000);
+    // Reset
+    ['res-name','res-phone','res-date','res-time','res-notes'].forEach(id => document.getElementById(id).value = '');
+  }
+
+  /* ── Smooth anchor links ── */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', function(e) {
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        const offset = 70;
+        window.scrollTo({ top: target.offsetTop - offset, behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+</body>
+</html>

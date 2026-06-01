@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Sea Cafe & Food Destination, Diu – Fresh Flavors, Coastal Vibes, Unforgettable Memories. Seafood, Indian, Chinese, Fast Food & more at Diu's finest beachside restaurant."/>
-  <meta name="keywords" content="Sea Cafe Diu, restaurant Diu, seafood Diu, beachside dining Diu, best restaurant Diu"/>
-  <title>Sea Cafe & Food Destination – Diu</title>
+  <meta name="description" content="Kankeshwar : The Indian Culture Restaurant, Diu – Authentic Indian Flavours, Royal Hospitality, Unforgettable Memories. Indian cuisine, tandoor, thali, paneer specialties & more at Diu's finest Indian restaurant."/>
+  <meta name="keywords" content="Kankeshwar Diu, Indian restaurant Diu, pure vegetarian Diu, thali Diu, tandoor Diu, best restaurant Diu"/>
+  <title>Kankeshwar : The Indian Culture Restaurant – Diu</title>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -246,7 +246,7 @@
     .hero-title em { font-style:italic; color:var(--sunset-warm); }
     .hero-tagline {
       font-size:clamp(1rem,2vw,1.2rem); color:rgba(255,255,255,0.85);
-      margin:20px auto 36px; max-width:500px; line-height:1.6; font-weight:300;
+      margin:20px auto 36px; max-width:600px; line-height:1.6; font-weight:300;
       animation:fadeUp 0.9s 0.4s ease both;
     }
     .hero-cta { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; animation:fadeUp 0.9s 0.6s ease both; }
@@ -422,7 +422,8 @@
       padding:10px 12px; border-radius:6px; transition:background 0.15s;
     }
     .menu-item:hover { background:rgba(74,180,216,0.06); }
-    .item-name { font-weight:500; font-size:0.92rem; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    .item-name { font-weight:500; font-size:0.92rem; display:flex; align-items:center; gap:8px; flex-wrap:wrap; flex:1; min-width:0; }
+    .item-right { display:flex; align-items:center; gap:10px; flex-shrink:0; }
     .item-price { font-weight:800; color:var(--coral); white-space:nowrap; font-size:0.95rem; }
     .badge {
       display:inline-block; font-size:0.58rem; padding:2px 7px;
@@ -444,6 +445,34 @@
       color:#5d4037; border-radius:0 6px 6px 0;
     }
     .placeholder { color:#bbb; font-style:italic; }
+    .item-desc { font-size:0.78rem; color:var(--text-light); margin-top:3px; }
+
+    /* ── Cart Add/Qty buttons ── */
+    .add-btn {
+      width:30px; height:30px; border-radius:50%;
+      background:var(--ocean); color:var(--white);
+      border:none; cursor:pointer; font-size:0.9rem;
+      display:flex; align-items:center; justify-content:center;
+      transition:var(--transition); flex-shrink:0;
+    }
+    .add-btn:hover { background:var(--ocean-mid); transform:scale(1.1); }
+    .qty-controls {
+      display:flex; align-items:center; gap:6px; flex-shrink:0;
+    }
+    .qty-btn {
+      width:26px; height:26px; border-radius:50%;
+      background:var(--ocean); color:var(--white);
+      border:none; cursor:pointer; font-size:0.8rem;
+      display:flex; align-items:center; justify-content:center;
+      transition:var(--transition);
+    }
+    .qty-btn:hover { background:var(--coral); }
+    .qty-btn.minus { background:#999; }
+    .qty-btn.minus:hover { background:var(--coral); }
+    .qty-count {
+      font-weight:700; font-size:0.88rem; color:var(--ocean);
+      min-width:18px; text-align:center;
+    }
 
     @media (max-width:600px) {
       .menu-modal-box { margin:10px 0; border-radius:14px; }
@@ -454,6 +483,115 @@
       .menu-cat-title { font-size:1.2rem; }
       .menu-nav-link { padding:12px 12px; font-size:0.78rem; }
     }
+
+    /* ══════════════════════════════════════════════════
+       CART FLOATING BUTTON
+    ══════════════════════════════════════════════════ */
+    .cart-float-btn {
+      position:fixed; bottom:88px; left:24px; z-index:900;
+      width:56px; height:56px; border-radius:50%;
+      background:var(--ocean); color:var(--white);
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.3rem; box-shadow:0 4px 20px rgba(10,79,110,0.45);
+      transition:var(--transition); cursor:pointer; border:none;
+      animation:cartPulse 2s ease-in-out infinite;
+    }
+    .cart-float-btn:hover { transform:scale(1.1); background:var(--ocean-mid); }
+    .cart-badge {
+      position:absolute; top:-4px; right:-4px;
+      background:var(--coral); color:#fff;
+      width:22px; height:22px; border-radius:50%;
+      font-size:0.7rem; font-weight:700;
+      display:flex; align-items:center; justify-content:center;
+      border:2px solid var(--off-white);
+    }
+    .cart-badge:empty { display:none; }
+    @keyframes cartPulse {
+      0%,100% { box-shadow:0 4px 20px rgba(10,79,110,0.45); }
+      50% { box-shadow:0 4px 30px rgba(10,79,110,0.7), 0 0 0 8px rgba(10,79,110,0.1); }
+    }
+
+    /* ══════════════════════════════════════════════════
+       CART DRAWER
+    ══════════════════════════════════════════════════ */
+    .cart-overlay {
+      position:fixed; inset:0; background:rgba(0,0,0,0.5);
+      z-index:10001; opacity:0; visibility:hidden;
+      transition:opacity 0.3s, visibility 0.3s;
+    }
+    .cart-overlay.open { opacity:1; visibility:visible; }
+    .cart-drawer {
+      position:fixed; top:0; right:-420px; bottom:0;
+      width:400px; max-width:92vw; z-index:10002;
+      background:var(--white);
+      box-shadow:-4px 0 30px rgba(0,0,0,0.2);
+      transition:right 0.35s cubic-bezier(0.4,0,0.2,1);
+      display:flex; flex-direction:column;
+    }
+    .cart-drawer.open { right:0; }
+    .cart-drawer-header {
+      padding:20px 24px;
+      background:linear-gradient(135deg, var(--ocean), var(--ocean-mid));
+      color:var(--white); display:flex; align-items:center;
+      justify-content:space-between;
+    }
+    .cart-drawer-header h3 {
+      font-family:var(--font-display); font-size:1.3rem; font-weight:700;
+    }
+    .cart-drawer-close {
+      background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3);
+      color:#fff; width:36px; height:36px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer; font-size:1rem; transition:var(--transition);
+    }
+    .cart-drawer-close:hover { background:rgba(255,255,255,0.3); }
+    .cart-drawer-body {
+      flex:1; overflow-y:auto; padding:16px 24px;
+    }
+    .cart-empty {
+      text-align:center; padding:40px 0; color:var(--text-light);
+    }
+    .cart-empty i { font-size:3rem; color:#ddd; margin-bottom:12px; }
+    .cart-item {
+      display:flex; align-items:center; gap:12px;
+      padding:12px 0; border-bottom:1px dashed rgba(10,79,110,0.1);
+    }
+    .cart-item-info { flex:1; min-width:0; }
+    .cart-item-name { font-weight:600; font-size:0.88rem; color:var(--text); }
+    .cart-item-price { font-size:0.78rem; color:var(--text-light); }
+    .cart-item-qty {
+      display:flex; align-items:center; gap:8px;
+    }
+    .cart-item-total {
+      font-weight:800; color:var(--coral); font-size:0.92rem;
+      white-space:nowrap;
+    }
+    .cart-drawer-footer {
+      padding:20px 24px;
+      border-top:2px solid rgba(10,79,110,0.1);
+      background:var(--off-white);
+    }
+    .cart-total-row {
+      display:flex; justify-content:space-between; align-items:center;
+      margin-bottom:16px;
+    }
+    .cart-total-label { font-size:1rem; font-weight:600; color:var(--text); }
+    .cart-total-value { font-size:1.3rem; font-weight:800; color:var(--ocean); font-family:var(--font-display); }
+    .cart-whatsapp-btn {
+      display:flex; align-items:center; justify-content:center; gap:10px;
+      width:100%; padding:14px; border-radius:50px;
+      background:#25D366; color:#fff; font-size:0.95rem;
+      font-weight:700; cursor:pointer; border:none;
+      transition:var(--transition);
+    }
+    .cart-whatsapp-btn:hover { background:#1da851; transform:translateY(-2px); box-shadow:0 6px 20px rgba(37,211,102,0.4); }
+    .cart-clear-btn {
+      display:block; width:100%; margin-top:10px; padding:10px;
+      border-radius:50px; background:transparent; border:1px solid #ddd;
+      color:var(--text-light); font-size:0.82rem; font-weight:600;
+      cursor:pointer; transition:var(--transition);
+    }
+    .cart-clear-btn:hover { border-color:var(--coral); color:var(--coral); }
 
     /* ══════════════════════════════════════════════════
        GALLERY
@@ -673,6 +811,7 @@
       .footer-bottom { flex-direction:column; text-align:center; }
 
       .form-row { grid-template-columns:1fr; }
+      .cart-float-btn { bottom:24px; left:16px; width:50px; height:50px; font-size:1.1rem; }
     }
     @media (max-width:480px) {
       .gallery-masonry { columns:1; }
@@ -686,8 +825,8 @@
 <!-- ─── LOADING SPLASH ────────────────────────────────── -->
 <div id="loader">
   <div class="loader-logo">
-    <div class="loader-logo-icon"><i class="fas fa-anchor"></i></div>
-    <div class="loader-logo-name">Sea Cafe &amp;<br><em>Food Destination</em></div>
+    <div class="loader-logo-icon"><i class="fas fa-om"></i></div>
+    <div class="loader-logo-name">Kankeshwar<br><em>The Indian Culture Restaurant</em></div>
     <div class="loader-logo-sub">Diu</div>
   </div>
   <div class="loader-spinner">
@@ -708,8 +847,8 @@
 <nav id="navbar">
   <div class="container nav-inner">
     <a href="#hero" class="nav-logo">
-      <span class="nav-logo-name">Sea Cafe</span>
-      <span class="nav-logo-sub">Food Destination · Diu</span>
+      <span class="nav-logo-name">Kankeshwar</span>
+      <span class="nav-logo-sub">The Indian Culture Restaurant · Diu</span>
     </a>
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
@@ -740,9 +879,9 @@
 <section id="hero">
   <div class="hero-bg"></div>
   <div class="hero-content">
-    <div class="hero-badge"><i class="fas fa-anchor"></i> Diu's Finest Coastal Dining</div>
-    <h1 class="hero-title">Sea Cafe &amp;<br><em>Food Destination</em></h1>
-    <p class="hero-tagline">Fresh Flavors, Coastal Vibes, Unforgettable Memories.</p>
+    <div class="hero-badge"><i class="fas fa-spa"></i> Diu's Finest Indian Dining</div>
+    <h1 class="hero-title">Kankeshwar<br><em>The Indian Culture Restaurant</em></h1>
+    <p class="hero-tagline">Authentic Indian Flavours, Royal Hospitality, Unforgettable Memories.</p>
     <div class="hero-cta">
       <a href="javascript:void(0)" class="btn btn-primary" onclick="openMenuModal()"><i class="fas fa-utensils"></i> View Menu</a>
       <a href="#reservation" class="btn btn-outline"><i class="fas fa-calendar-alt"></i> Reserve a Table</a>
@@ -766,10 +905,10 @@
       <div class="about-images reveal-left">
         <img class="about-img-main"
           src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80"
-          alt="Sea Cafe interior dining" loading="lazy"/>
+          alt="Kankeshwar Indian restaurant dining" loading="lazy"/>
         <img class="about-img-accent"
           src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80"
-          alt="Fresh seafood dish" loading="lazy"/>
+          alt="Indian thali dish" loading="lazy"/>
         <div class="about-badge-float">
           <i class="fas fa-star" style="color:var(--sunset)"></i>
           <div>
@@ -779,21 +918,21 @@
         </div>
       </div>
       <div class="about-content reveal-right">
-        <span class="section-tag"><i class="fas fa-fish"></i> &nbsp;Our Story</span>
-        <h2 class="section-title">Where Every Meal Feels Like<br>a Seaside Getaway</h2>
+        <span class="section-tag"><i class="fas fa-om"></i> &nbsp;Our Heritage</span>
+        <h2 class="section-title">Where Every Meal Celebrates<br>India's Rich Heritage</h2>
         <p class="section-subtitle">
-          Nestled in the heart of the beautiful Union Territory of Diu, Sea Cafe & Food Destination is more than a restaurant — it's a culinary landmark. Born from a passion for fresh ingredients and warm hospitality, we have been welcoming families, tourists, and food lovers from across India and beyond.
+          Nestled in the heart of the beautiful Union Territory of Diu, Kankeshwar : The Indian Culture Restaurant is more than a restaurant — it is a celebration of India's rich culinary heritage. Born from a passion for authentic Indian flavours and warm hospitality, we have been welcoming families, tourists, and food lovers from across India and beyond.
         </p>
         <p class="section-subtitle" style="margin-top:14px">
-          From our freshly-caught seafood specials to fragrant Indian curries, crispy fast food bites, and refreshing beverages — every plate tells a story of love, tradition, and coastal flavour. Our relaxed beachside ambiance, hygienic open kitchen, and attentive service make us the go-to dining destination in Diu.
+          From our aromatic paneer specials and sizzling tandoor delicacies to wholesome thali meals and traditional vegetarian preparations — every plate tells a story of love, tradition, and authentic Indian spices. Our warm ambiance, hygienic kitchen, and attentive service make us the go-to Indian dining destination in Diu.
         </p>
         <div class="about-features">
-          <div class="about-feature"><i class="fas fa-check-circle"></i> Fresh Daily Catch</div>
-          <div class="about-feature"><i class="fas fa-check-circle"></i> Hygienic Open Kitchen</div>
-          <div class="about-feature"><i class="fas fa-check-circle"></i> Beachside Ambiance</div>
+          <div class="about-feature"><i class="fas fa-check-circle"></i> Pure Vegetarian</div>
+          <div class="about-feature"><i class="fas fa-check-circle"></i> Authentic Indian Spices</div>
+          <div class="about-feature"><i class="fas fa-check-circle"></i> Tandoor Specialties</div>
+          <div class="about-feature"><i class="fas fa-check-circle"></i> Thali Meals</div>
           <div class="about-feature"><i class="fas fa-check-circle"></i> Family &amp; Group Dining</div>
-          <div class="about-feature"><i class="fas fa-check-circle"></i> Vegetarian Friendly</div>
-          <div class="about-feature"><i class="fas fa-check-circle"></i> Live Seafood Counter</div>
+          <div class="about-feature"><i class="fas fa-check-circle"></i> Warm Hospitality</div>
         </div>
         <a href="#reservation" class="btn btn-ocean" style="margin-top:36px"><i class="fas fa-calendar-check"></i> Book Your Table</a>
       </div>
@@ -807,52 +946,52 @@
     <div class="specialties-header reveal">
       <span class="section-tag"><i class="fas fa-award"></i> &nbsp;What We Serve</span>
       <h2 class="section-title">Our Culinary Specialties</h2>
-      <p class="section-subtitle">A feast for every palate — from the ocean to the mountains, we bring the world's flavours to your table.</p>
+      <p class="section-subtitle">A feast for every palate — authentic Indian flavours, tandoor magic, and sweet endings that celebrate India's rich culinary tradition.</p>
     </div>
     <div class="specialties-grid">
       <div class="specialty-card reveal">
-        <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=700&q=80" alt="Seafood Delicacies" loading="lazy"/>
+        <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=700&q=80" alt="Chinese Cuisine" loading="lazy"/>
         <div class="specialty-card-overlay"></div>
         <div class="specialty-card-content">
-          <div class="specialty-icon"><i class="fas fa-fish"></i></div>
-          <div class="specialty-title">Seafood Delicacies</div>
-          <div class="specialty-desc">Fresh catch, grilled, fried &amp; curried to perfection</div>
+          <div class="specialty-icon"><i class="fas fa-bowl-food"></i></div>
+          <div class="specialty-title">Chinese Cuisine</div>
+          <div class="specialty-desc">Sizzling Chinese &amp; Indo-Chinese favourites</div>
         </div>
       </div>
       <div class="specialty-card reveal">
-        <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=700&q=80" alt="Indian Cuisine" loading="lazy"/>
+        <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=700&q=80" alt="Paneer Specials" loading="lazy"/>
+        <div class="specialty-card-overlay"></div>
+        <div class="specialty-card-content">
+          <div class="specialty-icon"><i class="fas fa-cheese"></i></div>
+          <div class="specialty-title">Paneer Specials</div>
+          <div class="specialty-desc">Rich, creamy paneer preparations galore</div>
+        </div>
+      </div>
+      <div class="specialty-card reveal">
+        <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?w=700&q=80" alt="Tandoor Delights" loading="lazy"/>
+        <div class="specialty-card-overlay"></div>
+        <div class="specialty-card-content">
+          <div class="specialty-icon"><i class="fas fa-fire"></i></div>
+          <div class="specialty-title">Tandoor Delights</div>
+          <div class="specialty-desc">Freshly baked breads &amp; tandoor magic</div>
+        </div>
+      </div>
+      <div class="specialty-card reveal">
+        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=700&q=80" alt="Thali Meals" loading="lazy"/>
+        <div class="specialty-card-overlay"></div>
+        <div class="specialty-card-content">
+          <div class="specialty-icon"><i class="fas fa-plate-wheat"></i></div>
+          <div class="specialty-title">Thali Meals</div>
+          <div class="specialty-desc">Complete meals — Gujarati &amp; Punjabi thalis</div>
+        </div>
+      </div>
+      <div class="specialty-card reveal">
+        <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=700&q=80" alt="Indian Curries" loading="lazy"/>
         <div class="specialty-card-overlay"></div>
         <div class="specialty-card-content">
           <div class="specialty-icon"><i class="fas fa-pepper-hot"></i></div>
-          <div class="specialty-title">Indian Cuisine</div>
-          <div class="specialty-desc">Authentic flavours, traditional recipes &amp; rich curries</div>
-        </div>
-      </div>
-      <div class="specialty-card reveal">
-        <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?w=700&q=80" alt="Chinese Cuisine" loading="lazy"/>
-        <div class="specialty-card-overlay"></div>
-        <div class="specialty-card-content">
-          <div class="specialty-icon"><i class="fas fa-drumstick-bite"></i></div>
-          <div class="specialty-title">Chinese Cuisine</div>
-          <div class="specialty-desc">Wok-tossed noodles, momos &amp; stir-fry favourites</div>
-        </div>
-      </div>
-      <div class="specialty-card reveal">
-        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=700&q=80" alt="Fast Food" loading="lazy"/>
-        <div class="specialty-card-overlay"></div>
-        <div class="specialty-card-content">
-          <div class="specialty-icon"><i class="fas fa-hamburger"></i></div>
-          <div class="specialty-title">Fast Food</div>
-          <div class="specialty-desc">Crispy burgers, loaded fries &amp; quick bites</div>
-        </div>
-      </div>
-      <div class="specialty-card reveal">
-        <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=700&q=80" alt="Beverages & Mocktails" loading="lazy"/>
-        <div class="specialty-card-overlay"></div>
-        <div class="specialty-card-content">
-          <div class="specialty-icon"><i class="fas fa-glass-martini-alt"></i></div>
-          <div class="specialty-title">Beverages &amp; Mocktails</div>
-          <div class="specialty-desc">Fresh juices, mocktails &amp; cold brews</div>
+          <div class="specialty-title">Indian Curries</div>
+          <div class="specialty-desc">Authentic vegetable &amp; dal preparations</div>
         </div>
       </div>
       <div class="specialty-card reveal">
@@ -861,7 +1000,7 @@
         <div class="specialty-card-content">
           <div class="specialty-icon"><i class="fas fa-ice-cream"></i></div>
           <div class="specialty-title">Desserts</div>
-          <div class="specialty-desc">Sweet endings — cakes, ice creams &amp; more</div>
+          <div class="specialty-desc">Sweet endings — ice creams, gulab jamoon &amp; more</div>
         </div>
       </div>
     </div>
@@ -876,7 +1015,7 @@
     <div class="gallery-header reveal">
       <span class="section-tag"><i class="fas fa-camera"></i> &nbsp;Moments</span>
       <h2 class="section-title">A Taste of Our World</h2>
-      <p class="section-subtitle">From ocean breezes to sizzling plates — a glimpse into life at Sea Cafe.</p>
+      <p class="section-subtitle">From aromatic spices to sizzling plates — a glimpse into life at Kankeshwar.</p>
     </div>
     <div class="gallery-masonry">
       <div class="gallery-item reveal" onclick="openLightbox(this)">
@@ -888,7 +1027,7 @@
         <div class="gallery-item-overlay"><i class="fas fa-search-plus"></i></div>
       </div>
       <div class="gallery-item reveal" onclick="openLightbox(this)">
-        <img src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=600&q=80" alt="Seafood dish" loading="lazy"/>
+        <img src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=600&q=80" alt="Indian dish" loading="lazy"/>
         <div class="gallery-item-overlay"><i class="fas fa-search-plus"></i></div>
       </div>
       <div class="gallery-item reveal" onclick="openLightbox(this)">
@@ -900,15 +1039,15 @@
         <div class="gallery-item-overlay"><i class="fas fa-search-plus"></i></div>
       </div>
       <div class="gallery-item reveal" onclick="openLightbox(this)">
-        <img src="https://images.unsplash.com/photo-1502301103665-0b95cc738daf?w=600&q=80" alt="Beachside view" loading="lazy"/>
+        <img src="https://images.unsplash.com/photo-1502301103665-0b95cc738daf?w=600&q=80" alt="Restaurant view" loading="lazy"/>
         <div class="gallery-item-overlay"><i class="fas fa-search-plus"></i></div>
       </div>
       <div class="gallery-item reveal" onclick="openLightbox(this)">
-        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&q=80" alt="Pizza dish" loading="lazy"/>
+        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&q=80" alt="Indian cuisine" loading="lazy"/>
         <div class="gallery-item-overlay"><i class="fas fa-search-plus"></i></div>
       </div>
       <div class="gallery-item reveal" onclick="openLightbox(this)">
-        <img src="https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=600&q=80" alt="Grilled seafood" loading="lazy"/>
+        <img src="https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=600&q=80" alt="Tandoor special" loading="lazy"/>
         <div class="gallery-item-overlay"><i class="fas fa-search-plus"></i></div>
       </div>
       <div class="gallery-item reveal" onclick="openLightbox(this)">
@@ -952,14 +1091,14 @@
             <div class="res-detail-icon"><i class="fas fa-phone"></i></div>
             <div class="res-detail-text">
               <strong>Call Us</strong>
-              <span>+91 XXXXX XXXXX</span>
+              <span>075740 33599</span>
             </div>
           </div>
           <div class="res-detail">
             <div class="res-detail-icon"><i class="fab fa-whatsapp"></i></div>
             <div class="res-detail-text">
               <strong>WhatsApp</strong>
-              <span>+91 XXXXX XXXXX</span>
+              <span>075740 33599</span>
             </div>
           </div>
         </div>
@@ -1028,7 +1167,7 @@
   <div class="container">
     <div class="contact-header reveal">
       <span class="section-tag"><i class="fas fa-location-dot"></i> &nbsp;Find Us</span>
-      <h2 class="section-title">Visit Sea Cafe in Diu</h2>
+      <h2 class="section-title">Visit Kankeshwar in Diu</h2>
       <p class="section-subtitle">We're located in the heart of the island — easy to find, impossible to forget.</p>
     </div>
     <div class="contact-grid">
@@ -1037,22 +1176,21 @@
           <div class="contact-card-icon"><i class="fas fa-map-marker-alt"></i></div>
           <div>
             <h4>Address</h4>
-            <p>Sea Cafe &amp; Food Destination<br>Diu, Daman &amp; Diu – 362520<br>India</p>
+            <p>Kankeshwar : The Indian Culture Restaurant<br>Diu, Daman &amp; Diu – 362520<br>India</p>
           </div>
         </div>
         <div class="contact-card">
           <div class="contact-card-icon"><i class="fas fa-phone"></i></div>
           <div>
             <h4>Phone</h4>
-            <a href="tel:+91XXXXXXXXXX">+91 XXXXX XXXXX</a>
-            <a href="tel:+91XXXXXXXXXX" style="margin-top:4px">+91 XXXXX XXXXX</a>
+            <a href="tel:+917574033599">075740 33599</a>
           </div>
         </div>
         <div class="contact-card">
           <div class="contact-card-icon"><i class="fas fa-envelope"></i></div>
           <div>
             <h4>Email</h4>
-            <a href="mailto:hello@seacafediu.com">hello@seacafediu.com</a>
+            <a href="mailto:hello@kankeshwardiu.com">hello@kankeshwardiu.com</a>
           </div>
         </div>
         <div class="contact-card">
@@ -1065,11 +1203,10 @@
         </div>
       </div>
       <div class="map-container reveal-right">
-        <!-- Replace the src with your actual Google Maps embed URL -->
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14931.91540697899!2d70.9284!3d20.7144!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be28e8e3bc0f5b7%3A0x9a97c01cb4f85b6a!2sDiu!5e0!3m2!1sen!2sin!4v1680000000000"
           allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-          title="Sea Cafe Location Map"
+          title="Kankeshwar Location Map"
         ></iframe>
       </div>
     </div>
@@ -1081,13 +1218,13 @@
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <div class="footer-brand-name">Sea Cafe</div>
-        <div class="footer-brand-sub">Food Destination · Diu</div>
-        <p>A coastal haven for food lovers. Fresh seafood, warm hospitality, and unforgettable views on the beautiful island of Diu.</p>
+        <div class="footer-brand-name">Kankeshwar</div>
+        <div class="footer-brand-sub">The Indian Culture Restaurant · Diu</div>
+        <p>A haven for lovers of authentic Indian cuisine. Pure vegetarian, warm hospitality, and unforgettable flavours on the beautiful island of Diu.</p>
         <div class="footer-social">
           <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
           <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          <a href="https://wa.me/917574033599" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
           <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
           <a href="#" aria-label="Google"><i class="fab fa-google"></i></a>
         </div>
@@ -1099,7 +1236,6 @@
           <li><a href="#specialties">Specialties</a></li>
           <li><a href="javascript:void(0)" onclick="openMenuModal()">Our Menu</a></li>
           <li><a href="#gallery">Gallery</a></li>
-
           <li><a href="#reservation">Reserve a Table</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
@@ -1107,11 +1243,11 @@
       <div class="footer-col">
         <h4>Cuisines</h4>
         <ul>
-          <li><a href="javascript:void(0)" onclick="openMenuModal()">Seafood Delicacies</a></li>
-          <li><a href="javascript:void(0)" onclick="openMenuModal()">Indian Cuisine</a></li>
           <li><a href="javascript:void(0)" onclick="openMenuModal()">Chinese Cuisine</a></li>
-          <li><a href="javascript:void(0)" onclick="openMenuModal()">Fast Food</a></li>
-          <li><a href="javascript:void(0)" onclick="openMenuModal()">Beverages &amp; Mocktails</a></li>
+          <li><a href="javascript:void(0)" onclick="openMenuModal()">Paneer Specials</a></li>
+          <li><a href="javascript:void(0)" onclick="openMenuModal()">Tandoor Delights</a></li>
+          <li><a href="javascript:void(0)" onclick="openMenuModal()">Thali Meals</a></li>
+          <li><a href="javascript:void(0)" onclick="openMenuModal()">Indian Curries</a></li>
           <li><a href="javascript:void(0)" onclick="openMenuModal()">Desserts</a></li>
         </ul>
       </div>
@@ -1129,8 +1265,8 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p>&copy; 2025 Sea Cafe &amp; Food Destination, Diu. All rights reserved.</p>
-      <p>Designed with <i class="fas fa-heart" style="color:var(--sunset)"></i> for the love of good food &amp; coastal living</p>
+      <p>&copy; 2025 Kankeshwar : The Indian Culture Restaurant, Diu. All rights reserved.</p>
+      <p>Designed with <i class="fas fa-heart" style="color:var(--sunset)"></i> for the love of good food &amp; Indian heritage</p>
     </div>
   </div>
 </footer>
@@ -1141,274 +1277,199 @@
     <!-- Header -->
     <div class="menu-modal-close">
       <div>
-        <h2>Sea Cafe Menu</h2>
-        <div class="tagline">The Flavors of Diu</div>
-        <span class="menu-veg-badge"><i class="fas fa-leaf" style="margin-right:4px"></i> 100% Pure Vegetarian</span>
+        <h2>Kankeshwar Menu</h2>
+        <div class="tagline">The Flavours of India</div>
+        <span class="menu-veg-badge"><i class="fas fa-leaf" style="margin-right:4px"></i> Pure Vegetarian</span>
       </div>
       <button class="menu-modal-close-btn" onclick="closeMenuModal()" aria-label="Close menu"><i class="fas fa-times"></i></button>
     </div>
     <!-- Category nav -->
     <div class="menu-nav-bar">
       <div class="menu-nav-inner">
-        <a class="menu-nav-link" onclick="menuScrollTo('breakfast')">Breakfast</a>
-        <a class="menu-nav-link" onclick="menuScrollTo('mains')">Main Course</a>
-        <a class="menu-nav-link" onclick="menuScrollTo('breads')">Breads</a>
-        <a class="menu-nav-link" onclick="menuScrollTo('sides')">Sides</a>
-        <a class="menu-nav-link" onclick="menuScrollTo('rice')">Rice</a>
-        <a class="menu-nav-link" onclick="menuScrollTo('south-indian')">South Indian</a>
-        <a class="menu-nav-link" onclick="menuScrollTo('chinese')">Chinese</a>
-        <a class="menu-nav-link" onclick="menuScrollTo('pizza')">Pizza</a>
-        <a class="menu-nav-link" onclick="menuScrollTo('snacks')">Snacks</a>
-        <a class="menu-nav-link" onclick="menuScrollTo('maggi-sandwich')">Maggi & Sandwich</a>
-        <a class="menu-nav-link" onclick="menuScrollTo('beverages')">Beverages</a>
+        <a class="menu-nav-link" onclick="menuScrollTo('cat-chinese')">Chinese</a>
+        <a class="menu-nav-link" onclick="menuScrollTo('cat-paneer')">Paneer</a>
+        <a class="menu-nav-link" onclick="menuScrollTo('cat-sweet')">Sweet</a>
+        <a class="menu-nav-link" onclick="menuScrollTo('cat-vegetables')">Vegetable's</a>
+        <a class="menu-nav-link" onclick="menuScrollTo('cat-dalrice')">Dal &amp; Rice</a>
+        <a class="menu-nav-link" onclick="menuScrollTo('cat-tandoor')">Tandoor</a>
+        <a class="menu-nav-link" onclick="menuScrollTo('cat-fixmeal')">Fix Meal</a>
+        <a class="menu-nav-link" onclick="menuScrollTo('cat-dessert')">Dessert</a>
       </div>
     </div>
     <!-- Menu body -->
     <div class="menu-body">
 
-      <!-- BREAKFAST -->
-      <div class="menu-section" id="breakfast">
-        <h2 class="menu-cat-title"><span class="icon">🌅</span> Breakfast & Pav Bhaji</h2>
-        <p class="menu-sub-cat">Breakfast</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Aloo Poha</span><span class="item-price">₹80</span></div>
-          <div class="menu-item"><span class="item-name">Aloo Paratha</span><span class="item-price">₹150</span></div>
-        </div>
-        <p class="menu-sub-cat">Pav Bhaji</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Pav Bhaji <span class="badge must-try">Must Try</span></span><span class="item-price">₹150</span></div>
-          <div class="menu-item"><span class="item-name">Chole Bhatura <span class="badge must-try">Must Try</span></span><span class="item-price">₹150</span></div>
-        </div>
-      </div>
-
-      <!-- MAIN COURSE -->
-      <div class="menu-section" id="mains">
-        <h2 class="menu-cat-title"><span class="icon">🍛</span> Main Course Specials</h2>
-        <p class="menu-sub-cat">Veg Special</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Chana Masala</span><span class="item-price">₹200</span></div>
-          <div class="menu-item"><span class="item-name">Aloo Mutter</span><span class="item-price">₹200</span></div>
-        </div>
-        <p class="menu-sub-cat">Paneer Special</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Palak Paneer</span><span class="item-price">₹250</span></div>
-        </div>
-        <p class="menu-sub-cat">Cheese Special</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Cheese Masala</span><span class="item-price">₹350</span></div>
-        </div>
-        <p class="menu-sub-cat">Kaju Special</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Kaju Curry</span><span class="item-price">₹350</span></div>
-        </div>
-        <p class="menu-sub-cat">Dal Special</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Dal Fry</span><span class="item-price">₹120</span></div>
-        </div>
-      </div>
-
-      <!-- BREADS -->
-      <div class="menu-section" id="breads">
-        <h2 class="menu-cat-title"><span class="icon">🫓</span> Indian Breads</h2>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Chapati</span><span class="item-price">₹20</span></div>
-          <div class="menu-item"><span class="item-name">Tandoori Roti</span><span class="item-price">₹30</span></div>
-          <div class="menu-item"><span class="item-name">Butter Tandoori Roti</span><span class="item-price">₹40</span></div>
-          <div class="menu-item"><span class="item-name">Missi Roti</span><span class="item-price">₹40</span></div>
-          <div class="menu-item"><span class="item-name">Plain Naan</span><span class="item-price">₹50</span></div>
-          <div class="menu-item"><span class="item-name">Butter Naan</span><span class="item-price">₹60</span></div>
-          <div class="menu-item"><span class="item-name">Garlic Naan</span><span class="item-price">₹70</span></div>
-          <div class="menu-item"><span class="item-name">Cheese Naan</span><span class="item-price">₹90</span></div>
-        </div>
-      </div>
-
-      <!-- SIDES -->
-      <div class="menu-section" id="sides">
-        <h2 class="menu-cat-title"><span class="icon">🥗</span> Khane Ke Sath (Sides)</h2>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Plain Buttermilk</span><span class="item-price">₹50</span></div>
-          <div class="menu-item"><span class="item-name">Masala Buttermilk</span><span class="item-price">₹70</span></div>
-          <div class="menu-item"><span class="item-name">Green Salad</span><span class="item-price">₹80</span></div>
-          <div class="menu-item"><span class="item-name">Russian Salad</span><span class="item-price">₹100</span></div>
-          <div class="menu-item"><span class="item-name">Papad (Plain)</span><span class="item-price">₹30</span></div>
-          <div class="menu-item"><span class="item-name">Papad (Fried)</span><span class="item-price">₹40</span></div>
-          <div class="menu-item"><span class="item-name">Raita</span><span class="item-price">₹60</span></div>
-        </div>
-      </div>
-
-      <!-- RICE -->
-      <div class="menu-section" id="rice">
-        <h2 class="menu-cat-title"><span class="icon">🍚</span> Rice</h2>
-        <p class="menu-sub-cat">Indian Rice</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Steam Rice</span><span class="item-price">₹100</span></div>
-          <div class="menu-item"><span class="item-name">Jeera Rice</span><span class="item-price">₹120</span></div>
-          <div class="menu-item"><span class="item-name">Veg Pulao</span><span class="item-price">₹180</span></div>
-          <div class="menu-item"><span class="item-name">Paneer Pulao <span class="badge must-try">Must Try</span></span><span class="item-price">₹200</span></div>
-        </div>
-        <p class="menu-sub-cat">Chinese Rice</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Veg Fried Rice</span><span class="item-price">₹160</span></div>
-        </div>
-      </div>
-
-      <!-- SOUTH INDIAN -->
-      <div class="menu-section" id="south-indian">
-        <h2 class="menu-cat-title"><span class="icon">🫓</span> South Indian</h2>
-        <div class="menu-grid">
-          <div class="menu-item" style="flex-direction:column;align-items:flex-start;gap:6px;padding:14px 12px;">
-            <span class="item-name" style="font-weight:700;">Plain Dosa</span>
-            <div class="variant-tags">
-              <span class="variant-tag">Plain ₹120</span>
-              <span class="variant-tag">Butter ₹150</span>
-              <span class="variant-tag">Cheese ₹180</span>
-            </div>
-          </div>
-          <div class="menu-item" style="flex-direction:column;align-items:flex-start;gap:6px;padding:14px 12px;">
-            <span class="item-name" style="font-weight:700;">Masala Dosa</span>
-            <div class="variant-tags">
-              <span class="variant-tag">Plain ₹140</span>
-              <span class="variant-tag">Butter ₹170</span>
-              <span class="variant-tag">Cheese ₹200</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <!-- CHINESE -->
-      <div class="menu-section" id="chinese">
+      <div class="menu-section" id="cat-chinese">
         <h2 class="menu-cat-title"><span class="icon">🥡</span> Chinese</h2>
-        <p class="menu-sub-cat">Noodles</p>
         <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Hakka Noodles</span><span class="item-price">₹180</span></div>
-        </div>
-        <p class="menu-sub-cat">Soup</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Manchow Soup</span><span class="item-price">₹120</span></div>
-          <div class="menu-item"><span class="item-name">Tomato Soup</span><span class="item-price">₹120</span></div>
-          <div class="menu-item"><span class="item-name">Sweet Corn Soup</span><span class="item-price">₹120</span></div>
-          <div class="menu-item"><span class="item-name">Hot & Sour Soup</span><span class="item-price">₹120</span></div>
-          <div class="menu-item"><span class="item-name">Veg Clear Soup</span><span class="item-price">₹120</span></div>
-        </div>
-        <p class="menu-sub-cat">Chinese Special</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Veg Manchurian Dry</span><span class="item-price">₹160</span></div>
-          <div class="menu-item"><span class="item-name">Veg Manchurian Gravy</span><span class="item-price">₹180</span></div>
-          <div class="menu-item"><span class="item-name">Chilli Paneer Dry</span><span class="item-price">₹220</span></div>
-          <div class="menu-item"><span class="item-name">Chilli Paneer Gravy</span><span class="item-price">₹240</span></div>
-          <div class="menu-item"><span class="item-name">Spring Roll (6 pcs)</span><span class="item-price">₹280</span></div>
-        </div>
-      </div>
-
-      <!-- PIZZA -->
-      <div class="menu-section" id="pizza">
-        <h2 class="menu-cat-title"><span class="icon">🍕</span> Pizza</h2>
-        <p class="menu-sub-cat">Premium Pizza</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Double Cheese Margherita</span><span class="item-price">₹350</span></div>
-        </div>
-        <p class="menu-sub-cat">Classic Pizza</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Margherita Pizza</span><span class="item-price">₹220</span></div>
-        </div>
-        <p class="menu-sub-cat">Add-ons</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Extra Tomatoes</span><span class="item-price">₹20</span></div>
-          <div class="menu-item"><span class="item-name">Extra Cheese</span><span class="item-price">₹30</span></div>
-          <div class="menu-item"><span class="item-name">Extra Paneer</span><span class="item-price">₹20</span></div>
+          <div class="menu-item"><span class="item-name">Paneer Or Mushroom Chilly</span><span class="item-right"><span class="item-price">₹220</span><button class="add-btn" onclick="addToCart('Paneer Or Mushroom Chilly',220)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Veg. Manchurian Or Veg. 65 Dry</span><span class="item-right"><span class="item-price">₹169</span><button class="add-btn" onclick="addToCart('Veg. Manchurian Or Veg. 65 Dry',169)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Dragon Potato</span><span class="item-right"><span class="item-price">₹169</span><button class="add-btn" onclick="addToCart('Dragon Potato',169)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Chinese Bhel</span><span class="item-right"><span class="item-price">₹134</span><button class="add-btn" onclick="addToCart('Chinese Bhel',134)">+</button></span></div>
+          <div class="menu-item" style="flex-direction:column;align-items:flex-start;gap:6px;padding:14px 12px;">
+            <span class="item-name" style="font-weight:700;">Selection Of Noodles</span>
+            <div class="variant-tags">
+              <span class="variant-tag">Hakka ₹165</span>
+              <span class="variant-tag">Szechwan ₹165</span>
+            </div>
+            <span class="item-right" style="margin-top:6px"><span class="item-price">₹165</span><button class="add-btn" onclick="addToCart('Selection Of Noodles',165)">+</button></span>
+          </div>
+          <div class="menu-item" style="flex-direction:column;align-items:flex-start;gap:6px;padding:14px 12px;">
+            <span class="item-name" style="font-weight:700;">Selection Of Fried Rice</span>
+            <div class="variant-tags">
+              <span class="variant-tag">Vegetable ₹165</span>
+              <span class="variant-tag">Szechwan ₹165</span>
+            </div>
+            <span class="item-right" style="margin-top:6px"><span class="item-price">₹165</span><button class="add-btn" onclick="addToCart('Selection Of Fried Rice',165)">+</button></span>
+          </div>
+          <div class="menu-item"><span class="item-name">Tripple Combo</span><span class="item-right"><span class="item-price">₹269</span><button class="add-btn" onclick="addToCart('Tripple Combo',269)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Crispy Fried Babycorn</span><span class="item-right"><span class="item-price">₹189</span><button class="add-btn" onclick="addToCart('Crispy Fried Babycorn',189)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Crispy Fried Veg</span><span class="item-right"><span class="item-price">₹189</span><button class="add-btn" onclick="addToCart('Crispy Fried Veg',189)">+</button></span></div>
         </div>
       </div>
 
-      <!-- SNACKS -->
-      <div class="menu-section" id="snacks">
-        <h2 class="menu-cat-title"><span class="icon">🍟</span> Fries, Momos & Burgers</h2>
-        <p class="menu-sub-cat">Fries</p>
+      <!-- PANEER -->
+      <div class="menu-section" id="cat-paneer">
+        <h2 class="menu-cat-title"><span class="icon">🧀</span> Paneer</h2>
         <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">French Fries</span><span class="item-price">₹120</span></div>
-          <div class="menu-item"><span class="item-name">Peri Peri Fries</span><span class="item-price">₹140</span></div>
-          <div class="menu-item"><span class="item-name">Cheese Fries</span><span class="item-price">₹150</span></div>
-          <div class="menu-item"><span class="item-name">Cheese Chilli Fries</span><span class="item-price">₹180</span></div>
-        </div>
-        <p class="menu-sub-cat">Momos</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Steam Momos</span><span class="item-price">₹120</span></div>
-          <div class="menu-item"><span class="item-name">Fried Momos</span><span class="item-price">₹120</span></div>
-        </div>
-        <p class="menu-sub-cat">Burger</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Veg Burger</span><span class="item-price">₹120</span></div>
-          <div class="menu-item"><span class="item-name">Veg Cheese Burger</span><span class="item-price">₹140</span></div>
-          <div class="menu-item"><span class="item-name">Maharaja Burger</span><span class="item-price">₹180</span></div>
+          <div class="menu-item"><span class="item-name">Paneer Lababdar Or Koriyala</span><span class="item-right"><span class="item-price">₹224</span><button class="add-btn" onclick="addToCart('Paneer Lababdar Or Koriyala',224)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Paneer Bagdadi Or Ashiyana</span><span class="item-right"><span class="item-price">₹234</span><button class="add-btn" onclick="addToCart('Paneer Bagdadi Or Ashiyana',234)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Paneer Butter Masala</span><span class="item-right"><span class="item-price">₹209</span><button class="add-btn" onclick="addToCart('Paneer Butter Masala',209)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Paneer Tikka Masala</span><span class="item-right"><span class="item-price">₹219</span><button class="add-btn" onclick="addToCart('Paneer Tikka Masala',219)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Paneer Handi/Tawa/Kadai</span><span class="item-right"><span class="item-price">₹199</span><button class="add-btn" onclick="addToCart('Paneer Handi/Tawa/Kadai',199)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Paneer Maska Makhni</span><span class="item-right"><span class="item-price">₹214</span><button class="add-btn" onclick="addToCart('Paneer Maska Makhni',214)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Kaju Paneer</span><span class="item-right"><span class="item-price">₹245</span><button class="add-btn" onclick="addToCart('Kaju Paneer',245)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Palak Or Mutter Paneer</span><span class="item-right"><span class="item-price">₹199</span><button class="add-btn" onclick="addToCart('Palak Or Mutter Paneer',199)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Cheese Butter Masala</span><span class="item-right"><span class="item-price">₹245</span><button class="add-btn" onclick="addToCart('Cheese Butter Masala',245)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Paneer Bhurji</span><span class="item-right"><span class="item-price">₹245</span><button class="add-btn" onclick="addToCart('Paneer Bhurji',245)">+</button></span></div>
         </div>
       </div>
 
-      <!-- MAGGI & SANDWICH -->
-      <div class="menu-section" id="maggi-sandwich">
-        <h2 class="menu-cat-title"><span class="icon">🥪</span> Maggi & Sandwiches</h2>
-        <p class="menu-sub-cat">Maggi</p>
+      <!-- SWEET -->
+      <div class="menu-section" id="cat-sweet">
+        <h2 class="menu-cat-title"><span class="icon">🍯</span> Sweet</h2>
         <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Masala Maggi</span><span class="item-price">₹80</span></div>
-          <div class="menu-item"><span class="item-name">Butter Masala Maggi <span class="badge best-seller">Best Seller</span></span><span class="item-price">₹100</span></div>
-        </div>
-        <p class="menu-sub-cat">3 Layered Sandwich</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Bread Butter Jam Grilled</span><span class="item-price">₹70</span></div>
-          <div class="menu-item"><span class="item-name">Hulk Sandwich</span><span class="item-price">₹300</span></div>
-        </div>
-        <p class="menu-sub-cat">Garlic Bread</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Garlic Bread</span><span class="item-price">₹120</span></div>
-          <div class="menu-item"><span class="item-name">Garlic Bread Stick with Cheese Dip</span><span class="item-price">₹250</span></div>
+          <div class="menu-item"><span class="item-name">Navratan Korma</span><span class="item-right"><span class="item-price">₹239</span><button class="add-btn" onclick="addToCart('Navratan Korma',239)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Cheese Angoori</span><span class="item-right"><span class="item-price">₹239</span><button class="add-btn" onclick="addToCart('Cheese Angoori',239)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Malai Kofta</span><span class="item-right"><span class="item-price">₹229</span><button class="add-btn" onclick="addToCart('Malai Kofta',229)">+</button></span></div>
         </div>
       </div>
 
-      <!-- BEVERAGES -->
-      <div class="menu-section" id="beverages">
-        <h2 class="menu-cat-title"><span class="icon">🥤</span> Beverages</h2>
-        <p class="menu-sub-cat">Fresh Juice</p>
+      <!-- VEGETABLE'S -->
+      <div class="menu-section" id="cat-vegetables">
+        <h2 class="menu-cat-title"><span class="icon">🥬</span> Vegetable's</h2>
         <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Pineapple Juice</span><span class="item-price">₹120</span></div>
+          <div class="menu-item"><span class="item-name">Sev Tomato</span><span class="item-right"><span class="item-price">₹139</span><button class="add-btn" onclick="addToCart('Sev Tomato',139)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Lasaniya Bateka</span><span class="item-right"><span class="item-price">₹169</span><button class="add-btn" onclick="addToCart('Lasaniya Bateka',169)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Dum Aloo</span><span class="item-right"><span class="item-price">₹169</span><button class="add-btn" onclick="addToCart('Dum Aloo',169)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Aloo Tomato Rasawala</span><span class="item-right"><span class="item-price">₹169</span><button class="add-btn" onclick="addToCart('Aloo Tomato Rasawala',169)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Cabbege Mutter</span><span class="item-right"><span class="item-price">₹169</span><button class="add-btn" onclick="addToCart('Cabbege Mutter',169)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Vegetable Lababdar /Khazana</span><span class="item-right"><span class="item-price">₹205</span><button class="add-btn" onclick="addToCart('Vegetable Lababdar /Khazana',205)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Vegetable Shabnam /Shabnam Curry</span><span class="item-right"><span class="item-price">₹219</span><button class="add-btn" onclick="addToCart('Vegetable Shabnam /Shabnam Curry',219)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Cholle Peshawari</span><span class="item-right"><span class="item-price">₹189</span><button class="add-btn" onclick="addToCart('Cholle Peshawari',189)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Subz Achari/Jalfrzie</span><span class="item-right"><span class="item-price">₹199</span><button class="add-btn" onclick="addToCart('Subz Achari/Jalfrzie',199)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Veg. Handi/Kadai /Tawa</span><span class="item-right"><span class="item-price">₹189</span><button class="add-btn" onclick="addToCart('Veg. Handi/Kadai /Tawa',189)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Tomato Makai Bharta</span><span class="item-right"><span class="item-price">₹189</span><button class="add-btn" onclick="addToCart('Tomato Makai Bharta',189)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Vegetable Koriyala</span><span class="item-right"><span class="item-price">₹204</span><button class="add-btn" onclick="addToCart('Vegetable Koriyala',204)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Veg.Kolapuri/Makhanwala</span><span class="item-right"><span class="item-price">₹169</span><button class="add-btn" onclick="addToCart('Veg.Kolapuri/Makhanwala',169)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Alu Mutter/Jeera Aloo</span><span class="item-right"><span class="item-price">₹159</span><button class="add-btn" onclick="addToCart('Alu Mutter/Jeera Aloo',159)">+</button></span></div>
         </div>
-        <p class="menu-sub-cat">Jamu Shots</p>
+      </div>
+
+      <!-- DAL & RICE -->
+      <div class="menu-section" id="cat-dalrice">
+        <h2 class="menu-cat-title"><span class="icon">🍚</span> Dal &amp; Rice</h2>
         <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Half</span><span class="item-price">₹100</span></div>
-          <div class="menu-item"><span class="item-name">Full</span><span class="item-price">₹180</span></div>
+          <div class="menu-item"><span class="item-name">Dal Fry</span><span class="item-right"><span class="item-price">₹119</span><button class="add-btn" onclick="addToCart('Dal Fry',119)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Dal Tadkewali</span><span class="item-right"><span class="item-price">₹129</span><button class="add-btn" onclick="addToCart('Dal Tadkewali',129)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Steam Rice</span><span class="item-right"><span class="item-price">₹109</span><button class="add-btn" onclick="addToCart('Steam Rice',109)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Jeera Rice</span><span class="item-right"><span class="item-price">₹119</span><button class="add-btn" onclick="addToCart('Jeera Rice',119)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Hydrabadi Biryani</span><span class="item-right"><span class="item-price">₹159</span><button class="add-btn" onclick="addToCart('Hydrabadi Biryani',159)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Vegetable Pulao</span><span class="item-right"><span class="item-price">₹134</span><button class="add-btn" onclick="addToCart('Vegetable Pulao',134)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Kadhi</span><span class="item-right"><span class="item-price">₹89</span><button class="add-btn" onclick="addToCart('Kadhi',89)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Dal Khichdi</span><span class="item-right"><span class="item-price">₹139</span><button class="add-btn" onclick="addToCart('Dal Khichdi',139)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Dum Biriyani</span><span class="item-right"><span class="item-price">₹159</span><button class="add-btn" onclick="addToCart('Dum Biriyani',159)">+</button></span></div>
         </div>
-        <p class="menu-sub-cat">Milkshake</p>
+      </div>
+
+      <!-- TANDOOR -->
+      <div class="menu-section" id="cat-tandoor">
+        <h2 class="menu-cat-title"><span class="icon">🫓</span> Tandoor</h2>
         <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Chocolate Shake</span><span class="item-price">₹120</span></div>
-          <div class="menu-item"><span class="item-name">Vanilla Shake</span><span class="item-price">₹120</span></div>
-          <div class="menu-item"><span class="item-name">Strawberry Shake</span><span class="item-price">₹130</span></div>
-          <div class="menu-item"><span class="item-name">Mango Shake</span><span class="item-price">₹150</span></div>
-          <div class="menu-item"><span class="item-name">Butterscotch Shake</span><span class="item-price">₹150</span></div>
-          <div class="menu-item"><span class="item-name">Oreo Shake</span><span class="item-price">₹160</span></div>
-          <div class="menu-item"><span class="item-name">Cold Coffee</span><span class="item-price">₹160</span></div>
-          <div class="menu-item"><span class="item-name">KitKat Shake</span><span class="item-price">₹180</span></div>
-          <div class="menu-item"><span class="item-name">Blue Lagoon Shake</span><span class="item-price">₹180</span></div>
-          <div class="menu-item"><span class="item-name">Pista Shake</span><span class="item-price">₹200</span></div>
-          <div class="menu-item"><span class="item-name">Red Velvet Shake</span><span class="item-price">₹200</span></div>
-          <div class="menu-item"><span class="item-name">Nutella Shake</span><span class="item-price">₹220</span></div>
-          <div class="menu-item"><span class="item-name">Dark Chocolate Shake</span><span class="item-price">₹220</span></div>
-          <div class="menu-item"><span class="item-name">Kiwi Shake</span><span class="item-price">₹220</span></div>
+          <div class="menu-item"><span class="item-name">Roti (Plain Or Butter)</span><span class="item-right"><span class="item-price">₹22</span><button class="add-btn" onclick="addToCart('Roti (Plain Or Butter)',22)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Tawa Roti</span><span class="item-right"><span class="item-price">₹20</span><button class="add-btn" onclick="addToCart('Tawa Roti',20)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Garlic Roti</span><span class="item-right"><span class="item-price">₹45</span><button class="add-btn" onclick="addToCart('Garlic Roti',45)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Kulcha (Plain Or Butter)</span><span class="item-right"><span class="item-price">₹40</span><button class="add-btn" onclick="addToCart('Kulcha (Plain Or Butter)',40)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Cheese Or Garlic Kulcha</span><span class="item-right"><span class="item-price">₹99</span><button class="add-btn" onclick="addToCart('Cheese Or Garlic Kulcha',99)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Stuffed Kulcha</span><span class="item-right"><span class="item-price">₹89</span><button class="add-btn" onclick="addToCart('Stuffed Kulcha',89)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Paratha (Plain Or Butter)</span><span class="item-right"><span class="item-price">₹40</span><button class="add-btn" onclick="addToCart('Paratha (Plain Or Butter)',40)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Stuffed Paratha</span><span class="item-right"><span class="item-price">₹89</span><button class="add-btn" onclick="addToCart('Stuffed Paratha',89)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Tawa Paratha</span><span class="item-right"><span class="item-price">₹35</span><button class="add-btn" onclick="addToCart('Tawa Paratha',35)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Nan (Plain Or Butter)</span><span class="item-right"><span class="item-price">₹40</span><button class="add-btn" onclick="addToCart('Nan (Plain Or Butter)',40)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Cheese Or Garlic Nan</span><span class="item-right"><span class="item-price">₹99</span><button class="add-btn" onclick="addToCart('Cheese Or Garlic Nan',99)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Stuffed Nan</span><span class="item-right"><span class="item-price">₹89</span><button class="add-btn" onclick="addToCart('Stuffed Nan',89)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Cheese Chilly Nan</span><span class="item-right"><span class="item-price">₹109</span><button class="add-btn" onclick="addToCart('Cheese Chilly Nan',109)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Cheese Garlic Nan</span><span class="item-right"><span class="item-price">₹109</span><button class="add-btn" onclick="addToCart('Cheese Garlic Nan',109)">+</button></span></div>
         </div>
-        <p class="menu-sub-cat">Mocktails</p>
+      </div>
+
+      <!-- FIX MEAL -->
+      <div class="menu-section" id="cat-fixmeal">
+        <h2 class="menu-cat-title"><span class="icon">🍛</span> Fix Meal</h2>
         <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Classic Mint Mojito</span><span class="item-price">₹120</span></div>
-          <div class="menu-item"><span class="item-name">Lemon Mojito</span><span class="item-price">₹120</span></div>
-          <div class="menu-item"><span class="item-name">Blue Lagoon</span><span class="item-price">₹150</span></div>
-          <div class="menu-item"><span class="item-name">Virgin Mojito</span><span class="item-price">₹150</span></div>
-          <div class="menu-item"><span class="item-name">Watermelon Cooler</span><span class="item-price">₹160</span></div>
-          <div class="menu-item"><span class="item-name">Green Apple Mojito</span><span class="item-price">₹170</span></div>
-          <div class="menu-item"><span class="item-name">Strawberry Mojito</span><span class="item-price">₹180</span></div>
-          <div class="menu-item"><span class="item-name">Mango Mojito</span><span class="item-price">₹180</span></div>
-          <div class="menu-item"><span class="item-name">Kiwi Mojito</span><span class="item-price">₹200</span></div>
-          <div class="menu-item"><span class="item-name">Pomegranate Mojito</span><span class="item-price">₹200</span></div>
-          <div class="menu-item"><span class="item-name">Peach Mojito</span><span class="item-price">₹220</span></div>
-          <div class="menu-item"><span class="item-name">Litchi Mojito</span><span class="item-price">₹240</span></div>
-          <div class="menu-item"><span class="item-name">Passion Fruit Mojito</span><span class="item-price">₹260</span></div>
-          <div class="menu-item"><span class="item-name">Rose Mojito</span><span class="item-price">₹260</span></div>
-          <div class="menu-item"><span class="item-name">Dragon Fruit Mojito</span><span class="item-price">₹280</span></div>
-          <div class="menu-item"><span class="item-name">⭐ Sea Cafe Special Mojito <span class="badge signature">Signature</span></span><span class="item-price">₹300</span></div>
+          <div class="menu-item" style="flex-direction:column;align-items:flex-start;gap:4px;padding:14px 12px;">
+            <div style="display:flex;justify-content:space-between;width:100%;align-items:center;">
+              <span class="item-name" style="font-weight:700;">GUJARATI THALI = FIX</span>
+              <span class="item-right"><span class="item-price">₹149</span><button class="add-btn" onclick="addToCart('GUJARATI THALI = FIX',149)">+</button></span>
+            </div>
+            <div class="item-desc">One Veg. Kathol Dal, Rice, Butter Milk, Papad, Four Chapathi</div>
+          </div>
+          <div class="menu-item" style="flex-direction:column;align-items:flex-start;gap:4px;padding:14px 12px;">
+            <div style="display:flex;justify-content:space-between;width:100%;align-items:center;">
+              <span class="item-name" style="font-weight:700;">PUNJABI THALI = FIX</span>
+              <span class="item-right"><span class="item-price">₹219</span><button class="add-btn" onclick="addToCart('PUNJABI THALI = FIX',219)">+</button></span>
+            </div>
+            <div class="item-desc">One Paneer, One Veg., Dal, Rice, Papad Butter Milk, Two Tand. Roti, Ice Cream</div>
+          </div>
+          <div class="menu-item" style="flex-direction:column;align-items:flex-start;gap:4px;padding:14px 12px;">
+            <div style="display:flex;justify-content:space-between;width:100%;align-items:center;">
+              <span class="item-name" style="font-weight:700;">Spl. GUJARATI THALI = FIX</span>
+              <span class="item-right"><span class="item-price">₹179</span><button class="add-btn" onclick="addToCart('Spl. GUJARATI THALI = FIX',179)">+</button></span>
+            </div>
+            <div class="item-desc">Farsan, One Veg. Kathol Dal, Rice, Butter Milk, Papad, Four Chapathi, Ice Cream</div>
+          </div>
+          <div class="menu-item" style="flex-direction:column;align-items:flex-start;gap:4px;padding:14px 12px;">
+            <div style="display:flex;justify-content:space-between;width:100%;align-items:center;">
+              <span class="item-name" style="font-weight:700;">Spl. PUNJABI THALI = FIX</span>
+              <span class="item-right"><span class="item-price">₹249</span><button class="add-btn" onclick="addToCart('Spl. PUNJABI THALI = FIX',249)">+</button></span>
+            </div>
+            <div class="item-desc">Soup, One Paneer, One Veg., Dal, Rice, Papad Butter Milk, Two Tand. Roti, Ice Cream</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DESSERT -->
+      <div class="menu-section" id="cat-dessert">
+        <h2 class="menu-cat-title"><span class="icon">🍨</span> Dessert</h2>
+        <div class="menu-grid">
+          <div class="menu-item" style="flex-direction:column;align-items:flex-start;gap:6px;padding:14px 12px;">
+            <span class="item-name" style="font-weight:700;">Flavored Ice Cream</span>
+            <div class="variant-tags">
+              <span class="variant-tag">Vanilla ₹39</span>
+              <span class="variant-tag">Strawberry ₹39</span>
+            </div>
+            <span class="item-right" style="margin-top:6px"><span class="item-price">₹39</span><button class="add-btn" onclick="addToCart('Flavored Ice Cream',39)">+</button></span>
+          </div>
+          <div class="menu-item"><span class="item-name">Chocolate, Mango</span><span class="item-right"><span class="item-price">₹49</span><button class="add-btn" onclick="addToCart('Chocolate, Mango Ice Cream',49)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Kesar Pista</span><span class="item-right"><span class="item-price">₹55</span><button class="add-btn" onclick="addToCart('Kesar Pista',55)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Butter Sctoch</span><span class="item-right"><span class="item-price">₹55</span><button class="add-btn" onclick="addToCart('Butter Sctoch',55)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">J.K Special Ice Cream</span><span class="item-right"><span class="item-price">₹144</span><button class="add-btn" onclick="addToCart('J.K Special Ice Cream',144)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Gulab Jamoon</span><span class="item-right"><span class="item-price">₹49</span><button class="add-btn" onclick="addToCart('Gulab Jamoon',49)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Milk Shake</span><span class="item-right"><span class="item-price">₹99</span><button class="add-btn" onclick="addToCart('Milk Shake',99)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Milk Shake With Ice Cream</span><span class="item-right"><span class="item-price">₹129</span><button class="add-btn" onclick="addToCart('Milk Shake With Ice Cream',129)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Cold Coffee</span><span class="item-right"><span class="item-price">₹89</span><button class="add-btn" onclick="addToCart('Cold Coffee',89)">+</button></span></div>
+          <div class="menu-item"><span class="item-name">Cold Coffee With Ice Cream</span><span class="item-right"><span class="item-price">₹109</span><button class="add-btn" onclick="addToCart('Cold Coffee With Ice Cream',109)">+</button></span></div>
         </div>
       </div>
 
@@ -1416,8 +1477,36 @@
   </div><!-- /menu-modal-box -->
 </div><!-- /menuModal -->
 
+<!-- ─── CART FLOATING BUTTON ──────────────────────────── -->
+<button class="cart-float-btn" id="cartFloatBtn" onclick="openCartDrawer()">
+  <i class="fas fa-shopping-cart"></i>
+  <span class="cart-badge" id="cartBadge"></span>
+</button>
+
+<!-- ─── CART DRAWER ───────────────────────────────────── -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCartDrawer()"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-drawer-header">
+    <h3><i class="fas fa-shopping-cart" style="margin-right:8px"></i> Your Order</h3>
+    <button class="cart-drawer-close" onclick="closeCartDrawer()"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="cart-drawer-body" id="cartDrawerBody">
+    <!-- Filled by JS -->
+  </div>
+  <div class="cart-drawer-footer" id="cartDrawerFooter" style="display:none;">
+    <div class="cart-total-row">
+      <span class="cart-total-label">Total</span>
+      <span class="cart-total-value" id="cartTotalValue">₹0</span>
+    </div>
+    <button class="cart-whatsapp-btn" onclick="sendWhatsAppOrder()">
+      <i class="fab fa-whatsapp"></i> Order on WhatsApp
+    </button>
+    <button class="cart-clear-btn" onclick="clearCart()">Clear Cart</button>
+  </div>
+</div>
+
 <!-- ─── FLOATING BUTTONS ───────────────────────────────── -->
-<a href="https://wa.me/91XXXXXXXXXX" id="whatsapp-btn" target="_blank" rel="noopener" aria-label="WhatsApp us">
+<a href="https://wa.me/917574033599" id="whatsapp-btn" target="_blank" rel="noopener" aria-label="WhatsApp us">
   <i class="fab fa-whatsapp"></i>
 </a>
 <button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">
@@ -1431,7 +1520,6 @@
     setTimeout(function() {
       const loader = document.getElementById('loader');
       loader.classList.add('hidden');
-      // Remove from DOM after transition
       setTimeout(function() { loader.remove(); }, 700);
     }, 1800);
   });
@@ -1450,20 +1538,21 @@
     menuModal.classList.add('open');
     document.body.style.overflow = 'hidden';
     menuModal.scrollTop = 0;
+    renderCartButtons();
   }
   function closeMenuModal() {
     menuModal.classList.remove('open');
     document.body.style.overflow = '';
   }
-  // Close on clicking outside the modal box
   menuModal.addEventListener('click', function(e) {
     if (e.target === menuModal) closeMenuModal();
   });
-  // Close on Escape key
   document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && menuModal.classList.contains('open')) closeMenuModal();
+    if (e.key === 'Escape') {
+      if (menuModal.classList.contains('open')) closeMenuModal();
+      if (document.getElementById('cartDrawer').classList.contains('open')) closeCartDrawer();
+    }
   });
-  // Scroll to category inside modal
   function menuScrollTo(id) {
     const el = document.getElementById(id);
     if (el) {
@@ -1472,7 +1561,6 @@
       box.scrollTo({ top: offset, behavior: 'smooth' });
     }
   }
-  // Highlight active category nav on scroll inside modal
   const menuSections = menuModal.querySelectorAll('.menu-section');
   const menuNavLinks = menuModal.querySelectorAll('.menu-nav-link');
   const menuBox = menuModal.querySelector('.menu-modal-box');
@@ -1526,8 +1614,6 @@
     if (e.target === this) closeLightbox();
   });
 
-
-
   /* ── Reservation form ── */
   function submitReservation() {
     const name = document.getElementById('res-name').value.trim();
@@ -1540,7 +1626,6 @@
     }
     document.getElementById('formSuccess').classList.add('show');
     setTimeout(() => document.getElementById('formSuccess').classList.remove('show'), 6000);
-    // Reset
     ['res-name','res-phone','res-date','res-time','res-notes'].forEach(id => document.getElementById(id).value = '');
   }
 
@@ -1555,6 +1640,171 @@
       }
     });
   });
+
+  /* ══════════════════════════════════════════════════
+     CART FUNCTIONALITY
+  ══════════════════════════════════════════════════ */
+  const CART_KEY = 'kankeshwar_cart';
+
+  function getCart() {
+    try {
+      return JSON.parse(localStorage.getItem(CART_KEY)) || [];
+    } catch(e) { return []; }
+  }
+  function saveCart(cart) {
+    localStorage.setItem(CART_KEY, JSON.stringify(cart));
+    updateCartBadge();
+    renderCartDrawer();
+    renderCartButtons();
+  }
+
+  function addToCart(name, price) {
+    const cart = getCart();
+    const existing = cart.find(i => i.name === name);
+    if (existing) {
+      existing.qty += 1;
+    } else {
+      cart.push({ name, price, qty: 1 });
+    }
+    saveCart(cart);
+  }
+
+  function removeFromCart(name) {
+    let cart = getCart();
+    const existing = cart.find(i => i.name === name);
+    if (existing) {
+      existing.qty -= 1;
+      if (existing.qty <= 0) {
+        cart = cart.filter(i => i.name !== name);
+      }
+    }
+    saveCart(cart);
+  }
+
+  function clearCart() {
+    localStorage.removeItem(CART_KEY);
+    updateCartBadge();
+    renderCartDrawer();
+    renderCartButtons();
+  }
+
+  function updateCartBadge() {
+    const cart = getCart();
+    const total = cart.reduce((s, i) => s + i.qty, 0);
+    const badge = document.getElementById('cartBadge');
+    badge.textContent = total > 0 ? total : '';
+  }
+
+  function renderCartButtons() {
+    const cart = getCart();
+    document.querySelectorAll('.add-btn').forEach(btn => {
+      const itemName = btn.getAttribute('data-item');
+      // We rely on onclick instead
+    });
+    // Update all add-btn to show qty controls if item in cart
+    document.querySelectorAll('.menu-item').forEach(item => {
+      const addBtn = item.querySelector('.add-btn');
+      if (!addBtn) return;
+      const onclickStr = addBtn.getAttribute('onclick');
+      if (!onclickStr) return;
+      // Extract name from onclick
+      const match = onclickStr.match(/addToCart\('(.+?)',\s*(\d+)\)/);
+      if (!match) return;
+      const name = match[1];
+      const price = parseInt(match[2]);
+      const cartItem = cart.find(i => i.name === name);
+      const itemRight = addBtn.closest('.item-right') || addBtn.parentElement;
+      if (!itemRight) return;
+
+      if (cartItem) {
+        // Replace add-btn with qty controls
+        const existingQty = itemRight.querySelector('.qty-controls');
+        if (existingQty) {
+          existingQty.querySelector('.qty-count').textContent = cartItem.qty;
+          return;
+        }
+        addBtn.style.display = 'none';
+        const qtyDiv = document.createElement('div');
+        qtyDiv.className = 'qty-controls';
+        qtyDiv.innerHTML = '<button class="qty-btn minus" onclick="removeFromCart(\'' + name.replace(/'/g, "\\'") + '\')">−</button>' +
+          '<span class="qty-count">' + cartItem.qty + '</span>' +
+          '<button class="qty-btn" onclick="addToCart(\'' + name.replace(/'/g, "\\'") + '\',' + price + ')">+</button>';
+        itemRight.appendChild(qtyDiv);
+      } else {
+        addBtn.style.display = '';
+        const existingQty = itemRight.querySelector('.qty-controls');
+        if (existingQty) existingQty.remove();
+      }
+    });
+  }
+
+  function renderCartDrawer() {
+    const cart = getCart();
+    const body = document.getElementById('cartDrawerBody');
+    const footer = document.getElementById('cartDrawerFooter');
+
+    if (cart.length === 0) {
+      body.innerHTML = '<div class="cart-empty"><i class="fas fa-shopping-cart"></i><p>Your cart is empty</p><p style="font-size:0.82rem;margin-top:6px">Add items from the menu to get started</p></div>';
+      footer.style.display = 'none';
+      return;
+    }
+
+    let html = '';
+    let grandTotal = 0;
+    cart.forEach(item => {
+      const lineTotal = item.price * item.qty;
+      grandTotal += lineTotal;
+      html += '<div class="cart-item">' +
+        '<div class="cart-item-info">' +
+          '<div class="cart-item-name">' + item.name + '</div>' +
+          '<div class="cart-item-price">₹' + item.price + ' each</div>' +
+        '</div>' +
+        '<div class="cart-item-qty">' +
+          '<button class="qty-btn minus" onclick="removeFromCart(\'' + item.name.replace(/'/g, "\\'") + '\')">−</button>' +
+          '<span class="qty-count">' + item.qty + '</span>' +
+          '<button class="qty-btn" onclick="addToCart(\'' + item.name.replace(/'/g, "\\'") + '\',' + item.price + ')">+</button>' +
+        '</div>' +
+        '<div class="cart-item-total">₹' + lineTotal + '</div>' +
+      '</div>';
+    });
+
+    body.innerHTML = html;
+    footer.style.display = '';
+    document.getElementById('cartTotalValue').textContent = '₹' + grandTotal;
+  }
+
+  function openCartDrawer() {
+    document.getElementById('cartOverlay').classList.add('open');
+    document.getElementById('cartDrawer').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    renderCartDrawer();
+  }
+  function closeCartDrawer() {
+    document.getElementById('cartOverlay').classList.remove('open');
+    document.getElementById('cartDrawer').classList.remove('open');
+    if (!menuModal.classList.contains('open')) {
+      document.body.style.overflow = '';
+    }
+  }
+
+  function sendWhatsAppOrder() {
+    const cart = getCart();
+    if (cart.length === 0) return;
+    let msg = '🍽️ New Order from Kankeshwar Website\n\n';
+    let grandTotal = 0;
+    cart.forEach(item => {
+      const lineTotal = item.price * item.qty;
+      grandTotal += lineTotal;
+      msg += item.qty + 'x ' + item.name + ' — ₹' + lineTotal + '\n';
+    });
+    msg += '\nTotal: ₹' + grandTotal;
+    const url = 'https://wa.me/917574033599?text=' + encodeURIComponent(msg);
+    window.open(url, '_blank');
+  }
+
+  // Initialize cart badge on page load
+  updateCartBadge();
 </script>
+
 </body>
 </html>

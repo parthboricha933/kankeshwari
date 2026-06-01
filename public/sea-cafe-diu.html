@@ -268,48 +268,122 @@
     .specialty-desc { font-size:0.8rem; color:rgba(255,255,255,0.8); margin-top:4px; }
 
     /* ══════════════════════════════════════════════════
-       MENU SECTION
+       MENU MODAL (popup only – not in page flow)
     ══════════════════════════════════════════════════ */
-    #menu {
-      padding:100px 0;
-      background:linear-gradient(135deg, var(--sand) 0%, var(--off-white) 100%);
-      position:relative; overflow:hidden;
+    #menuModal {
+      display:none; position:fixed; inset:0; z-index:10000;
+      background:rgba(0,0,0,0.6); backdrop-filter:blur(6px);
+      justify-content:center; align-items:flex-start;
+      overflow:hidden; padding:24px;
     }
-    #menu::before {
-      content:''; position:absolute; top:-80px; right:-80px;
-      width:300px; height:300px;
-      background:radial-gradient(circle, rgba(74,180,216,0.12) 0%, transparent 70%);
-      border-radius:50%;
+    #menuModal.open { display:flex; }
+    .menu-modal-box {
+      background:var(--off-white); border-radius:20px;
+      max-width:1100px; width:100%; position:relative;
+      box-shadow:0 24px 80px rgba(0,0,0,0.3); margin:24px 0;
+      overflow-y:auto; max-height:calc(100vh - 48px);
     }
-    #menu::after {
-      content:''; position:absolute; bottom:-60px; left:-60px;
-      width:250px; height:250px;
-      background:radial-gradient(circle, rgba(224,123,57,0.1) 0%, transparent 70%);
-      border-radius:50%;
+    .menu-modal-close {
+      position:sticky; top:0; z-index:10;
+      display:flex; align-items:center; justify-content:space-between;
+      background:linear-gradient(135deg, var(--ocean) 0%, var(--ocean-mid) 100%);
+      padding:20px 28px; cursor:default;
+      border-radius:20px 20px 0 0;
     }
-    .menu-header { text-align:center; margin-bottom:60px; }
-    .menu-header .section-subtitle { margin:0 auto; }
-    .menu-divider {
-      display:flex; align-items:center; gap:16px;
-      justify-content:center; margin:20px 0 0;
-    }
-    .menu-divider-line { width:60px; height:1px; background:var(--sand-dark); }
-    .menu-divider i { color:var(--sunset); font-size:1rem; }
-
-    #custom-menu-container {
-      position:relative; z-index:1;
-      min-height:200px;
-      background:var(--white);
-      border-radius:20px;
-      border:2px dashed var(--sand-dark);
-      padding:48px;
+    .menu-modal-close h2 { font-family:var(--font-display); font-size:1.8rem; font-weight:700; color:var(--white); }
+    .menu-modal-close .tagline { font-size:0.8rem; color:rgba(255,255,255,0.7); letter-spacing:0.15em; text-transform:uppercase; }
+    .menu-modal-close-btn {
+      background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3);
+      color:var(--white); font-size:1.2rem; cursor:pointer;
+      width:40px; height:40px; border-radius:50%;
       display:flex; align-items:center; justify-content:center;
-      box-shadow:var(--shadow);
+      transition:var(--transition);
     }
-    .menu-placeholder-inner { text-align:center; }
-    .menu-placeholder-inner i { font-size:2.5rem; color:var(--sand-dark); margin-bottom:16px; }
-    .menu-placeholder-inner h3 { font-family:var(--font-display); font-size:1.5rem; color:var(--text-light); margin-bottom:8px; }
-    .menu-placeholder-inner p { font-size:0.85rem; color:var(--sand-dark); font-weight:500; letter-spacing:0.05em; }
+    .menu-modal-close-btn:hover { background:rgba(255,255,255,0.3); }
+    .menu-veg-badge {
+      display:inline-block; background:#2e7d32; color:#fff;
+      padding:4px 14px; border-radius:50px; font-size:0.7rem;
+      font-weight:600; letter-spacing:0.5px; margin-top:8px;
+    }
+
+    /* Sticky category nav inside modal */
+    .menu-nav-bar {
+      position:sticky; top:76px; z-index:5;
+      background:var(--white); border-bottom:1px solid rgba(10,79,110,0.08);
+      box-shadow:0 2px 8px rgba(0,0,0,0.04);
+      padding:0 28px;
+    }
+    .menu-nav-inner {
+      display:flex; overflow-x:auto; scrollbar-width:none;
+      -ms-overflow-style:none; gap:0;
+    }
+    .menu-nav-inner::-webkit-scrollbar { display:none; }
+    .menu-nav-link {
+      padding:14px 16px; font-size:0.82rem; font-weight:600;
+      color:var(--text-light); text-decoration:none; white-space:nowrap;
+      border-bottom:3px solid transparent; transition:all 0.2s;
+      cursor:pointer;
+    }
+    .menu-nav-link:hover, .menu-nav-link.active {
+      color:var(--ocean); border-bottom-color:var(--ocean);
+    }
+
+    /* Menu content */
+    .menu-body { padding:28px 28px 60px; }
+    .menu-section { margin-bottom:40px; scroll-margin-top:60px; }
+    .menu-cat-title {
+      font-family:var(--font-display); font-size:1.5rem; font-weight:700;
+      color:var(--ocean); margin-bottom:14px; padding-bottom:8px;
+      border-bottom:3px solid var(--ocean-mid);
+      display:flex; align-items:center; gap:10px;
+    }
+    .menu-cat-title .icon { font-size:1.3rem; }
+    .menu-sub-cat {
+      font-weight:700; margin-top:18px; margin-bottom:8px;
+      color:var(--text); font-size:0.95rem;
+      padding-left:12px; border-left:3px solid var(--ocean-light);
+    }
+    .menu-grid {
+      display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:0;
+    }
+    .menu-item {
+      display:flex; justify-content:space-between; align-items:center;
+      border-bottom:1px dashed rgba(10,79,110,0.1);
+      padding:10px 12px; border-radius:6px; transition:background 0.15s;
+    }
+    .menu-item:hover { background:rgba(74,180,216,0.06); }
+    .item-name { font-weight:500; font-size:0.92rem; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    .item-price { font-weight:800; color:var(--coral); white-space:nowrap; font-size:0.95rem; }
+    .badge {
+      display:inline-block; font-size:0.58rem; padding:2px 7px;
+      border-radius:4px; text-transform:uppercase; letter-spacing:0.5px; font-weight:700;
+      color:#fff;
+    }
+    .badge.best-seller { background-color:#2e7d32; }
+    .badge.signature { background-color:#6a1b9a; }
+    .badge.must-try { background-color:var(--sunset); }
+    .variant-tags { display:flex; gap:6px; flex-wrap:wrap; margin-top:4px; }
+    .variant-tag {
+      background:rgba(10,79,110,0.06); color:var(--ocean);
+      padding:3px 12px; border-radius:20px; font-size:0.75rem;
+      font-weight:700; border:1px solid rgba(10,79,110,0.12);
+    }
+    .menu-note {
+      background:#fff8e1; border-left:4px solid #ffa000;
+      padding:10px 14px; margin-top:10px; font-size:0.82rem;
+      color:#5d4037; border-radius:0 6px 6px 0;
+    }
+    .placeholder { color:#bbb; font-style:italic; }
+
+    @media (max-width:600px) {
+      .menu-modal-box { margin:10px 0; border-radius:14px; }
+      .menu-body { padding:16px 16px 40px; }
+      .menu-modal-close { padding:16px 20px; }
+      .menu-modal-close h2 { font-size:1.4rem; }
+      .menu-grid { grid-template-columns:1fr; }
+      .menu-cat-title { font-size:1.2rem; }
+      .menu-nav-link { padding:12px 12px; font-size:0.78rem; }
+    }
 
     /* ══════════════════════════════════════════════════
        GALLERY
@@ -549,7 +623,7 @@
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
       <li><a href="#specialties">Specialties</a></li>
-      <li><a href="#menu">Menu</a></li>
+      <li><a href="javascript:void(0)" onclick="openMenuModal()">Menu</a></li>
       <li><a href="#gallery">Gallery</a></li>
       <li><a href="#contact">Contact</a></li>
       <li><a href="#reservation" class="nav-reserve">Reserve Table</a></li>
@@ -565,7 +639,7 @@
   <button class="mobile-menu-close" id="mobileClose"><i class="fas fa-times"></i></button>
   <a href="#about" onclick="closeMobile()">About</a>
   <a href="#specialties" onclick="closeMobile()">Specialties</a>
-  <a href="#menu" onclick="closeMobile()">Menu</a>
+  <a href="javascript:void(0)" onclick="closeMobile();openMenuModal()">Menu</a>
   <a href="#gallery" onclick="closeMobile()">Gallery</a>
   <a href="#contact" onclick="closeMobile()">Contact</a>
   <a href="#reservation" onclick="closeMobile()" style="color:var(--sunset)">Reserve a Table</a>
@@ -579,7 +653,7 @@
     <h1 class="hero-title">Sea Cafe &amp;<br><em>Food Destination</em></h1>
     <p class="hero-tagline">Fresh Flavors, Coastal Vibes, Unforgettable Memories.</p>
     <div class="hero-cta">
-      <a href="#menu" class="btn btn-primary"><i class="fas fa-utensils"></i> View Menu</a>
+      <a href="javascript:void(0)" class="btn btn-primary" onclick="openMenuModal()"><i class="fas fa-utensils"></i> View Menu</a>
       <a href="#reservation" class="btn btn-outline"><i class="fas fa-calendar-alt"></i> Reserve a Table</a>
     </div>
   </div>
@@ -703,38 +777,7 @@
   </div>
 </section>
 
-<!-- ─── MENU ──────────────────────────────────────────── -->
-<section id="menu">
-  <div class="container">
-    <div class="menu-header reveal">
-      <span class="section-tag"><i class="fas fa-book-open"></i> &nbsp;Explore</span>
-      <h2 class="section-title">Our Full Menu</h2>
-      <p class="section-subtitle">Handcrafted dishes made from the freshest local ingredients, served with warmth and love.</p>
-      <div class="menu-divider">
-        <div class="menu-divider-line"></div>
-        <i class="fas fa-anchor"></i>
-        <div class="menu-divider-line"></div>
-      </div>
-    </div>
-
-    <!-- ════════════════════════════════════════════════════
-         YOUR EXISTING MENU CODE GOES HERE
-         Replace the placeholder content below with your
-         custom menu component or HTML code.
-    ════════════════════════════════════════════════════ -->
-    <div id="custom-menu-container">
-      <div class="menu-placeholder-inner">
-        <i class="fas fa-utensils"></i>
-        <h3>Menu Coming Soon</h3>
-        <p><!-- PASTE YOUR EXISTING MENU CODE HERE --></p>
-      </div>
-    </div>
-    <!-- ════════════════════════════════════════════════════
-         END OF MENU INTEGRATION AREA
-    ════════════════════════════════════════════════════ -->
-
-  </div>
-</section>
+<!-- Menu section removed from page flow — now opens as a popup modal -->
 
 <!-- ─── GALLERY ────────────────────────────────────────── -->
 <section id="gallery">
@@ -963,7 +1006,7 @@
         <ul>
           <li><a href="#about">About Us</a></li>
           <li><a href="#specialties">Specialties</a></li>
-          <li><a href="#menu">Our Menu</a></li>
+          <li><a href="javascript:void(0)" onclick="openMenuModal()">Our Menu</a></li>
           <li><a href="#gallery">Gallery</a></li>
 
           <li><a href="#reservation">Reserve a Table</a></li>
@@ -973,12 +1016,12 @@
       <div class="footer-col">
         <h4>Cuisines</h4>
         <ul>
-          <li><a href="#menu">Seafood Delicacies</a></li>
-          <li><a href="#menu">Indian Cuisine</a></li>
-          <li><a href="#menu">Chinese Cuisine</a></li>
-          <li><a href="#menu">Fast Food</a></li>
-          <li><a href="#menu">Beverages &amp; Mocktails</a></li>
-          <li><a href="#menu">Desserts</a></li>
+          <li><a href="javascript:void(0)" onclick="openMenuModal()">Seafood Delicacies</a></li>
+          <li><a href="javascript:void(0)" onclick="openMenuModal()">Indian Cuisine</a></li>
+          <li><a href="javascript:void(0)" onclick="openMenuModal()">Chinese Cuisine</a></li>
+          <li><a href="javascript:void(0)" onclick="openMenuModal()">Fast Food</a></li>
+          <li><a href="javascript:void(0)" onclick="openMenuModal()">Beverages &amp; Mocktails</a></li>
+          <li><a href="javascript:void(0)" onclick="openMenuModal()">Desserts</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -1001,6 +1044,287 @@
   </div>
 </footer>
 
+<!-- ─── MENU MODAL ────────────────────────────────────────── -->
+<div id="menuModal">
+  <div class="menu-modal-box">
+    <!-- Header -->
+    <div class="menu-modal-close">
+      <div>
+        <h2>Sea Cafe Menu</h2>
+        <div class="tagline">The Flavors of Diu</div>
+        <span class="menu-veg-badge"><i class="fas fa-leaf" style="margin-right:4px"></i> 100% Pure Vegetarian</span>
+      </div>
+      <button class="menu-modal-close-btn" onclick="closeMenuModal()" aria-label="Close menu"><i class="fas fa-times"></i></button>
+    </div>
+    <!-- Category nav -->
+    <div class="menu-nav-bar">
+      <div class="menu-nav-inner">
+        <a class="menu-nav-link" onclick="menuScrollTo('breakfast')">Breakfast</a>
+        <a class="menu-nav-link" onclick="menuScrollTo('mains')">Main Course</a>
+        <a class="menu-nav-link" onclick="menuScrollTo('breads')">Breads</a>
+        <a class="menu-nav-link" onclick="menuScrollTo('sides')">Sides</a>
+        <a class="menu-nav-link" onclick="menuScrollTo('rice')">Rice</a>
+        <a class="menu-nav-link" onclick="menuScrollTo('south-indian')">South Indian</a>
+        <a class="menu-nav-link" onclick="menuScrollTo('chinese')">Chinese</a>
+        <a class="menu-nav-link" onclick="menuScrollTo('pizza')">Pizza</a>
+        <a class="menu-nav-link" onclick="menuScrollTo('snacks')">Snacks</a>
+        <a class="menu-nav-link" onclick="menuScrollTo('maggi-sandwich')">Maggi & Sandwich</a>
+        <a class="menu-nav-link" onclick="menuScrollTo('beverages')">Beverages</a>
+      </div>
+    </div>
+    <!-- Menu body -->
+    <div class="menu-body">
+
+      <!-- BREAKFAST -->
+      <div class="menu-section" id="breakfast">
+        <h2 class="menu-cat-title"><span class="icon">🌅</span> Breakfast & Pav Bhaji</h2>
+        <p class="menu-sub-cat">Breakfast</p>
+        <div class="menu-grid">
+          <div class="menu-item"><span class="item-name">Aloo Poha</span><span class="item-price">₹80</span></div>
+          <div class="menu-item"><span class="item-name">Aloo Paratha</span><span class="item-price">₹150</span></div>
+        </div>
+        <p class="menu-sub-cat">Pav Bhaji</p>
+        <div class="menu-grid">
+          <div class="menu-item"><span class="item-name">Pav Bhaji <span class="badge must-try">Must Try</span></span><span class="item-price">₹150</span></div>
+          <div class="menu-item"><span class="item-name">Chole Bhatura <span class="badge must-try">Must Try</span></span><span class="item-price">₹150</span></div>
+        </div>
+      </div>
+
+      <!-- MAIN COURSE -->
+      <div class="menu-section" id="mains">
+        <h2 class="menu-cat-title"><span class="icon">🍛</span> Main Course Specials</h2>
+        <p class="menu-sub-cat">Veg Special</p>
+        <div class="menu-grid">
+          <div class="menu-item"><span class="item-name">Chana Masala</span><span class="item-price">₹200</span></div>
+          <div class="menu-item"><span class="item-name">Aloo Mutter</span><span class="item-price">₹200</span></div>
+        </div>
+        <p class="menu-sub-cat">Paneer Special</p>
+        <div class="menu-grid">
+          <div class="menu-item"><span class="item-name">Palak Paneer</span><span class="item-price">₹250</span></div>
+        </div>
+        <p class="menu-sub-cat">Cheese Special</p>
+        <div class="menu-grid">
+          <div class="menu-item"><span class="item-name">Cheese Masala</span><span class="item-price">₹350</span></div>
+        </div>
+        <p class="menu-sub-cat">Kaju Special</p>
+        <div class="menu-grid">
+          <div class="menu-item"><span class="item-name">Kaju Curry</span><span class="item-price">₹350</span></div>
+        </div>
+        <p class="menu-sub-cat">Dal Special</p>
+        <div class="menu-grid">
+          <div class="menu-item"><span class="item-name">Dal Fry</span><span class="item-price">₹120</span></div>
+        </div>
+      </div>
+
+      <!-- BREADS -->
+      <div class="menu-section" id="breads">
+        <h2 class="menu-cat-title"><span class="icon">🫓</span> Indian Breads</h2>
+        <div class="menu-grid">
+          <div class="menu-item"><span class="item-name">Chapati</span><span class="item-price">₹20</span></div>
+          <div class="menu-item"><span class="item-name">Tandoori Roti</span><span class="item-price">₹30</span></div>
+          <div class="menu-item"><span class="item-name">Butter Tandoori Roti</span><span class="item-price">₹40</span></div>
+          <div class="menu-item"><span class="item-name">Missi Roti</span><span class="item-price">₹40</span></div>
+          <div class="menu-item"><span class="item-name">Plain Naan</span><span class="item-price">₹50</span></div>
+          <div class="menu-item"><span class="item-name">Butter Naan</span><span class="item-price">₹60</span></div>
+          <div class="menu-item"><span class="item-name">Garlic Naan</span><span class="item-price">₹70</span></div>
+          <div class="menu-item"><span class="item-name">Cheese Naan</span><span class="item-price">₹90</span></div>
+        </div>
+      </div>
+
+      <!-- SIDES -->
+      <div class="menu-section" id="sides">
+        <h2 class="menu-cat-title"><span class="icon">🥗</span> Khane Ke Sath (Sides)</h2>
+        <div class="menu-grid">
+          <div class="menu-item"><span class="item-name">Plain Buttermilk</span><span class="item-price">₹50</span></div>
+          <div class="menu-item"><span class="item-name">Masala Buttermilk</span><span class="item-price">₹70</span></div>
+          <div class="menu-item"><span class="item-name">Green Salad</span><span class="item-price">₹80</span></div>
+          <div class="menu-item"><span class="item-name">Russian Salad</span><span class="item-price">₹100</span></div>
+          <div class="menu-item"><span class="item-name">Papad (Plain)</span><span class="item-price">₹30</span></div>
+          <div class="menu-item"><span class="item-name">Papad (Fried)</span><span class="item-price">₹40</span></div>
+          <div class="menu-item"><span class="item-name">Raita</span><span class="item-price">₹60</span></div>
+        </div>
+      </div>
+
+      <!-- RICE -->
+      <div class="menu-section" id="rice">
+        <h2 class="menu-cat-title"><span class="icon">🍚</span> Rice</h2>
+        <p class="menu-sub-cat">Indian Rice</p>
+        <div class="menu-grid">
+          <div class="menu-item"><span class="item-name">Steam Rice</span><span class="item-price">₹100</span></div>
+          <div class="menu-item"><span class="item-name">Jeera Rice</span><span class="item-price">₹120</span></div>
+          <div class="menu-item"><span class="item-name">Veg Pulao</span><span class="item-price">₹180</span></div>
+          <div class="menu-item"><span class="item-name">Paneer Pulao <span class="badge must-try">Must Try</span></span><span class="item-price">₹200</span></div>
+        </div>
+        <p class="menu-sub-cat">Chinese Rice</p>
+        <div class="menu-grid">
+          <div class="menu-item"><span class="item-name">Veg Fried Rice</span><span class="item-price">₹160</span></div>
+        </div>
+      </div>
+
+      <!-- SOUTH INDIAN -->
+      <div class="menu-section" id="south-indian">
+        <h2 class="menu-cat-title"><span class="icon">🫓</span> South Indian</h2>
+        <div class="menu-grid">
+          <div class="menu-item" style="flex-direction:column;align-items:flex-start;gap:6px;padding:14px 12px;">
+            <span class="item-name" style="font-weight:700;">Plain Dosa</span>
+            <div class="variant-tags">
+              <span class="variant-tag">Plain ₹120</span>
+              <span class="variant-tag">Butter ₹150</span>
+              <span class="variant-tag">Cheese ₹180</span>
+            </div>
+          </div>
+          <div class="menu-item" style="flex-direction:column;align-items:flex-start;gap:6px;padding:14px 12px;">
+            <span class="item-name" style="font-weight:700;">Masala Dosa</span>
+            <div class="variant-tags">
+              <span class="variant-tag">Plain ₹140</span>
+              <span class="variant-tag">Butter ₹170</span>
+              <span class="variant-tag">Cheese ₹200</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHINESE -->
+      <div class="menu-section" id="chinese">
+        <h2 class="menu-cat-title"><span class="icon">🥡</span> Chinese</h2>
+        <p class="menu-sub-cat">Noodles</p>
+        <div class="menu-grid">
+          <div class="menu-item"><span class="item-name">Hakka Noodles</span><span class="item-price">₹180</span></div>
+        </div>
+        <p class="menu-sub-cat">Soup</p>
+        <div class="menu-grid">
+          <div class="menu-item"><span class="item-name">Manchow Soup</span><span class="item-price">₹120</span></div>
+          <div class="menu-item"><span class="item-name">Tomato Soup</span><span class="item-price">₹120</span></div>
+          <div class="menu-item"><span class="item-name">Sweet Corn Soup</span><span class="item-price">₹120</span></div>
+          <div class="menu-item"><span class="item-name">Hot & Sour Soup</span><span class="item-price">₹120</span></div>
+          <div class="menu-item"><span class="item-name">Veg Clear Soup</span><span class="item-price">₹120</span></div>
+        </div>
+        <p class="menu-sub-cat">Chinese Special</p>
+        <div class="menu-grid">
+          <div class="menu-item"><span class="item-name">Veg Manchurian Dry</span><span class="item-price">₹160</span></div>
+          <div class="menu-item"><span class="item-name">Veg Manchurian Gravy</span><span class="item-price">₹180</span></div>
+          <div class="menu-item"><span class="item-name">Chilli Paneer Dry</span><span class="item-price">₹220</span></div>
+          <div class="menu-item"><span class="item-name">Chilli Paneer Gravy</span><span class="item-price">₹240</span></div>
+          <div class="menu-item"><span class="item-name">Spring Roll (6 pcs)</span><span class="item-price">₹280</span></div>
+        </div>
+      </div>
+
+      <!-- PIZZA -->
+      <div class="menu-section" id="pizza">
+        <h2 class="menu-cat-title"><span class="icon">🍕</span> Pizza</h2>
+        <p class="menu-sub-cat">Premium Pizza</p>
+        <div class="menu-grid">
+          <div class="menu-item"><span class="item-name">Double Cheese Margherita</span><span class="item-price">₹350</span></div>
+        </div>
+        <p class="menu-sub-cat">Classic Pizza</p>
+        <div class="menu-grid">
+          <div class="menu-item"><span class="item-name">Margherita Pizza</span><span class="item-price">₹220</span></div>
+        </div>
+        <p class="menu-sub-cat">Add-ons</p>
+        <div class="menu-grid">
+          <div class="menu-item"><span class="item-name">Extra Tomatoes</span><span class="item-price">₹20</span></div>
+          <div class="menu-item"><span class="item-name">Extra Cheese</span><span class="item-price">₹30</span></div>
+          <div class="menu-item"><span class="item-name">Extra Paneer</span><span class="item-price">₹20</span></div>
+        </div>
+      </div>
+
+      <!-- SNACKS -->
+      <div class="menu-section" id="snacks">
+        <h2 class="menu-cat-title"><span class="icon">🍟</span> Fries, Momos & Burgers</h2>
+        <p class="menu-sub-cat">Fries</p>
+        <div class="menu-grid">
+          <div class="menu-item"><span class="item-name">French Fries</span><span class="item-price">₹120</span></div>
+          <div class="menu-item"><span class="item-name">Peri Peri Fries</span><span class="item-price">₹140</span></div>
+          <div class="menu-item"><span class="item-name">Cheese Fries</span><span class="item-price">₹150</span></div>
+          <div class="menu-item"><span class="item-name">Cheese Chilli Fries</span><span class="item-price">₹180</span></div>
+        </div>
+        <p class="menu-sub-cat">Momos</p>
+        <div class="menu-grid">
+          <div class="menu-item"><span class="item-name">Steam Momos</span><span class="item-price">₹120</span></div>
+          <div class="menu-item"><span class="item-name">Fried Momos</span><span class="item-price">₹120</span></div>
+        </div>
+        <p class="menu-sub-cat">Burger</p>
+        <div class="menu-grid">
+          <div class="menu-item"><span class="item-name">Veg Burger</span><span class="item-price">₹120</span></div>
+          <div class="menu-item"><span class="item-name">Veg Cheese Burger</span><span class="item-price">₹140</span></div>
+          <div class="menu-item"><span class="item-name">Maharaja Burger</span><span class="item-price">₹180</span></div>
+        </div>
+      </div>
+
+      <!-- MAGGI & SANDWICH -->
+      <div class="menu-section" id="maggi-sandwich">
+        <h2 class="menu-cat-title"><span class="icon">🥪</span> Maggi & Sandwiches</h2>
+        <p class="menu-sub-cat">Maggi</p>
+        <div class="menu-grid">
+          <div class="menu-item"><span class="item-name">Masala Maggi</span><span class="item-price">₹80</span></div>
+          <div class="menu-item"><span class="item-name">Butter Masala Maggi <span class="badge best-seller">Best Seller</span></span><span class="item-price">₹100</span></div>
+        </div>
+        <p class="menu-sub-cat">3 Layered Sandwich</p>
+        <div class="menu-grid">
+          <div class="menu-item"><span class="item-name">Bread Butter Jam Grilled</span><span class="item-price">₹70</span></div>
+          <div class="menu-item"><span class="item-name">Hulk Sandwich</span><span class="item-price">₹300</span></div>
+        </div>
+        <p class="menu-sub-cat">Garlic Bread</p>
+        <div class="menu-grid">
+          <div class="menu-item"><span class="item-name">Garlic Bread</span><span class="item-price">₹120</span></div>
+          <div class="menu-item"><span class="item-name">Garlic Bread Stick with Cheese Dip</span><span class="item-price">₹250</span></div>
+        </div>
+      </div>
+
+      <!-- BEVERAGES -->
+      <div class="menu-section" id="beverages">
+        <h2 class="menu-cat-title"><span class="icon">🥤</span> Beverages</h2>
+        <p class="menu-sub-cat">Fresh Juice</p>
+        <div class="menu-grid">
+          <div class="menu-item"><span class="item-name">Pineapple Juice</span><span class="item-price">₹120</span></div>
+        </div>
+        <p class="menu-sub-cat">Jamu Shots</p>
+        <div class="menu-grid">
+          <div class="menu-item"><span class="item-name">Half</span><span class="item-price">₹100</span></div>
+          <div class="menu-item"><span class="item-name">Full</span><span class="item-price">₹180</span></div>
+        </div>
+        <p class="menu-sub-cat">Milkshake</p>
+        <div class="menu-grid">
+          <div class="menu-item"><span class="item-name">Chocolate Shake</span><span class="item-price">₹120</span></div>
+          <div class="menu-item"><span class="item-name">Vanilla Shake</span><span class="item-price">₹120</span></div>
+          <div class="menu-item"><span class="item-name">Strawberry Shake</span><span class="item-price">₹130</span></div>
+          <div class="menu-item"><span class="item-name">Mango Shake</span><span class="item-price">₹150</span></div>
+          <div class="menu-item"><span class="item-name">Butterscotch Shake</span><span class="item-price">₹150</span></div>
+          <div class="menu-item"><span class="item-name">Oreo Shake</span><span class="item-price">₹160</span></div>
+          <div class="menu-item"><span class="item-name">Cold Coffee</span><span class="item-price">₹160</span></div>
+          <div class="menu-item"><span class="item-name">KitKat Shake</span><span class="item-price">₹180</span></div>
+          <div class="menu-item"><span class="item-name">Blue Lagoon Shake</span><span class="item-price">₹180</span></div>
+          <div class="menu-item"><span class="item-name">Pista Shake</span><span class="item-price">₹200</span></div>
+          <div class="menu-item"><span class="item-name">Red Velvet Shake</span><span class="item-price">₹200</span></div>
+          <div class="menu-item"><span class="item-name">Nutella Shake</span><span class="item-price">₹220</span></div>
+          <div class="menu-item"><span class="item-name">Dark Chocolate Shake</span><span class="item-price">₹220</span></div>
+          <div class="menu-item"><span class="item-name">Kiwi Shake</span><span class="item-price">₹220</span></div>
+        </div>
+        <p class="menu-sub-cat">Mocktails</p>
+        <div class="menu-grid">
+          <div class="menu-item"><span class="item-name">Classic Mint Mojito</span><span class="item-price">₹120</span></div>
+          <div class="menu-item"><span class="item-name">Lemon Mojito</span><span class="item-price">₹120</span></div>
+          <div class="menu-item"><span class="item-name">Blue Lagoon</span><span class="item-price">₹150</span></div>
+          <div class="menu-item"><span class="item-name">Virgin Mojito</span><span class="item-price">₹150</span></div>
+          <div class="menu-item"><span class="item-name">Watermelon Cooler</span><span class="item-price">₹160</span></div>
+          <div class="menu-item"><span class="item-name">Green Apple Mojito</span><span class="item-price">₹170</span></div>
+          <div class="menu-item"><span class="item-name">Strawberry Mojito</span><span class="item-price">₹180</span></div>
+          <div class="menu-item"><span class="item-name">Mango Mojito</span><span class="item-price">₹180</span></div>
+          <div class="menu-item"><span class="item-name">Kiwi Mojito</span><span class="item-price">₹200</span></div>
+          <div class="menu-item"><span class="item-name">Pomegranate Mojito</span><span class="item-price">₹200</span></div>
+          <div class="menu-item"><span class="item-name">Peach Mojito</span><span class="item-price">₹220</span></div>
+          <div class="menu-item"><span class="item-name">Litchi Mojito</span><span class="item-price">₹240</span></div>
+          <div class="menu-item"><span class="item-name">Passion Fruit Mojito</span><span class="item-price">₹260</span></div>
+          <div class="menu-item"><span class="item-name">Rose Mojito</span><span class="item-price">₹260</span></div>
+          <div class="menu-item"><span class="item-name">Dragon Fruit Mojito</span><span class="item-price">₹280</span></div>
+          <div class="menu-item"><span class="item-name">⭐ Sea Cafe Special Mojito <span class="badge signature">Signature</span></span><span class="item-price">₹300</span></div>
+        </div>
+      </div>
+
+    </div><!-- /menu-body -->
+  </div><!-- /menu-modal-box -->
+</div><!-- /menuModal -->
+
 <!-- ─── FLOATING BUTTONS ───────────────────────────────── -->
 <a href="https://wa.me/91XXXXXXXXXX" id="whatsapp-btn" target="_blank" rel="noopener" aria-label="WhatsApp us">
   <i class="fab fa-whatsapp"></i>
@@ -1017,6 +1341,52 @@
     if (window.scrollY > 60) navbar.classList.add('scrolled');
     else navbar.classList.remove('scrolled');
     document.getElementById('scroll-top').classList.toggle('visible', window.scrollY > 400);
+  });
+
+  /* ── Menu modal ── */
+  const menuModal = document.getElementById('menuModal');
+  function openMenuModal() {
+    menuModal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    menuModal.scrollTop = 0;
+  }
+  function closeMenuModal() {
+    menuModal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  // Close on clicking outside the modal box
+  menuModal.addEventListener('click', function(e) {
+    if (e.target === menuModal) closeMenuModal();
+  });
+  // Close on Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && menuModal.classList.contains('open')) closeMenuModal();
+  });
+  // Scroll to category inside modal
+  function menuScrollTo(id) {
+    const el = document.getElementById(id);
+    if (el) {
+      const box = menuModal.querySelector('.menu-modal-box');
+      const offset = el.offsetTop - box.offsetTop - 120;
+      box.scrollTo({ top: offset, behavior: 'smooth' });
+    }
+  }
+  // Highlight active category nav on scroll inside modal
+  const menuSections = menuModal.querySelectorAll('.menu-section');
+  const menuNavLinks = menuModal.querySelectorAll('.menu-nav-link');
+  const menuBox = menuModal.querySelector('.menu-modal-box');
+  menuBox.addEventListener('scroll', () => {
+    let current = '';
+    menuSections.forEach(sec => {
+      const top = sec.offsetTop - menuBox.offsetTop - 120;
+      if (menuBox.scrollTop >= top) current = sec.getAttribute('id');
+    });
+    menuNavLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('onclick') && link.getAttribute('onclick').includes(current)) {
+        link.classList.add('active');
+      }
+    });
   });
 
   /* ── Mobile menu ── */

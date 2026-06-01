@@ -352,33 +352,7 @@
       color:var(--white); cursor:pointer; background:none; border:none;
     }
 
-    /* ══════════════════════════════════════════════════
-       WHY CHOOSE US
-    ══════════════════════════════════════════════════ */
-    #why { padding:100px 0; background:var(--off-white); }
-    .why-header { text-align:center; margin-bottom:64px; }
-    .why-header .section-subtitle { margin:0 auto; }
-    .why-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
-    .why-card {
-      background:var(--white); border-radius:16px; padding:36px 28px;
-      border:1px solid rgba(10,79,110,0.08); transition:var(--transition);
-      position:relative; overflow:hidden;
-    }
-    .why-card::before {
-      content:''; position:absolute; top:0; left:0; right:0; height:3px;
-      background:linear-gradient(90deg,var(--ocean-mid),var(--ocean-light));
-      transform:scaleX(0); transform-origin:left; transition:var(--transition);
-    }
-    .why-card:hover { transform:translateY(-6px); box-shadow:var(--shadow); }
-    .why-card:hover::before { transform:scaleX(1); }
-    .why-icon {
-      width:56px; height:56px; border-radius:14px;
-      background:linear-gradient(135deg, var(--ocean-light), var(--ocean));
-      display:flex; align-items:center; justify-content:center;
-      font-size:1.4rem; color:var(--white); margin-bottom:20px;
-    }
-    .why-card h3 { font-family:var(--font-display); font-size:1.25rem; color:var(--ocean); margin-bottom:10px; font-weight:600; }
-    .why-card p { font-size:0.88rem; color:var(--text-light); line-height:1.7; }
+
 
 
 
@@ -536,7 +510,7 @@
     ══════════════════════════════════════════════════ */
     @media (max-width:1024px) {
       .specialties-grid { grid-template-columns:repeat(2,1fr); }
-      .why-grid { grid-template-columns:repeat(2,1fr); }
+
       .footer-grid { grid-template-columns:1fr 1fr; gap:36px; }
 
     }
@@ -547,7 +521,7 @@
       .about-img-accent { width:140px; height:140px; right:-12px; }
       .about-badge-float { left:12px; }
       .specialties-grid { grid-template-columns:1fr; }
-      .why-grid { grid-template-columns:1fr; }
+
       .gallery-masonry { columns:2; }
       .reservation-inner { grid-template-columns:1fr; }
       .contact-grid { grid-template-columns:1fr; }
@@ -816,49 +790,6 @@
   <button id="lightbox-close" onclick="closeLightbox()"><i class="fas fa-times"></i></button>
   <img id="lightbox-img" src="" alt="Gallery image"/>
 </div>
-
-<!-- ─── WHY CHOOSE US ──────────────────────────────────── -->
-<section id="why">
-  <div class="container">
-    <div class="why-header reveal">
-      <span class="section-tag"><i class="fas fa-heart"></i> &nbsp;Our Promise</span>
-      <h2 class="section-title">Why Guests Love Sea Cafe</h2>
-      <p class="section-subtitle">Every visit is crafted to delight — from the first sip to the last bite.</p>
-    </div>
-    <div class="why-grid">
-      <div class="why-card reveal">
-        <div class="why-icon"><i class="fas fa-leaf"></i></div>
-        <h3>Fresh Ingredients</h3>
-        <p>We source only the freshest produce, straight from local farms and daily seafood markets to ensure every dish is vibrant and nutritious.</p>
-      </div>
-      <div class="why-card reveal">
-        <div class="why-icon"><i class="fas fa-shield-alt"></i></div>
-        <h3>Hygienic Kitchen</h3>
-        <p>Our open-concept kitchen follows the highest hygiene standards. Cleanliness is our culture — from the prep table to your plate.</p>
-      </div>
-      <div class="why-card reveal">
-        <div class="why-icon" style="background:linear-gradient(135deg,var(--sunset-warm),var(--sunset))"><i class="fas fa-umbrella-beach"></i></div>
-        <h3>Beachside Ambience</h3>
-        <p>Dine with the sound of waves and the scent of the sea breeze. Our outdoor and semi-alfresco seating creates a truly magical atmosphere.</p>
-      </div>
-      <div class="why-card reveal">
-        <div class="why-icon" style="background:linear-gradient(135deg,var(--sunset-warm),var(--coral))"><i class="fas fa-users"></i></div>
-        <h3>Family Friendly</h3>
-        <p>A welcoming space for everyone — from toddlers to grandparents. Our menu, seating, and staff are all designed with families in mind.</p>
-      </div>
-      <div class="why-card reveal">
-        <div class="why-icon"><i class="fas fa-bolt"></i></div>
-        <h3>Fast Service</h3>
-        <p>We respect your time. Our trained team ensures prompt, cheerful service so your dining experience is seamless and enjoyable.</p>
-      </div>
-      <div class="why-card reveal">
-        <div class="why-icon" style="background:linear-gradient(135deg,#e8b86d,var(--sunset))"><i class="fas fa-medal"></i></div>
-        <h3>Quality Food</h3>
-        <p>From the spice blend to the garnish, every element is carefully considered. We never compromise on taste, quality, or presentation.</p>
-      </div>
-    </div>
-  </div>
-</section>
 
 
 

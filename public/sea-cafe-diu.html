@@ -1223,7 +1223,7 @@
     </div>
     <div class="footer-bottom">
       <p>&copy; 2025 Bavarchi - The Indian Cuisine Restaurant, Diu. All rights reserved.</p>
-      <p>Designed with <i class="fas fa-heart" style="color:var(--sunset)"></i> for the love of good food &amp; pure vegetarian living</p>
+      <p>Designed with <i class="fas fa-heart" style="color:var(--sunset)"></i> for the love of good food &amp; pure vegetarian living · <a href="/admin" style="font-size:0.75rem;opacity:0.4;">Admin</a></p>
     </div>
   </div>
 </footer>
@@ -1594,11 +1594,26 @@
     });
   }
 
+  // Preload menu from API on page load
+  (function preloadMenu() {
+    fetch('/api/menu')
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (data && data.length > 0) {
+          renderMenuFromAPI(data);
+          menuDataLoaded = true;
+        }
+      })
+      .catch(function(err) {
+        console.warn('Failed to preload menu from API, will use fallback:', err);
+      });
+  })();
+
   function openMenuModal() {
     menuModal.classList.add('open');
     document.body.style.overflow = 'hidden';
     menuModal.scrollTop = 0;
-    // Fetch menu from API if not already loaded
+    // Try to fetch menu from API if not already loaded
     if (!menuDataLoaded && !menuDataLoading) {
       menuDataLoading = true;
       fetch('/api/menu')

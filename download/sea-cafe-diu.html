@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Bavarchi - The Indian Cuisine Restaurant, Diu – Fresh Flavors, Coastal Vibes, Unforgettable Memories. Seafood, Indian, Chinese, Fast Food & more at Diu's finest beachside restaurant."/>
-  <meta name="keywords" content="Bavarchi Diu, restaurant Diu, seafood Diu, beachside dining Diu, best restaurant Diu"/>
+  <meta name="description" content="Bavarchi - The Indian Cuisine Restaurant, Diu – 100% Pure Vegetarian. Indian, Chinese, Paneer, Tandoor, Thalis & more at Diu's finest vegetarian restaurant."/>
+  <meta name="keywords" content="Bavarchi Diu, pure veg restaurant Diu, vegetarian restaurant Diu, best veg restaurant Diu, Indian cuisine Diu"/>
   <title>Bavarchi - The Indian Cuisine Restaurant - Diu</title>
 
   <!-- Google Fonts -->
@@ -50,6 +50,29 @@
     .splash-dots span:nth-child(2) { animation-delay:0.2s; }
     .splash-dots span:nth-child(3) { animation-delay:0.4s; }
     @keyframes splashDot { 0%,100%{opacity:0.3;transform:translateY(0);} 50%{opacity:1;transform:translateY(-6px);} }
+
+    /* ─── Pure Veg Symbol ─────────────────────────────── */
+    .veg-symbol {
+      display:inline-flex; align-items:center; justify-content:center;
+      width:22px; height:22px; border:2px solid #2e7d32; border-radius:4px;
+      background:transparent; position:relative; flex-shrink:0;
+    }
+    .veg-symbol::after {
+      content:''; width:10px; height:10px; border-radius:50%;
+      background:#2e7d32; position:absolute;
+    }
+    .veg-symbol.white { border-color:#4caf50; }
+    .veg-symbol.white::after { background:#4caf50; }
+    .veg-badge {
+      display:inline-flex; align-items:center; gap:6px;
+      background:rgba(46,125,50,0.1); border:1px solid rgba(46,125,50,0.25);
+      border-radius:50px; padding:6px 16px; font-size:0.78rem;
+      font-weight:700; color:#2e7d32; letter-spacing:0.06em;
+    }
+    .veg-badge.hero-veg {
+      background:rgba(255,255,255,0.12); border:1px solid rgba(76,175,80,0.4);
+      color:#81c784; backdrop-filter:blur(8px);
+    }
 
     /* ─── CSS Variables ──────────────────────────────── */
     :root {
@@ -763,9 +786,10 @@
 <!-- ─── LOADING SPLASH ──────────────────────────────────── -->
 <div id="splash-loader">
   <div class="splash-content">
-    <div class="splash-icon"><i class="fas fa-om"></i></div>
+    <div class="splash-icon"><i class="fas fa-seedling"></i></div>
     <h1 class="splash-title">Bavarchi</h1>
     <p class="splash-sub">The Indian Cuisine Restaurant · Diu</p>
+    <p class="splash-sub" style="margin-top:4px;color:#4caf50;font-weight:600;">100% Pure Vegetarian</p>
     <div class="splash-waves">
       <svg viewBox="0 0 120 20" preserveAspectRatio="none"><path d="M0,10 C20,18 40,2 60,10 C80,18 100,2 120,10" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"><animate attributeName="d" dur="3s" repeatCount="indefinite" values="M0,10 C20,18 40,2 60,10 C80,18 100,2 120,10;M0,10 C20,2 40,18 60,10 C80,2 100,18 120,10;M0,10 C20,18 40,2 60,10 C80,18 100,2 120,10"/></svg>
     </div>
@@ -777,8 +801,8 @@
 <nav id="navbar">
   <div class="container nav-inner">
     <a href="#hero" class="nav-logo">
-      <span class="nav-logo-name">Bavarchi</span>
-      <span class="nav-logo-sub">The Indian Cuisine Restaurant · Diu</span>
+      <span class="nav-logo-name">Bavarchi <span class="veg-symbol white" style="vertical-align:middle;margin-left:4px;width:18px;height:18px;"></span></span>
+      <span class="nav-logo-sub">The Indian Cuisine Restaurant · Diu · Pure Veg</span>
     </a>
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
@@ -809,9 +833,9 @@
 <section id="hero">
   <div class="hero-bg"></div>
   <div class="hero-content">
-    <div class="hero-badge"><i class="fas fa-anchor"></i> Diu's Finest Coastal Dining</div>
+    <div class="hero-badge"><span class="veg-symbol white" style="width:16px;height:16px;"></span> 100% Pure Vegetarian</div>
     <h1 class="hero-title">Bavarchi<br><em>The Indian Cuisine Restaurant</em></h1>
-    <p class="hero-tagline">Fresh Flavors, Coastal Vibes, Unforgettable Memories.</p>
+    <p class="hero-tagline">Authentic Flavors, Pure Veg Delights, Unforgettable Memories.</p>
     <div class="hero-cta">
       <a href="javascript:void(0)" class="btn btn-primary" onclick="openMenuModal()"><i class="fas fa-utensils"></i> View Menu</a>
       <a href="#reservation" class="btn btn-outline"><i class="fas fa-calendar-alt"></i> Reserve a Table</a>
@@ -838,7 +862,7 @@
           alt="Bavarchi interior dining" loading="lazy"/>
         <img class="about-img-accent"
           src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80"
-          alt="Fresh seafood dish" loading="lazy"/>
+          alt="Delicious vegetarian thali" loading="lazy"/>
         <div class="about-badge-float">
           <i class="fas fa-star" style="color:var(--sunset)"></i>
           <div>
@@ -848,21 +872,21 @@
         </div>
       </div>
       <div class="about-content reveal-right">
-        <span class="section-tag"><i class="fas fa-fish"></i> &nbsp;Our Story</span>
-        <h2 class="section-title">Where Every Meal Feels Like<br>a Seaside Getaway</h2>
+        <span class="section-tag"><i class="fas fa-seedling"></i> &nbsp;Our Story</span>
+        <h2 class="section-title">Where Every Meal Feels Like<br>a Celebration of Flavour</h2>
         <p class="section-subtitle">
           Nestled in the heart of the beautiful Union Territory of Diu, Bavarchi - The Indian Cuisine Restaurant is more than a restaurant — it's a culinary landmark. Born from a passion for fresh ingredients and warm hospitality, we have been welcoming families, tourists, and food lovers from across India and beyond.
         </p>
         <p class="section-subtitle" style="margin-top:14px">
-          From our freshly-caught seafood specials to fragrant Indian curries, crispy fast food bites, and refreshing beverages — every plate tells a story of love, tradition, and coastal flavour. Our relaxed beachside ambiance, hygienic open kitchen, and attentive service make us the go-to dining destination in Diu.
+          From our aromatic paneer preparations to fragrant Indian curries, crispy Chinese starters, and refreshing beverages — every plate tells a story of love, tradition, and pure vegetarian flavour. Our warm ambiance, hygienic open kitchen, and attentive service make us the go-to pure veg dining destination in Diu.
         </p>
         <div class="about-features">
-          <div class="about-feature"><i class="fas fa-check-circle"></i> Fresh Daily Catch</div>
+          <div class="about-feature"><i class="fas fa-check-circle"></i> 100% Pure Vegetarian</div>
           <div class="about-feature"><i class="fas fa-check-circle"></i> Hygienic Open Kitchen</div>
-          <div class="about-feature"><i class="fas fa-check-circle"></i> Beachside Ambiance</div>
+          <div class="about-feature"><i class="fas fa-check-circle"></i> Warm Family Ambiance</div>
           <div class="about-feature"><i class="fas fa-check-circle"></i> Family &amp; Group Dining</div>
-          <div class="about-feature"><i class="fas fa-check-circle"></i> Vegetarian Friendly</div>
-          <div class="about-feature"><i class="fas fa-check-circle"></i> Live Seafood Counter</div>
+          <div class="about-feature"><i class="fas fa-check-circle"></i> Fresh Ingredients Daily</div>
+          <div class="about-feature"><i class="fas fa-check-circle"></i> Tandoor &amp; Live Roti</div>
         </div>
         <a href="#reservation" class="btn btn-ocean" style="margin-top:36px"><i class="fas fa-calendar-check"></i> Book Your Table</a>
       </div>
@@ -876,16 +900,16 @@
     <div class="specialties-header reveal">
       <span class="section-tag"><i class="fas fa-award"></i> &nbsp;What We Serve</span>
       <h2 class="section-title">Our Culinary Specialties</h2>
-      <p class="section-subtitle">A feast for every palate — from the ocean to the mountains, we bring the world's flavours to your table.</p>
+      <p class="section-subtitle">A feast for every palate — pure veg flavours from across India and beyond, crafted with love and tradition.</p>
     </div>
     <div class="specialties-grid">
       <div class="specialty-card reveal">
-        <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=700&q=80" alt="Seafood Delicacies" loading="lazy"/>
+        <img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=700&q=80" alt="Paneer Delights" loading="lazy"/>
         <div class="specialty-card-overlay"></div>
         <div class="specialty-card-content">
-          <div class="specialty-icon"><i class="fas fa-fish"></i></div>
-          <div class="specialty-title">Seafood Delicacies</div>
-          <div class="specialty-desc">Fresh catch, grilled, fried &amp; curried to perfection</div>
+          <div class="specialty-icon"><i class="fas fa-seedling"></i></div>
+          <div class="specialty-title">Paneer Delights</div>
+          <div class="specialty-desc">Creamy, spiced &amp; grilled paneer preparations</div>
         </div>
       </div>
       <div class="specialty-card reveal">
@@ -901,7 +925,7 @@
         <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?w=700&q=80" alt="Chinese Cuisine" loading="lazy"/>
         <div class="specialty-card-overlay"></div>
         <div class="specialty-card-content">
-          <div class="specialty-icon"><i class="fas fa-drumstick-bite"></i></div>
+          <div class="specialty-icon"><i class="fas fa-fire"></i></div>
           <div class="specialty-title">Chinese Cuisine</div>
           <div class="specialty-desc">Wok-tossed noodles, momos &amp; stir-fry favourites</div>
         </div>
@@ -945,7 +969,7 @@
     <div class="gallery-header reveal">
       <span class="section-tag"><i class="fas fa-camera"></i> &nbsp;Moments</span>
       <h2 class="section-title">A Taste of Our World</h2>
-      <p class="section-subtitle">From ocean breezes to sizzling plates — a glimpse into life at Bavarchi.</p>
+      <p class="section-subtitle">From sizzling plates to warm smiles — a glimpse into life at Bavarchi.</p>
     </div>
     <div class="gallery-masonry">
       <div class="gallery-item reveal" onclick="openLightbox(this)">
@@ -957,7 +981,7 @@
         <div class="gallery-item-overlay"><i class="fas fa-search-plus"></i></div>
       </div>
       <div class="gallery-item reveal" onclick="openLightbox(this)">
-        <img src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=600&q=80" alt="Seafood dish" loading="lazy"/>
+        <img src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=600&q=80" alt="Vegetarian curry" loading="lazy"/>
         <div class="gallery-item-overlay"><i class="fas fa-search-plus"></i></div>
       </div>
       <div class="gallery-item reveal" onclick="openLightbox(this)">
@@ -969,7 +993,7 @@
         <div class="gallery-item-overlay"><i class="fas fa-search-plus"></i></div>
       </div>
       <div class="gallery-item reveal" onclick="openLightbox(this)">
-        <img src="https://images.unsplash.com/photo-1502301103665-0b95cc738daf?w=600&q=80" alt="Beachside view" loading="lazy"/>
+        <img src="https://images.unsplash.com/photo-1502301103665-0b95cc738daf?w=600&q=80" alt="Restaurant ambiance" loading="lazy"/>
         <div class="gallery-item-overlay"><i class="fas fa-search-plus"></i></div>
       </div>
       <div class="gallery-item reveal" onclick="openLightbox(this)">
@@ -977,7 +1001,7 @@
         <div class="gallery-item-overlay"><i class="fas fa-search-plus"></i></div>
       </div>
       <div class="gallery-item reveal" onclick="openLightbox(this)">
-        <img src="https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=600&q=80" alt="Grilled seafood" loading="lazy"/>
+        <img src="https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=600&q=80" alt="Vegetarian grill" loading="lazy"/>
         <div class="gallery-item-overlay"><i class="fas fa-search-plus"></i></div>
       </div>
       <div class="gallery-item reveal" onclick="openLightbox(this)">
@@ -1150,9 +1174,9 @@
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <div class="footer-brand-name">Bavarchi</div>
-        <div class="footer-brand-sub">The Indian Cuisine Restaurant · Diu</div>
-        <p>A coastal haven for food lovers. Fresh seafood, warm hospitality, and unforgettable views on the beautiful island of Diu.</p>
+        <div class="footer-brand-name">Bavarchi <span class="veg-symbol" style="vertical-align:middle;margin-left:6px;width:18px;height:18px;"></span></div>
+        <div class="footer-brand-sub">The Indian Cuisine Restaurant · Diu · Pure Veg</div>
+        <p>A pure vegetarian haven for food lovers. Fresh ingredients, warm hospitality, and unforgettable flavours on the beautiful island of Diu.</p>
         <div class="footer-social">
           <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
           <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
@@ -1199,7 +1223,7 @@
     </div>
     <div class="footer-bottom">
       <p>&copy; 2025 Bavarchi - The Indian Cuisine Restaurant, Diu. All rights reserved.</p>
-      <p>Designed with <i class="fas fa-heart" style="color:var(--sunset)"></i> for the love of good food &amp; coastal living</p>
+      <p>Designed with <i class="fas fa-heart" style="color:var(--sunset)"></i> for the love of good food &amp; pure vegetarian living</p>
     </div>
   </div>
 </footer>
@@ -1210,7 +1234,7 @@
     <!-- Header -->
     <div class="menu-modal-close">
       <div>
-        <h2>Bavarchi Menu</h2>
+        <h2>Bavarchi Menu <span class="veg-symbol" style="vertical-align:middle;margin-left:6px;width:18px;height:18px;border-color:#81c784;"></span></h2>
         <div class="tagline">The Flavors of Diu</div>
         <span class="menu-veg-badge"><i class="fas fa-leaf" style="margin-right:4px"></i> 100% Pure Vegetarian</span>
       </div>
@@ -1572,7 +1596,7 @@
       return;
     }
     /* Build WhatsApp message */
-    let msg = `🍽️ *Table Reservation – Bavarchi*\n\n`;
+    let msg = `🍽️ *Table Reservation – Bavarchi (Pure Veg)*\n\n`;
     msg += `👤 Name: ${name}\n`;
     msg += `📞 Phone: ${phone}\n`;
     msg += `📅 Date: ${date}\n`;
@@ -1777,7 +1801,7 @@
       alert('Your cart is empty! Please add items to your order.');
       return;
     }
-    var msg = '🛒 *Food Order – Bavarchi*\n\n';
+    var msg = '🛒 *Food Order – Bavarchi (Pure Veg)*\n\n';
     var idx = 1;
     for (var k in cart) {
       var item = cart[k];

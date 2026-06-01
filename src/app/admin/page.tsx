@@ -923,12 +923,12 @@ export default function AdminPage() {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label>Badge</Label>
-                <Select value={itemBadge} onValueChange={setItemBadge}>
+                <Select value={itemBadge || "none"} onValueChange={v => setItemBadge(v === "none" ? "" : v)}>
                   <SelectTrigger>
                     <SelectValue placeholder="None" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">None</SelectItem>
+                    <SelectItem value="none">None</SelectItem>
                     <SelectItem value="best-seller">Best Seller</SelectItem>
                     <SelectItem value="signature">Signature</SelectItem>
                     <SelectItem value="must-try">Must Try</SelectItem>

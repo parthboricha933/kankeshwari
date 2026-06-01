@@ -1549,8 +1549,10 @@
         } else {
           bodyHtml += '<div class="menu-item">';
           bodyHtml += '<span class="item-name">' + item.name + badgeHtml + variantHtml + '</span>';
+          bodyHtml += '<div style="display:flex;align-items:center;gap:8px;">';
           bodyHtml += '<span class="item-price">₹' + item.price + '</span>';
-          bodyHtml += '</div>';
+          bodyHtml += '<div class="item-actions" data-key="' + item.name + '||' + item.price + '"><button class="add-btn" data-key="' + item.name + '||' + item.price + '" data-name="' + item.name.replace(/"/g,'&quot;') + '" data-price="' + item.price + '" onclick="addToCart(this)">ADD</button></div>';
+          bodyHtml += '</div></div>';
         }
       }
       bodyHtml += '</div></div>';

@@ -1458,7 +1458,7 @@
     </div>
     <div class="cart-drawer-footer" id="cartDrawerFooter">
       <div class="cart-bill-row"><span>Subtotal</span><span id="drawerSubtotal">₹0</span></div>
-      <div class="cart-bill-row"><span>GST (18%)</span><span id="drawerGst">₹0</span></div>
+      <div class="cart-bill-row"><span>GST (5%)</span><span id="drawerGst">₹0</span></div>
       <div class="cart-bill-row grand-total"><span>Total</span><span id="drawerTotal">₹0</span></div>
       <button class="order-btn" style="width:100%;justify-content:center;margin-top:14px" onclick="sendOrderToWhatsApp()">
         <i class="fab fa-whatsapp"></i> Confirm Order on WhatsApp
@@ -1711,7 +1711,7 @@
       subtotal += cart[k].price * cart[k].qty;
       totalItems += cart[k].qty;
     }
-    var gst = Math.round(subtotal * 0.18);
+    var gst = Math.round(subtotal * 0.05);
     var grand = subtotal + gst;
     return { subtotal: subtotal, gst: gst, grand: grand, totalItems: totalItems };
   }
@@ -1810,7 +1810,7 @@
     }
     msg += '\n───────────────\n';
     msg += '📦 Subtotal: ₹' + t.subtotal + '\n';
-    msg += '📋 GST (18%): ₹' + t.gst + '\n';
+    msg += '📋 GST (5%): ₹' + t.gst + '\n';
     msg += '💰 *Total: ₹' + t.grand + '*\n';
     msg += '\nPlease confirm my order. Thank you! 🙏';
     var waUrl = 'https://wa.me/917574033599?text=' + encodeURIComponent(msg);

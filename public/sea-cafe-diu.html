@@ -1064,12 +1064,12 @@
       <div class="footer-col">
         <h4>Cuisines</h4>
         <ul>
-          <li><a href="javascript:void(0)" onclick="openMenuModal()">Seafood Delicacies</a></li>
-          <li><a href="javascript:void(0)" onclick="openMenuModal()">Indian Cuisine</a></li>
-          <li><a href="javascript:void(0)" onclick="openMenuModal()">Chinese Cuisine</a></li>
-          <li><a href="javascript:void(0)" onclick="openMenuModal()">Fast Food</a></li>
-          <li><a href="javascript:void(0)" onclick="openMenuModal()">Beverages &amp; Mocktails</a></li>
-          <li><a href="javascript:void(0)" onclick="openMenuModal()">Desserts</a></li>
+          <li><a href="javascript:void(0)" onclick="openMenuModal()">Chinese</a></li>
+          <li><a href="javascript:void(0)" onclick="openMenuModal()">Paneer</a></li>
+          <li><a href="javascript:void(0)" onclick="openMenuModal()">Sweet</a></li>
+          <li><a href="javascript:void(0)" onclick="openMenuModal()">Vegetable's</a></li>
+          <li><a href="javascript:void(0)" onclick="openMenuModal()">Dal &amp; Rice</a></li>
+          <li><a href="javascript:void(0)" onclick="openMenuModal()">Tandoor</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -1107,265 +1107,170 @@
     <!-- Category nav -->
     <div class="menu-nav-bar">
       <div class="menu-nav-inner">
-        <a class="menu-nav-link" onclick="menuScrollTo('breakfast')">Breakfast</a>
-        <a class="menu-nav-link" onclick="menuScrollTo('mains')">Main Course</a>
-        <a class="menu-nav-link" onclick="menuScrollTo('breads')">Breads</a>
-        <a class="menu-nav-link" onclick="menuScrollTo('sides')">Sides</a>
-        <a class="menu-nav-link" onclick="menuScrollTo('rice')">Rice</a>
-        <a class="menu-nav-link" onclick="menuScrollTo('south-indian')">South Indian</a>
         <a class="menu-nav-link" onclick="menuScrollTo('chinese')">Chinese</a>
-        <a class="menu-nav-link" onclick="menuScrollTo('pizza')">Pizza</a>
-        <a class="menu-nav-link" onclick="menuScrollTo('snacks')">Snacks</a>
-        <a class="menu-nav-link" onclick="menuScrollTo('maggi-sandwich')">Maggi & Sandwich</a>
-        <a class="menu-nav-link" onclick="menuScrollTo('beverages')">Beverages</a>
+        <a class="menu-nav-link" onclick="menuScrollTo('paneer')">Paneer</a>
+        <a class="menu-nav-link" onclick="menuScrollTo('sweet')">Sweet</a>
+        <a class="menu-nav-link" onclick="menuScrollTo('vegetables')">Vegetable's</a>
+        <a class="menu-nav-link" onclick="menuScrollTo('dal-rice')">Dal &amp; Rice</a>
+        <a class="menu-nav-link" onclick="menuScrollTo('tandoor')">Tandoor</a>
+        <a class="menu-nav-link" onclick="menuScrollTo('fix-meal')">Fix Meal</a>
+        <a class="menu-nav-link" onclick="menuScrollTo('dessert')">Dessert</a>
       </div>
     </div>
     <!-- Menu body -->
     <div class="menu-body">
 
-      <!-- BREAKFAST -->
-      <div class="menu-section" id="breakfast">
-        <h2 class="menu-cat-title"><span class="icon">🌅</span> Breakfast & Pav Bhaji</h2>
-        <p class="menu-sub-cat">Breakfast</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Aloo Poha</span><span class="item-price">₹80</span></div>
-          <div class="menu-item"><span class="item-name">Aloo Paratha</span><span class="item-price">₹150</span></div>
-        </div>
-        <p class="menu-sub-cat">Pav Bhaji</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Pav Bhaji <span class="badge must-try">Must Try</span></span><span class="item-price">₹150</span></div>
-          <div class="menu-item"><span class="item-name">Chole Bhatura <span class="badge must-try">Must Try</span></span><span class="item-price">₹150</span></div>
-        </div>
-      </div>
-
-      <!-- MAIN COURSE -->
-      <div class="menu-section" id="mains">
-        <h2 class="menu-cat-title"><span class="icon">🍛</span> Main Course Specials</h2>
-        <p class="menu-sub-cat">Veg Special</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Chana Masala</span><span class="item-price">₹200</span></div>
-          <div class="menu-item"><span class="item-name">Aloo Mutter</span><span class="item-price">₹200</span></div>
-        </div>
-        <p class="menu-sub-cat">Paneer Special</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Palak Paneer</span><span class="item-price">₹250</span></div>
-        </div>
-        <p class="menu-sub-cat">Cheese Special</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Cheese Masala</span><span class="item-price">₹350</span></div>
-        </div>
-        <p class="menu-sub-cat">Kaju Special</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Kaju Curry</span><span class="item-price">₹350</span></div>
-        </div>
-        <p class="menu-sub-cat">Dal Special</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Dal Fry</span><span class="item-price">₹120</span></div>
-        </div>
-      </div>
-
-      <!-- BREADS -->
-      <div class="menu-section" id="breads">
-        <h2 class="menu-cat-title"><span class="icon">🫓</span> Indian Breads</h2>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Chapati</span><span class="item-price">₹20</span></div>
-          <div class="menu-item"><span class="item-name">Tandoori Roti</span><span class="item-price">₹30</span></div>
-          <div class="menu-item"><span class="item-name">Butter Tandoori Roti</span><span class="item-price">₹40</span></div>
-          <div class="menu-item"><span class="item-name">Missi Roti</span><span class="item-price">₹40</span></div>
-          <div class="menu-item"><span class="item-name">Plain Naan</span><span class="item-price">₹50</span></div>
-          <div class="menu-item"><span class="item-name">Butter Naan</span><span class="item-price">₹60</span></div>
-          <div class="menu-item"><span class="item-name">Garlic Naan</span><span class="item-price">₹70</span></div>
-          <div class="menu-item"><span class="item-name">Cheese Naan</span><span class="item-price">₹90</span></div>
-        </div>
-      </div>
-
-      <!-- SIDES -->
-      <div class="menu-section" id="sides">
-        <h2 class="menu-cat-title"><span class="icon">🥗</span> Khane Ke Sath (Sides)</h2>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Plain Buttermilk</span><span class="item-price">₹50</span></div>
-          <div class="menu-item"><span class="item-name">Masala Buttermilk</span><span class="item-price">₹70</span></div>
-          <div class="menu-item"><span class="item-name">Green Salad</span><span class="item-price">₹80</span></div>
-          <div class="menu-item"><span class="item-name">Russian Salad</span><span class="item-price">₹100</span></div>
-          <div class="menu-item"><span class="item-name">Papad (Plain)</span><span class="item-price">₹30</span></div>
-          <div class="menu-item"><span class="item-name">Papad (Fried)</span><span class="item-price">₹40</span></div>
-          <div class="menu-item"><span class="item-name">Raita</span><span class="item-price">₹60</span></div>
-        </div>
-      </div>
-
-      <!-- RICE -->
-      <div class="menu-section" id="rice">
-        <h2 class="menu-cat-title"><span class="icon">🍚</span> Rice</h2>
-        <p class="menu-sub-cat">Indian Rice</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Steam Rice</span><span class="item-price">₹100</span></div>
-          <div class="menu-item"><span class="item-name">Jeera Rice</span><span class="item-price">₹120</span></div>
-          <div class="menu-item"><span class="item-name">Veg Pulao</span><span class="item-price">₹180</span></div>
-          <div class="menu-item"><span class="item-name">Paneer Pulao <span class="badge must-try">Must Try</span></span><span class="item-price">₹200</span></div>
-        </div>
-        <p class="menu-sub-cat">Chinese Rice</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Veg Fried Rice</span><span class="item-price">₹160</span></div>
-        </div>
-      </div>
-
-      <!-- SOUTH INDIAN -->
-      <div class="menu-section" id="south-indian">
-        <h2 class="menu-cat-title"><span class="icon">🫓</span> South Indian</h2>
-        <div class="menu-grid">
-          <div class="menu-item" style="flex-direction:column;align-items:flex-start;gap:6px;padding:14px 12px;">
-            <span class="item-name" style="font-weight:700;">Plain Dosa</span>
-            <div class="variant-tags">
-              <span class="variant-tag">Plain ₹120</span>
-              <span class="variant-tag">Butter ₹150</span>
-              <span class="variant-tag">Cheese ₹180</span>
-            </div>
-          </div>
-          <div class="menu-item" style="flex-direction:column;align-items:flex-start;gap:6px;padding:14px 12px;">
-            <span class="item-name" style="font-weight:700;">Masala Dosa</span>
-            <div class="variant-tags">
-              <span class="variant-tag">Plain ₹140</span>
-              <span class="variant-tag">Butter ₹170</span>
-              <span class="variant-tag">Cheese ₹200</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <!-- CHINESE -->
       <div class="menu-section" id="chinese">
         <h2 class="menu-cat-title"><span class="icon">🥡</span> Chinese</h2>
-        <p class="menu-sub-cat">Noodles</p>
         <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Hakka Noodles</span><span class="item-price">₹180</span></div>
-        </div>
-        <p class="menu-sub-cat">Soup</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Manchow Soup</span><span class="item-price">₹120</span></div>
-          <div class="menu-item"><span class="item-name">Tomato Soup</span><span class="item-price">₹120</span></div>
-          <div class="menu-item"><span class="item-name">Sweet Corn Soup</span><span class="item-price">₹120</span></div>
-          <div class="menu-item"><span class="item-name">Hot & Sour Soup</span><span class="item-price">₹120</span></div>
-          <div class="menu-item"><span class="item-name">Veg Clear Soup</span><span class="item-price">₹120</span></div>
-        </div>
-        <p class="menu-sub-cat">Chinese Special</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Veg Manchurian Dry</span><span class="item-price">₹160</span></div>
-          <div class="menu-item"><span class="item-name">Veg Manchurian Gravy</span><span class="item-price">₹180</span></div>
-          <div class="menu-item"><span class="item-name">Chilli Paneer Dry</span><span class="item-price">₹220</span></div>
-          <div class="menu-item"><span class="item-name">Chilli Paneer Gravy</span><span class="item-price">₹240</span></div>
-          <div class="menu-item"><span class="item-name">Spring Roll (6 pcs)</span><span class="item-price">₹280</span></div>
+          <div class="menu-item"><span class="item-name">Paneer Or Mushroom Chilly</span><span class="item-price">₹220</span></div>
+          <div class="menu-item"><span class="item-name">Veg. Manchurian Or Veg. 65 Dry</span><span class="item-price">₹169</span></div>
+          <div class="menu-item"><span class="item-name">Dragon Potato</span><span class="item-price">₹169</span></div>
+          <div class="menu-item"><span class="item-name">Chinese Bhel</span><span class="item-price">₹134</span></div>
+          <div class="menu-item"><span class="item-name">Selection Of Noodles <span class="variant-tag">Hakka or Szechwan</span></span><span class="item-price">₹165</span></div>
+          <div class="menu-item"><span class="item-name">Selection Of Fried Rice <span class="variant-tag">Vegetable or Szechwan</span></span><span class="item-price">₹165</span></div>
+          <div class="menu-item"><span class="item-name">Tripple Combo</span><span class="item-price">₹269</span></div>
+          <div class="menu-item"><span class="item-name">Crispy Fried Babycorn</span><span class="item-price">₹189</span></div>
+          <div class="menu-item"><span class="item-name">Crispy Fried Veg</span><span class="item-price">₹189</span></div>
         </div>
       </div>
 
-      <!-- PIZZA -->
-      <div class="menu-section" id="pizza">
-        <h2 class="menu-cat-title"><span class="icon">🍕</span> Pizza</h2>
-        <p class="menu-sub-cat">Premium Pizza</p>
+      <!-- PANEER -->
+      <div class="menu-section" id="paneer">
+        <h2 class="menu-cat-title"><span class="icon">🧀</span> Paneer</h2>
         <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Double Cheese Margherita</span><span class="item-price">₹350</span></div>
-        </div>
-        <p class="menu-sub-cat">Classic Pizza</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Margherita Pizza</span><span class="item-price">₹220</span></div>
-        </div>
-        <p class="menu-sub-cat">Add-ons</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Extra Tomatoes</span><span class="item-price">₹20</span></div>
-          <div class="menu-item"><span class="item-name">Extra Cheese</span><span class="item-price">₹30</span></div>
-          <div class="menu-item"><span class="item-name">Extra Paneer</span><span class="item-price">₹20</span></div>
+          <div class="menu-item"><span class="item-name">Paneer Lababdar Or Koriyala</span><span class="item-price">₹224</span></div>
+          <div class="menu-item"><span class="item-name">Paneer Bagdadi Or Ashiyana</span><span class="item-price">₹234</span></div>
+          <div class="menu-item"><span class="item-name">Paneer Butter Masala</span><span class="item-price">₹209</span></div>
+          <div class="menu-item"><span class="item-name">Paneer Tikka Masala</span><span class="item-price">₹219</span></div>
+          <div class="menu-item"><span class="item-name">Paneer Handi / Tawa / Kadai</span><span class="item-price">₹199</span></div>
+          <div class="menu-item"><span class="item-name">Paneer Maska Makhni</span><span class="item-price">₹214</span></div>
+          <div class="menu-item"><span class="item-name">Kaju Paneer <span class="badge best-seller">Best Seller</span></span><span class="item-price">₹245</span></div>
+          <div class="menu-item"><span class="item-name">Palak Or Mutter Paneer</span><span class="item-price">₹199</span></div>
+          <div class="menu-item"><span class="item-name">Cheese Butter Masala</span><span class="item-price">₹245</span></div>
+          <div class="menu-item"><span class="item-name">Paneer Bhurji</span><span class="item-price">₹245</span></div>
         </div>
       </div>
 
-      <!-- SNACKS -->
-      <div class="menu-section" id="snacks">
-        <h2 class="menu-cat-title"><span class="icon">🍟</span> Fries, Momos & Burgers</h2>
-        <p class="menu-sub-cat">Fries</p>
+      <!-- SWEET -->
+      <div class="menu-section" id="sweet">
+        <h2 class="menu-cat-title"><span class="icon">🍯</span> Sweet</h2>
         <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">French Fries</span><span class="item-price">₹120</span></div>
-          <div class="menu-item"><span class="item-name">Peri Peri Fries</span><span class="item-price">₹140</span></div>
-          <div class="menu-item"><span class="item-name">Cheese Fries</span><span class="item-price">₹150</span></div>
-          <div class="menu-item"><span class="item-name">Cheese Chilli Fries</span><span class="item-price">₹180</span></div>
-        </div>
-        <p class="menu-sub-cat">Momos</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Steam Momos</span><span class="item-price">₹120</span></div>
-          <div class="menu-item"><span class="item-name">Fried Momos</span><span class="item-price">₹120</span></div>
-        </div>
-        <p class="menu-sub-cat">Burger</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Veg Burger</span><span class="item-price">₹120</span></div>
-          <div class="menu-item"><span class="item-name">Veg Cheese Burger</span><span class="item-price">₹140</span></div>
-          <div class="menu-item"><span class="item-name">Maharaja Burger</span><span class="item-price">₹180</span></div>
+          <div class="menu-item"><span class="item-name">Navratan Korma <span class="badge must-try">Must Try</span></span><span class="item-price">₹239</span></div>
+          <div class="menu-item"><span class="item-name">Cheese Angoori</span><span class="item-price">₹239</span></div>
+          <div class="menu-item"><span class="item-name">Malai Kofta</span><span class="item-price">₹229</span></div>
         </div>
       </div>
 
-      <!-- MAGGI & SANDWICH -->
-      <div class="menu-section" id="maggi-sandwich">
-        <h2 class="menu-cat-title"><span class="icon">🥪</span> Maggi & Sandwiches</h2>
-        <p class="menu-sub-cat">Maggi</p>
+      <!-- VEGETABLE'S -->
+      <div class="menu-section" id="vegetables">
+        <h2 class="menu-cat-title"><span class="icon">🥦</span> Vegetable's</h2>
         <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Masala Maggi</span><span class="item-price">₹80</span></div>
-          <div class="menu-item"><span class="item-name">Butter Masala Maggi <span class="badge best-seller">Best Seller</span></span><span class="item-price">₹100</span></div>
-        </div>
-        <p class="menu-sub-cat">3 Layered Sandwich</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Bread Butter Jam Grilled</span><span class="item-price">₹70</span></div>
-          <div class="menu-item"><span class="item-name">Hulk Sandwich</span><span class="item-price">₹300</span></div>
-        </div>
-        <p class="menu-sub-cat">Garlic Bread</p>
-        <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Garlic Bread</span><span class="item-price">₹120</span></div>
-          <div class="menu-item"><span class="item-name">Garlic Bread Stick with Cheese Dip</span><span class="item-price">₹250</span></div>
+          <div class="menu-item"><span class="item-name">Sev Tomato</span><span class="item-price">₹139</span></div>
+          <div class="menu-item"><span class="item-name">Lasaniya Bateka</span><span class="item-price">₹169</span></div>
+          <div class="menu-item"><span class="item-name">Dum Aloo</span><span class="item-price">₹169</span></div>
+          <div class="menu-item"><span class="item-name">Aloo Tomato Rasawala</span><span class="item-price">₹169</span></div>
+          <div class="menu-item"><span class="item-name">Cabbege Mutter</span><span class="item-price">₹169</span></div>
+          <div class="menu-item"><span class="item-name">Vegetable Lababdar / Khazana</span><span class="item-price">₹205</span></div>
+          <div class="menu-item"><span class="item-name">Vegetable Shabnam / Shabnam Curry</span><span class="item-price">₹219</span></div>
+          <div class="menu-item"><span class="item-name">Cholle Peshawari</span><span class="item-price">₹189</span></div>
+          <div class="menu-item"><span class="item-name">Subz Achari / Jalfrzie</span><span class="item-price">₹199</span></div>
+          <div class="menu-item"><span class="item-name">Veg. Handi / Kadai / Tawa</span><span class="item-price">₹189</span></div>
+          <div class="menu-item"><span class="item-name">Tomato Makai Bharta</span><span class="item-price">₹189</span></div>
+          <div class="menu-item"><span class="item-name">Vegetable Koriyala</span><span class="item-price">₹204</span></div>
+          <div class="menu-item"><span class="item-name">Veg. Kolapuri / Makhanwala</span><span class="item-price">₹169</span></div>
+          <div class="menu-item"><span class="item-name">Alu Mutter / Jeera Aloo</span><span class="item-price">₹159</span></div>
         </div>
       </div>
 
-      <!-- BEVERAGES -->
-      <div class="menu-section" id="beverages">
-        <h2 class="menu-cat-title"><span class="icon">🥤</span> Beverages</h2>
-        <p class="menu-sub-cat">Fresh Juice</p>
+      <!-- DAL & RICE -->
+      <div class="menu-section" id="dal-rice">
+        <h2 class="menu-cat-title"><span class="icon">🍚</span> Dal &amp; Rice</h2>
         <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Pineapple Juice</span><span class="item-price">₹120</span></div>
+          <div class="menu-item"><span class="item-name">Dal Fry</span><span class="item-price">₹119</span></div>
+          <div class="menu-item"><span class="item-name">Dal Tadkewali</span><span class="item-price">₹129</span></div>
+          <div class="menu-item"><span class="item-name">Steam Rice</span><span class="item-price">₹109</span></div>
+          <div class="menu-item"><span class="item-name">Jeera Rice</span><span class="item-price">₹119</span></div>
+          <div class="menu-item"><span class="item-name">Hydrabadi Biryani</span><span class="item-price">₹159</span></div>
+          <div class="menu-item"><span class="item-name">Vegetable Pulao</span><span class="item-price">₹134</span></div>
+          <div class="menu-item"><span class="item-name">Kadhi</span><span class="item-price">₹89</span></div>
+          <div class="menu-item"><span class="item-name">Dal Khichdi</span><span class="item-price">₹139</span></div>
+          <div class="menu-item"><span class="item-name">Dum Biriyani <span class="badge must-try">Must Try</span></span><span class="item-price">₹159</span></div>
         </div>
-        <p class="menu-sub-cat">Jamu Shots</p>
+      </div>
+
+      <!-- TANDOOR -->
+      <div class="menu-section" id="tandoor">
+        <h2 class="menu-cat-title"><span class="icon">🫓</span> Tandoor</h2>
         <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Half</span><span class="item-price">₹100</span></div>
-          <div class="menu-item"><span class="item-name">Full</span><span class="item-price">₹180</span></div>
+          <div class="menu-item"><span class="item-name">Roti (Plain Or Butter)</span><span class="item-price">₹22</span></div>
+          <div class="menu-item"><span class="item-name">Tawa Roti</span><span class="item-price">₹20</span></div>
+          <div class="menu-item"><span class="item-name">Garlic Roti</span><span class="item-price">₹45</span></div>
+          <div class="menu-item"><span class="item-name">Kulcha (Plain Or Butter)</span><span class="item-price">₹40</span></div>
+          <div class="menu-item"><span class="item-name">Cheese Or Garlic Kulcha</span><span class="item-price">₹99</span></div>
+          <div class="menu-item"><span class="item-name">Stuffed Kulcha</span><span class="item-price">₹89</span></div>
+          <div class="menu-item"><span class="item-name">Paratha (Plain Or Butter)</span><span class="item-price">₹40</span></div>
+          <div class="menu-item"><span class="item-name">Stuffed Paratha</span><span class="item-price">₹89</span></div>
+          <div class="menu-item"><span class="item-name">Tawa Paratha</span><span class="item-price">₹35</span></div>
+          <div class="menu-item"><span class="item-name">Nan (Plain Or Butter)</span><span class="item-price">₹40</span></div>
+          <div class="menu-item"><span class="item-name">Cheese Or Garlic Nan</span><span class="item-price">₹99</span></div>
+          <div class="menu-item"><span class="item-name">Stuffed Nan</span><span class="item-price">₹89</span></div>
+          <div class="menu-item"><span class="item-name">Cheese Chilly Nan</span><span class="item-price">₹109</span></div>
+          <div class="menu-item"><span class="item-name">Cheese Garlic Nan <span class="badge best-seller">Best Seller</span></span><span class="item-price">₹109</span></div>
         </div>
-        <p class="menu-sub-cat">Milkshake</p>
+      </div>
+
+      <!-- FIX MEAL -->
+      <div class="menu-section" id="fix-meal">
+        <h2 class="menu-cat-title"><span class="icon">🍽️</span> Fix Meal</h2>
         <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Chocolate Shake</span><span class="item-price">₹120</span></div>
-          <div class="menu-item"><span class="item-name">Vanilla Shake</span><span class="item-price">₹120</span></div>
-          <div class="menu-item"><span class="item-name">Strawberry Shake</span><span class="item-price">₹130</span></div>
-          <div class="menu-item"><span class="item-name">Mango Shake</span><span class="item-price">₹150</span></div>
-          <div class="menu-item"><span class="item-name">Butterscotch Shake</span><span class="item-price">₹150</span></div>
-          <div class="menu-item"><span class="item-name">Oreo Shake</span><span class="item-price">₹160</span></div>
-          <div class="menu-item"><span class="item-name">Cold Coffee</span><span class="item-price">₹160</span></div>
-          <div class="menu-item"><span class="item-name">KitKat Shake</span><span class="item-price">₹180</span></div>
-          <div class="menu-item"><span class="item-name">Blue Lagoon Shake</span><span class="item-price">₹180</span></div>
-          <div class="menu-item"><span class="item-name">Pista Shake</span><span class="item-price">₹200</span></div>
-          <div class="menu-item"><span class="item-name">Red Velvet Shake</span><span class="item-price">₹200</span></div>
-          <div class="menu-item"><span class="item-name">Nutella Shake</span><span class="item-price">₹220</span></div>
-          <div class="menu-item"><span class="item-name">Dark Chocolate Shake</span><span class="item-price">₹220</span></div>
-          <div class="menu-item"><span class="item-name">Kiwi Shake</span><span class="item-price">₹220</span></div>
+          <div class="menu-item" style="flex-direction:column;align-items:flex-start;gap:6px;padding:14px 12px;">
+            <div style="display:flex;justify-content:space-between;width:100%;align-items:center">
+              <span class="item-name" style="font-weight:700;">Gujarati Thali</span>
+              <span class="item-price">₹149</span>
+            </div>
+            <div class="variant-tags"><span class="variant-tag">One Veg. Kathol Dal, Rice, Butter Milk, Papad, Four Chapathi</span></div>
+          </div>
+          <div class="menu-item" style="flex-direction:column;align-items:flex-start;gap:6px;padding:14px 12px;">
+            <div style="display:flex;justify-content:space-between;width:100%;align-items:center">
+              <span class="item-name" style="font-weight:700;">Punjabi Thali</span>
+              <span class="item-price">₹219</span>
+            </div>
+            <div class="variant-tags"><span class="variant-tag">One Paneer, One Veg., Dal, Rice, Papad, Butter Milk, Two Tand. Roti, Ice Cream</span></div>
+          </div>
+          <div class="menu-item" style="flex-direction:column;align-items:flex-start;gap:6px;padding:14px 12px;">
+            <div style="display:flex;justify-content:space-between;width:100%;align-items:center">
+              <span class="item-name" style="font-weight:700;">Spl. Gujarati Thali <span class="badge signature">Signature</span></span>
+              <span class="item-price">₹179</span>
+            </div>
+            <div class="variant-tags"><span class="variant-tag">Farsan, One Veg. Kathol Dal, Rice, Butter Milk, Papad, Four Chapathi, Ice Cream</span></div>
+          </div>
+          <div class="menu-item" style="flex-direction:column;align-items:flex-start;gap:6px;padding:14px 12px;">
+            <div style="display:flex;justify-content:space-between;width:100%;align-items:center">
+              <span class="item-name" style="font-weight:700;">Spl. Punjabi Thali <span class="badge signature">Signature</span></span>
+              <span class="item-price">₹249</span>
+            </div>
+            <div class="variant-tags"><span class="variant-tag">Soup, One Paneer, One Veg., Dal, Rice, Papad, Butter Milk, Two Tand. Roti, Ice Cream</span></div>
+          </div>
         </div>
-        <p class="menu-sub-cat">Mocktails</p>
+      </div>
+
+      <!-- DESSERT -->
+      <div class="menu-section" id="dessert">
+        <h2 class="menu-cat-title"><span class="icon">🍨</span> Dessert</h2>
         <div class="menu-grid">
-          <div class="menu-item"><span class="item-name">Classic Mint Mojito</span><span class="item-price">₹120</span></div>
-          <div class="menu-item"><span class="item-name">Lemon Mojito</span><span class="item-price">₹120</span></div>
-          <div class="menu-item"><span class="item-name">Blue Lagoon</span><span class="item-price">₹150</span></div>
-          <div class="menu-item"><span class="item-name">Virgin Mojito</span><span class="item-price">₹150</span></div>
-          <div class="menu-item"><span class="item-name">Watermelon Cooler</span><span class="item-price">₹160</span></div>
-          <div class="menu-item"><span class="item-name">Green Apple Mojito</span><span class="item-price">₹170</span></div>
-          <div class="menu-item"><span class="item-name">Strawberry Mojito</span><span class="item-price">₹180</span></div>
-          <div class="menu-item"><span class="item-name">Mango Mojito</span><span class="item-price">₹180</span></div>
-          <div class="menu-item"><span class="item-name">Kiwi Mojito</span><span class="item-price">₹200</span></div>
-          <div class="menu-item"><span class="item-name">Pomegranate Mojito</span><span class="item-price">₹200</span></div>
-          <div class="menu-item"><span class="item-name">Peach Mojito</span><span class="item-price">₹220</span></div>
-          <div class="menu-item"><span class="item-name">Litchi Mojito</span><span class="item-price">₹240</span></div>
-          <div class="menu-item"><span class="item-name">Passion Fruit Mojito</span><span class="item-price">₹260</span></div>
-          <div class="menu-item"><span class="item-name">Rose Mojito</span><span class="item-price">₹260</span></div>
-          <div class="menu-item"><span class="item-name">Dragon Fruit Mojito</span><span class="item-price">₹280</span></div>
-          <div class="menu-item"><span class="item-name">⭐ Kankeshwari Special Mojito <span class="badge signature">Signature</span></span><span class="item-price">₹300</span></div>
+          <div class="menu-item"><span class="item-name">Flavored Ice Cream <span class="variant-tag">Vanilla, Strawberry</span></span><span class="item-price">₹39</span></div>
+          <div class="menu-item"><span class="item-name">Chocolate Ice Cream</span><span class="item-price">₹49</span></div>
+          <div class="menu-item"><span class="item-name">Mango Ice Cream</span><span class="item-price">₹49</span></div>
+          <div class="menu-item"><span class="item-name">Kesar Pista Ice Cream</span><span class="item-price">₹55</span></div>
+          <div class="menu-item"><span class="item-name">Butter Scotch Ice Cream</span><span class="item-price">₹55</span></div>
+          <div class="menu-item"><span class="item-name">J.K Special Ice Cream <span class="badge signature">Signature</span></span><span class="item-price">₹144</span></div>
+          <div class="menu-item"><span class="item-name">Gulab Jamoon</span><span class="item-price">₹49</span></div>
+          <div class="menu-item"><span class="item-name">Milk Shake</span><span class="item-price">₹99</span></div>
+          <div class="menu-item"><span class="item-name">Milk Shake With Ice Cream</span><span class="item-price">₹129</span></div>
+          <div class="menu-item"><span class="item-name">Cold Coffee</span><span class="item-price">₹89</span></div>
+          <div class="menu-item"><span class="item-name">Cold Coffee With Ice Cream</span><span class="item-price">₹109</span></div>
         </div>
       </div>
 

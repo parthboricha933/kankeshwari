@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/lib/db";
+import { db } from "@/lib/db";
 
 // GET /api/orders/[id] — Get order details by orderId
 export async function GET(
@@ -9,7 +9,7 @@ export async function GET(
   try {
     const { id } = await params;
 
-    const order = await prisma.order.findUnique({
+    const order = await db.order.findUnique({
       where: { orderId: id },
       include: { items: true },
     });

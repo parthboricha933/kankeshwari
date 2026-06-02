@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/lib/db";
+import { db } from "@/lib/db";
 
 // Validate required environment variables at startup
 function getUpiConfig() {
@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
     // ── Create order in database ───────────────────────────
     const orderId = generateOrderId();
 
-    const order = await prisma.order.create({
+    const order = await db.order.create({
       data: {
         orderId,
         customerName: customerName || null,
@@ -144,7 +144,7 @@ export async function GET(request: NextRequest) {
     }
 
     const token = authHeader.replace("Bearer ", "");
-    const adminToken = await prisma.adminToken.findUnique({
+    const adminToken = await db.adminToken.findUnique({
       where: { token },
       include: { admin: true },
     });
@@ -161,14 +161,14 @@ export async function GET(request: NextRequest) {
     const where = status ? { status } : {};
 
     const [orders, total] = await Promise.all([
-      prisma.order.findMany({
+      db.order.findMany({
         where,
         include: { items: true },
         orderBy: { createdAt: "desc" },
         take: limit,
         skip: offset,
       }),
-      prisma.order.count({ where }),
+      db.order.count({ where }),
     ]);
 
     return NextResponse.json({ success: true, orders, total, limit, offset });

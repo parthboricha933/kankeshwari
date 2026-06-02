@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/lib/db";
+import { db } from "@/lib/db";
 
 // POST /api/orders/[id]/confirm — Confirm payment for an order (customer self-confirms or admin)
 export async function POST(
@@ -11,7 +11,7 @@ export async function POST(
     const body = await request.json();
     const { upiTransactionRef, customerName, customerPhone } = body;
 
-    const order = await prisma.order.findUnique({
+    const order = await db.order.findUnique({
       where: { orderId: id },
       include: { items: true },
     });
@@ -38,7 +38,7 @@ export async function POST(
     }
 
     // Update order status to CONFIRMED
-    const updatedOrder = await prisma.order.update({
+    const updatedOrder = await db.order.update({
       where: { orderId: id },
       data: {
         status: "CONFIRMED",

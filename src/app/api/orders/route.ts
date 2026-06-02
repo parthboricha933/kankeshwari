@@ -97,7 +97,7 @@ export async function POST(request: NextRequest) {
 
     // ── Generate UPI payment link ──────────────────────────
     const { upiId, upiPayeeName } = getUpiConfig();
-    const upiAmount = (grandTotal / 100).toFixed(2); // Convert paise to rupees if stored in paise; currently stored as rupees
+    const upiAmount = grandTotal.toFixed(2); // Prices are in rupees
     const transactionNote = `Bawarchi Order ${orderId}`;
 
     // UPI deep link format

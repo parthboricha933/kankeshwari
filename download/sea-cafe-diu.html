@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Bavarchi - The Indian Cuisine Restaurant, Diu – 100% Pure Vegetarian. Indian, Chinese, Paneer, Tandoor, Thalis & more at Diu's finest vegetarian restaurant."/>
-  <meta name="keywords" content="Bavarchi Diu, pure veg restaurant Diu, vegetarian restaurant Diu, best veg restaurant Diu, Indian cuisine Diu"/>
-  <title>Bavarchi - The Indian Cuisine Restaurant - Diu</title>
+  <meta name="description" content="Bawarchi - The Indian Cuisine Restaurant, Diu – 100% Pure Vegetarian. Indian, Chinese, Paneer, Tandoor, Thalis & more at Diu's finest vegetarian restaurant."/>
+  <meta name="keywords" content="Bawarchi Diu, pure veg restaurant Diu, vegetarian restaurant Diu, best veg restaurant Diu, Indian cuisine Diu"/>
+  <title>Bawarchi - The Indian Cuisine Restaurant - Diu</title>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -202,10 +202,23 @@
     }
     .hero-bg {
       position:absolute; inset:0;
-      background:
-        linear-gradient(160deg, rgba(10,79,110,0.72) 0%, rgba(26,26,46,0.55) 50%, rgba(224,123,57,0.35) 100%),
-        url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1800&q=80') center/cover no-repeat;
       transform:scale(1.03);
+    }
+    .hero-slide {
+      position:absolute; inset:0;
+      background-size:cover;
+      background-position:center;
+      background-repeat:no-repeat;
+      opacity:0;
+      transition:opacity 1.5s ease-in-out;
+    }
+    .hero-slide::after {
+      content:'';
+      position:absolute; inset:0;
+      background:linear-gradient(160deg, rgba(10,79,110,0.72) 0%, rgba(26,26,46,0.55) 50%, rgba(224,123,57,0.35) 100%);
+    }
+    .hero-slide.active {
+      opacity:1;
       animation:heroZoom 18s ease-in-out infinite alternate;
     }
     @keyframes heroZoom { from { transform:scale(1.03); } to { transform:scale(1.08); } }
@@ -542,6 +555,37 @@
     }
     .cart-clear-btn:hover { border-color:var(--coral); color:var(--coral); }
 
+    /* ─── Payment Step UI ──────────────────────────────── */
+    .payment-step { display:none; padding:16px 0; }
+    .payment-step.active { display:block; }
+    .payment-upi-box {
+      background:linear-gradient(135deg,#f0f9ff 0%,#e0f2fe 100%);
+      border:2px solid #7dd3fc; border-radius:14px; padding:20px;
+      text-align:center; margin-bottom:16px;
+    }
+    .payment-upi-box .upi-icon { font-size:2rem; color:var(--ocean); margin-bottom:8px; }
+    .payment-upi-box .upi-amount { font-family:var(--font-display); font-size:2rem; font-weight:700; color:var(--ocean); }
+    .payment-upi-box .upi-id { font-size:0.82rem; color:var(--text-light); margin-top:4px; font-family:monospace; }
+    .payment-upi-box .upi-order-id { font-size:0.75rem; color:var(--sunset); margin-top:6px; font-weight:600; }
+    .pay-upi-btn {
+      display:inline-flex; align-items:center; gap:8px; padding:14px 28px;
+      border-radius:50px; background:var(--ocean); color:#fff;
+      font-size:0.95rem; font-weight:700; cursor:pointer; border:none;
+      transition:var(--transition); font-family:var(--font-body); margin-top:14px;
+    }
+    .pay-upi-btn:hover { background:var(--ocean-mid); transform:translateY(-2px); box-shadow:0 8px 24px rgba(10,79,110,0.3); }
+    .payment-divider { display:flex; align-items:center; gap:12px; margin:14px 0; color:var(--text-light); font-size:0.78rem; }
+    .payment-divider::before, .payment-divider::after { content:''; flex:1; height:1px; background:rgba(10,79,110,0.12); }
+    .confirm-paid-btn {
+      display:inline-flex; align-items:center; gap:8px; padding:12px 24px;
+      border-radius:50px; background:#2e7d32; color:#fff;
+      font-size:0.9rem; font-weight:700; cursor:pointer; border:none;
+      transition:var(--transition); font-family:var(--font-body); width:100%; justify-content:center;
+    }
+    .confirm-paid-btn:hover { background:#388e3c; transform:translateY(-1px); box-shadow:0 6px 20px rgba(46,125,50,0.4); }
+    .confirm-paid-btn:disabled { background:#9e9e9e; cursor:not-allowed; transform:none; box-shadow:none; }
+    .payment-note { font-size:0.75rem; color:var(--text-light); text-align:center; margin-top:10px; line-height:1.5; }
+
     @media (max-width:600px) {
       .menu-modal-box { margin:10px 0; border-radius:14px; }
       .menu-body { padding:16px 16px 40px; }
@@ -553,6 +597,50 @@
       .cart-bar { padding:12px 16px; }
       .order-btn { padding:10px 16px; font-size:0.8rem; }
       .cart-total .grand { font-size:1rem; }
+    }
+
+    /* Coupon Section */
+    .coupon-section { margin-top:10px; }
+    .coupon-offers-title { font-size:0.75rem; font-weight:600; color:var(--ocean); margin-bottom:6px; display:flex; align-items:center; gap:5px; }
+    .coupon-chips { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px; }
+    .coupon-chip {
+      display:inline-flex; align-items:center; gap:4px;
+      background:linear-gradient(135deg, #fff7ed 0%, #fef3c7 100%);
+      border:1.5px dashed var(--sunset);
+      border-radius:8px; padding:5px 10px;
+      font-size:0.72rem; font-weight:700; color:var(--coral);
+      cursor:pointer; transition:var(--transition);
+      user-select:none;
+    }
+    .coupon-chip:hover {
+      background:var(--sunset); color:#fff; border-style:solid;
+      transform:translateY(-1px); box-shadow:0 3px 12px rgba(224,123,57,0.3);
+    }
+    .coupon-chip i { font-size:0.7rem; }
+    .coupon-chip .chip-discount { color:var(--ocean); font-weight:800; }
+    .coupon-chip:hover .chip-discount { color:#fff; }
+    .coupon-chips-empty { font-size:0.72rem; color:var(--text-light); font-style:italic; }
+    .coupon-input-wrap { display:flex; gap:6px; }
+    .coupon-input-wrap input {
+      flex:1; padding:8px 12px; border:1.5px solid rgba(10,79,110,0.15);
+      border-radius:8px; font-size:0.82rem; font-family:inherit;
+      outline:none; transition:border-color 0.2s;
+    }
+    .coupon-input-wrap input:focus { border-color:var(--ocean); }
+    .coupon-apply-btn {
+      padding:8px 16px; border:none; border-radius:8px;
+      background:var(--ocean); color:#fff; font-size:0.8rem;
+      font-weight:600; cursor:pointer; transition:background 0.2s;
+    }
+    .coupon-apply-btn:hover { background:var(--ocean-dark); }
+    .coupon-apply-btn:disabled { opacity:0.5; cursor:default; }
+    .coupon-msg { font-size:0.75rem; margin-top:5px; min-height:1.2em; }
+    .coupon-msg.success { color:#16a34a; }
+    .coupon-msg.error { color:#dc2626; }
+    .cart-bill-row.discount-row { color:#16a34a; }
+    .coupon-remove-btn {
+      background:none; border:none; color:#dc2626; font-size:0.72rem;
+      cursor:pointer; text-decoration:underline; margin-left:4px;
     }
 
     /* ══════════════════════════════════════════════════
@@ -599,6 +687,30 @@
 
 
 
+
+    /* ══════════════════════════════════════════════════
+       PARTY & EVENT HALL
+    ══════════════════════════════════════════════════ */
+    #party-hall { padding:100px 0; background:var(--off-white); }
+    .party-grid { display:grid; grid-template-columns:1fr 1fr; gap:72px; align-items:center; }
+    .party-content .section-subtitle { max-width:100%; }
+    .party-features { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:28px; }
+    .party-feature { display:flex; align-items:center; gap:10px; font-size:0.88rem; font-weight:500; color:var(--text); }
+    .party-feature i { color:var(--sunset); font-size:1rem; width:20px; text-align:center; }
+    .party-cta { display:flex; gap:16px; margin-top:32px; flex-wrap:wrap; }
+    .party-images { position:relative; }
+    .party-img-main-wrap { border-radius:16px; overflow:hidden; box-shadow:var(--shadow); }
+    .party-img-main { width:100%; height:480px; object-fit:cover; display:block; }
+    .party-highlights { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:20px; }
+    .party-highlight-card {
+      background:var(--white); border-radius:14px; padding:20px 16px; text-align:center;
+      box-shadow:0 4px 20px rgba(10,79,110,0.08); border:1px solid rgba(10,79,110,0.06);
+      transition:var(--transition);
+    }
+    .party-highlight-card:hover { transform:translateY(-4px); box-shadow:var(--shadow); }
+    .party-highlight-card i { font-size:1.5rem; color:var(--sunset); display:block; margin-bottom:8px; }
+    .party-highlight-card strong { display:block; font-size:1.1rem; color:var(--ocean); font-family:var(--font-display); font-weight:700; }
+    .party-highlight-card span { font-size:0.75rem; color:var(--text-light); }
 
     /* ══════════════════════════════════════════════════
        RESERVATION
@@ -710,6 +822,23 @@
     .footer-hour-row { display:flex; justify-content:space-between; align-items:center; font-size:0.83rem; color:rgba(255,255,255,0.6); }
     .footer-hour-row strong { color:rgba(255,255,255,0.85); }
 
+    .footer-tnc {
+      border-top:1px solid rgba(255,255,255,0.08);
+      padding:28px 0 20px;
+      text-align:center;
+    }
+    .footer-tnc h4 {
+      font-size:0.8rem; font-weight:600; letter-spacing:0.12em; text-transform:uppercase;
+      color:rgba(255,255,255,0.45); margin-bottom:16px;
+    }
+    .footer-tnc ul {
+      display:flex; flex-wrap:wrap; justify-content:center; gap:10px 28px; list-style:none; padding:0; margin:0;
+    }
+    .footer-tnc ul li {
+      font-size:0.84rem; color:rgba(255,255,255,0.55); display:flex; align-items:center; gap:8px;
+    }
+    .footer-tnc ul li i { color:var(--sunset-warm); font-size:0.78rem; }
+
     .footer-bottom {
       border-top:1px solid rgba(255,255,255,0.06);
       padding:20px 0; display:flex; align-items:center; justify-content:space-between;
@@ -749,6 +878,21 @@
     #scroll-top.visible { display:flex; }
     #scroll-top:hover { background:var(--ocean-mid); transform:translateY(-3px); }
 
+    #admin-btn {
+      position:fixed; bottom:24px; left:24px; z-index:900;
+      width:44px; height:44px; border-radius:50%;
+      background:rgba(26,26,46,0.7); color:rgba(255,255,255,0.6);
+      display:flex; align-items:center; justify-content:center;
+      font-size:1rem; cursor:pointer; border:none; text-decoration:none;
+      box-shadow:0 2px 12px rgba(0,0,0,0.2);
+      transition:var(--transition);
+      backdrop-filter:blur(6px);
+    }
+    #admin-btn:hover {
+      background:var(--ocean); color:var(--white);
+      transform:translateY(-3px); box-shadow:0 6px 20px rgba(10,79,110,0.4);
+    }
+
     /* ══════════════════════════════════════════════════
        RESPONSIVE
     ══════════════════════════════════════════════════ */
@@ -767,6 +911,11 @@
       .specialties-grid { grid-template-columns:1fr; }
 
       .gallery-masonry { columns:2; }
+      .party-grid { grid-template-columns:1fr; gap:48px; }
+      .party-features { grid-template-columns:1fr; }
+      .party-img-main { height:300px; }
+      .party-highlights { grid-template-columns:repeat(3,1fr); }
+      .party-cta { flex-direction:column; }
       .reservation-inner { grid-template-columns:1fr; }
       .contact-grid { grid-template-columns:1fr; }
       .footer-grid { grid-template-columns:1fr; }
@@ -778,6 +927,7 @@
       .gallery-masonry { columns:1; }
       .hero-cta { flex-direction:column; align-items:center; }
       .about-features { grid-template-columns:1fr; }
+      .party-highlights { grid-template-columns:1fr; }
     }
   </style>
 </head>
@@ -787,7 +937,7 @@
 <div id="splash-loader">
   <div class="splash-content">
     <div class="splash-icon"><i class="fas fa-seedling"></i></div>
-    <h1 class="splash-title">Bavarchi</h1>
+    <h1 class="splash-title">Bawarchi</h1>
     <p class="splash-sub">The Indian Cuisine Restaurant · Diu</p>
     <p class="splash-sub" style="margin-top:4px;color:#4caf50;font-weight:600;">100% Pure Vegetarian</p>
     <div class="splash-waves">
@@ -801,7 +951,7 @@
 <nav id="navbar">
   <div class="container nav-inner">
     <a href="#hero" class="nav-logo">
-      <span class="nav-logo-name">Bavarchi <span class="veg-symbol white" style="vertical-align:middle;margin-left:4px;width:18px;height:18px;"></span></span>
+      <span class="nav-logo-name">Bawarchi <span class="veg-symbol white" style="vertical-align:middle;margin-left:4px;width:18px;height:18px;"></span></span>
       <span class="nav-logo-sub">The Indian Cuisine Restaurant · Diu · Pure Veg</span>
     </a>
     <ul class="nav-links">
@@ -809,6 +959,7 @@
       <li><a href="#specialties">Specialties</a></li>
       <li><a href="javascript:void(0)" onclick="openMenuModal()">Menu</a></li>
       <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#party-hall">Party Hall</a></li>
       <li><a href="#contact">Contact</a></li>
       <li><a href="#reservation" class="nav-reserve">Reserve Table</a></li>
     </ul>
@@ -825,16 +976,23 @@
   <a href="#specialties" onclick="closeMobile()">Specialties</a>
   <a href="javascript:void(0)" onclick="closeMobile();openMenuModal()">Menu</a>
   <a href="#gallery" onclick="closeMobile()">Gallery</a>
+  <a href="#party-hall" onclick="closeMobile()">Party Hall</a>
   <a href="#contact" onclick="closeMobile()">Contact</a>
   <a href="#reservation" onclick="closeMobile()" style="color:var(--sunset)">Reserve a Table</a>
 </div>
 
 <!-- ─── HERO ──────────────────────────────────────────── -->
 <section id="hero">
-  <div class="hero-bg"></div>
+  <div class="hero-bg">
+    <div class="hero-slide active" style="background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1800&q=80')"></div>
+    <div class="hero-slide" style="background-image:url('hero-slide-1.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('hero-slide-2.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('hero-slide-3.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('hero-slide-4.jpg')"></div>
+  </div>
   <div class="hero-content">
     <div class="hero-badge"><span class="veg-symbol white" style="width:16px;height:16px;"></span> 100% Pure Vegetarian</div>
-    <h1 class="hero-title">Bavarchi<br><em>The Indian Cuisine Restaurant</em></h1>
+    <h1 class="hero-title">Bawarchi<br><em>The Indian Cuisine Restaurant</em></h1>
     <p class="hero-tagline">Authentic Flavors, Pure Veg Delights, Unforgettable Memories.</p>
     <div class="hero-cta">
       <a href="javascript:void(0)" class="btn btn-primary" onclick="openMenuModal()"><i class="fas fa-utensils"></i> View Menu</a>
@@ -858,11 +1016,11 @@
     <div class="about-grid">
       <div class="about-images reveal-left">
         <img class="about-img-main"
-          src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80"
-          alt="Bavarchi interior dining" loading="lazy"/>
+          src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80"
+          alt="Bawarchi restaurant interior" loading="lazy"/>
         <img class="about-img-accent"
-          src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80"
-          alt="Delicious vegetarian thali" loading="lazy"/>
+          src="https://images.unsplash.com/photo-1567337710282-00832b415979?w=400&q=80"
+          alt="Pure vegetarian thali" loading="lazy"/>
         <div class="about-badge-float">
           <i class="fas fa-star" style="color:var(--sunset)"></i>
           <div>
@@ -875,16 +1033,17 @@
         <span class="section-tag"><i class="fas fa-seedling"></i> &nbsp;Our Story</span>
         <h2 class="section-title">Where Every Meal Feels Like<br>a Celebration of Flavour</h2>
         <p class="section-subtitle">
-          Nestled in the heart of the beautiful Union Territory of Diu, Bavarchi - The Indian Cuisine Restaurant is more than a restaurant — it's a culinary landmark. Born from a passion for fresh ingredients and warm hospitality, we have been welcoming families, tourists, and food lovers from across India and beyond.
+          Nestled in the heart of the beautiful Union Territory of Diu, Bawarchi - The Indian Cuisine Restaurant is more than a restaurant — it's a culinary landmark. Born from a passion for fresh ingredients and warm hospitality, we have been welcoming families, tourists, and food lovers from across India and beyond.
         </p>
         <p class="section-subtitle" style="margin-top:14px">
-          From our aromatic paneer preparations to fragrant Indian curries, crispy Chinese starters, and refreshing beverages — every plate tells a story of love, tradition, and pure vegetarian flavour. Our warm ambiance, hygienic open kitchen, and attentive service make us the go-to pure veg dining destination in Diu.
+          From our aromatic paneer preparations to fragrant Indian curries, crispy Chinese starters, and refreshing beverages — every plate tells a story of love, tradition, and pure vegetarian flavour. Our warm ambiance, hygienic open kitchen, and attentive service make us the go-to pure veg dining destination in Diu. We also feature a grand party and event hall that can accommodate over 900 guests — perfect for weddings, receptions, and celebrations of every kind.
         </p>
         <div class="about-features">
           <div class="about-feature"><i class="fas fa-check-circle"></i> 100% Pure Vegetarian</div>
           <div class="about-feature"><i class="fas fa-check-circle"></i> Hygienic Open Kitchen</div>
           <div class="about-feature"><i class="fas fa-check-circle"></i> Warm Family Ambiance</div>
           <div class="about-feature"><i class="fas fa-check-circle"></i> Family &amp; Group Dining</div>
+          <div class="about-feature"><i class="fas fa-check-circle"></i> Grand Party Hall (900+ Guests)</div>
           <div class="about-feature"><i class="fas fa-check-circle"></i> Fresh Ingredients Daily</div>
           <div class="about-feature"><i class="fas fa-check-circle"></i> Tandoor &amp; Live Roti</div>
         </div>
@@ -931,30 +1090,30 @@
         </div>
       </div>
       <div class="specialty-card reveal">
-        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=700&q=80" alt="Fast Food" loading="lazy"/>
+        <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?w=700&q=80" alt="Indian Snacks" loading="lazy"/>
         <div class="specialty-card-overlay"></div>
         <div class="specialty-card-content">
-          <div class="specialty-icon"><i class="fas fa-hamburger"></i></div>
-          <div class="specialty-title">Fast Food</div>
-          <div class="specialty-desc">Crispy burgers, loaded fries &amp; quick bites</div>
+          <div class="specialty-icon"><i class="fas fa-cookie-bite"></i></div>
+          <div class="specialty-title">Snacks &amp; Starters</div>
+          <div class="specialty-desc">Crispy samosas, pakoras &amp; quick bites</div>
         </div>
       </div>
       <div class="specialty-card reveal">
-        <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=700&q=80" alt="Beverages & Mocktails" loading="lazy"/>
+        <img src="https://images.unsplash.com/photo-1587735243615-c03f25aaff15?w=700&q=80" alt="Beverages & Mocktails" loading="lazy"/>
         <div class="specialty-card-overlay"></div>
         <div class="specialty-card-content">
           <div class="specialty-icon"><i class="fas fa-glass-martini-alt"></i></div>
           <div class="specialty-title">Beverages &amp; Mocktails</div>
-          <div class="specialty-desc">Fresh juices, mocktails &amp; cold brews</div>
+          <div class="specialty-desc">Fresh lassi, juices, mocktails &amp; cold coffee</div>
         </div>
       </div>
       <div class="specialty-card reveal">
-        <img src="https://images.unsplash.com/photo-1551024601-bec78aea704b?w=700&q=80" alt="Desserts" loading="lazy"/>
+        <img src="https://images.unsplash.com/photo-1567337710282-00832b415979?w=700&q=80" alt="Desserts" loading="lazy"/>
         <div class="specialty-card-overlay"></div>
         <div class="specialty-card-content">
           <div class="specialty-icon"><i class="fas fa-ice-cream"></i></div>
           <div class="specialty-title">Desserts</div>
-          <div class="specialty-desc">Sweet endings — cakes, ice creams &amp; more</div>
+          <div class="specialty-desc">Gulab jamun, ice creams &amp; Indian sweets</div>
         </div>
       </div>
     </div>
@@ -969,43 +1128,43 @@
     <div class="gallery-header reveal">
       <span class="section-tag"><i class="fas fa-camera"></i> &nbsp;Moments</span>
       <h2 class="section-title">A Taste of Our World</h2>
-      <p class="section-subtitle">From sizzling plates to warm smiles — a glimpse into life at Bavarchi.</p>
+      <p class="section-subtitle">From sizzling plates to warm smiles — a glimpse into life at Bawarchi.</p>
     </div>
     <div class="gallery-masonry">
       <div class="gallery-item reveal" onclick="openLightbox(this)">
-        <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?w=600&q=80" alt="Restaurant interior" loading="lazy"/>
+        <img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=600&q=80" alt="Paneer Butter Masala" loading="lazy"/>
         <div class="gallery-item-overlay"><i class="fas fa-search-plus"></i></div>
       </div>
       <div class="gallery-item reveal" onclick="openLightbox(this)">
-        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80" alt="Food plate" loading="lazy"/>
+        <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=600&q=80" alt="Veg Dum Biryani" loading="lazy"/>
         <div class="gallery-item-overlay"><i class="fas fa-search-plus"></i></div>
       </div>
       <div class="gallery-item reveal" onclick="openLightbox(this)">
-        <img src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=600&q=80" alt="Vegetarian curry" loading="lazy"/>
+        <img src="https://images.unsplash.com/photo-1567337710282-00832b415979?w=600&q=80" alt="Gujarati Thali" loading="lazy"/>
         <div class="gallery-item-overlay"><i class="fas fa-search-plus"></i></div>
       </div>
       <div class="gallery-item reveal" onclick="openLightbox(this)">
-        <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=600&q=80" alt="Healthy meal" loading="lazy"/>
+        <img src="https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=600&q=80" alt="Paneer Tikka" loading="lazy"/>
         <div class="gallery-item-overlay"><i class="fas fa-search-plus"></i></div>
       </div>
       <div class="gallery-item reveal" onclick="openLightbox(this)">
-        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80" alt="Dining atmosphere" loading="lazy"/>
+        <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600&q=80" alt="Samosa &amp; Chutney" loading="lazy"/>
         <div class="gallery-item-overlay"><i class="fas fa-search-plus"></i></div>
       </div>
       <div class="gallery-item reveal" onclick="openLightbox(this)">
-        <img src="https://images.unsplash.com/photo-1502301103665-0b95cc738daf?w=600&q=80" alt="Restaurant ambiance" loading="lazy"/>
+        <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&q=80" alt="Veg Curry &amp; Rice" loading="lazy"/>
         <div class="gallery-item-overlay"><i class="fas fa-search-plus"></i></div>
       </div>
       <div class="gallery-item reveal" onclick="openLightbox(this)">
-        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&q=80" alt="Pizza dish" loading="lazy"/>
+        <img src="https://images.unsplash.com/photo-1626132647523-66f5bf380027?w=600&q=80" alt="Chole Bhature" loading="lazy"/>
         <div class="gallery-item-overlay"><i class="fas fa-search-plus"></i></div>
       </div>
       <div class="gallery-item reveal" onclick="openLightbox(this)">
-        <img src="https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=600&q=80" alt="Vegetarian grill" loading="lazy"/>
+        <img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=600&q=80" alt="Veg Curry with Naan" loading="lazy"/>
         <div class="gallery-item-overlay"><i class="fas fa-search-plus"></i></div>
       </div>
       <div class="gallery-item reveal" onclick="openLightbox(this)">
-        <img src="https://images.unsplash.com/photo-1551024601-bec78aea704b?w=600&q=80" alt="Dessert" loading="lazy"/>
+        <img src="https://images.unsplash.com/photo-1587735243615-c03f25aaff15?w=600&q=80" alt="Mango Lassi" loading="lazy"/>
         <div class="gallery-item-overlay"><i class="fas fa-search-plus"></i></div>
       </div>
     </div>
@@ -1017,6 +1176,60 @@
   <button id="lightbox-close" onclick="closeLightbox()"><i class="fas fa-times"></i></button>
   <img id="lightbox-img" src="" alt="Gallery image"/>
 </div>
+
+<!-- ─── PARTY & EVENTS ───────────────────────────────── -->
+<section id="party-hall">
+  <div class="container">
+    <div class="party-grid">
+      <div class="party-content reveal-left">
+        <span class="section-tag"><i class="fas fa-glass-cheers"></i> &nbsp;Grand Celebrations</span>
+        <h2 class="section-title">Party &amp; Event Hall<br>for 900+ Guests</h2>
+        <p class="section-subtitle">
+          Planning a grand celebration? Bawarchi offers one of the largest pure vegetarian party halls in Diu, capable of hosting over 900 guests. Whether it is a wedding reception, engagement ceremony, birthday bash, corporate event, or a festive gathering — our spacious and elegant hall is the perfect venue for your special occasion.
+        </p>
+        <p class="section-subtitle" style="margin-top:14px">
+          Our dedicated events team ensures every detail is taken care of — from customized pure veg menus crafted by our expert chefs to elegant decor, professional sound systems, and seamless service. With ample parking, hygienic kitchen facilities, and a warm ambiance, your guests will leave with unforgettable memories.
+        </p>
+        <div class="party-features">
+          <div class="party-feature"><i class="fas fa-users"></i> Capacity: 900+ Guests</div>
+          <div class="party-feature"><i class="fas fa-seedling"></i> 100% Pure Veg Catering</div>
+          <div class="party-feature"><i class="fas fa-music"></i> Sound &amp; DJ Setup</div>
+          <div class="party-feature"><i class="fas fa-parking"></i> Ample Parking Space</div>
+          <div class="party-feature"><i class="fas fa-utensils"></i> Customizable Menu</div>
+          <div class="party-feature"><i class="fas fa-paint-brush"></i> Decoration Services</div>
+          <div class="party-feature"><i class="fas fa-snowflake"></i> Air-Conditioned Hall</div>
+          <div class="party-feature"><i class="fas fa-broom"></i> Dedicated Staff &amp; Service</div>
+        </div>
+        <div class="party-cta">
+          <a href="https://wa.me/918320977752?text=Hi%20Bawarchi!%20I%27m%20interested%20in%20booking%20your%20party%20hall%20for%20an%20event.%20Please%20share%20details." class="btn btn-primary" target="_blank"><i class="fab fa-whatsapp"></i> Book Event on WhatsApp</a>
+          <a href="#reservation" class="btn btn-ocean"><i class="fas fa-calendar-check"></i> Reserve Now</a>
+        </div>
+      </div>
+      <div class="party-images reveal-right">
+        <div class="party-img-main-wrap">
+          <img class="party-img-main" src="https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?w=700&q=80" alt="Grand party hall event" loading="lazy"/>
+        </div>
+        <div class="party-highlights">
+          <div class="party-highlight-card">
+            <i class="fas fa-users"></i>
+            <strong>900+</strong>
+            <span>Guests</span>
+          </div>
+          <div class="party-highlight-card">
+            <i class="fas fa-leaf"></i>
+            <strong>Pure Veg</strong>
+            <span>Catering</span>
+          </div>
+          <div class="party-highlight-card">
+            <i class="fas fa-heart"></i>
+            <strong>Weddings</strong>
+            <span>&amp; Events</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 
 
@@ -1038,21 +1251,21 @@
             <div class="res-detail-icon"><i class="fas fa-clock"></i></div>
             <div class="res-detail-text">
               <strong>Opening Hours</strong>
-              <span>Mon – Sun: 11:00 AM – 11:00 PM</span>
+              <span>Mon – Sun: 9:00 AM – 3:00 AM</span>
             </div>
           </div>
           <div class="res-detail">
             <div class="res-detail-icon"><i class="fas fa-phone"></i></div>
             <div class="res-detail-text">
               <strong>Call Us</strong>
-              <span><a href="tel:+917574033599" style="color:inherit">+91 75740 33599</a></span>
+              <span><a href="tel:+918320977752" style="color:inherit">+91 83209 77752</a></span>
             </div>
           </div>
           <div class="res-detail">
             <div class="res-detail-icon"><i class="fab fa-whatsapp"></i></div>
             <div class="res-detail-text">
               <strong>WhatsApp</strong>
-              <span><a href="https://wa.me/917574033599" target="_blank" rel="noopener" style="color:inherit">+91 75740 33599</a></span>
+              <span><a href="https://wa.me/918320977752" target="_blank" rel="noopener" style="color:inherit">+91 83209 77752</a></span>
             </div>
           </div>
         </div>
@@ -1065,7 +1278,7 @@
           </div>
           <div class="form-group">
             <label>Phone Number</label>
-            <input type="tel" id="res-phone" placeholder="+91 75740 33599"/>
+            <input type="tel" id="res-phone" placeholder="+91 83209 77752"/>
           </div>
         </div>
         <div class="form-row">
@@ -1121,7 +1334,7 @@
   <div class="container">
     <div class="contact-header reveal">
       <span class="section-tag"><i class="fas fa-location-dot"></i> &nbsp;Find Us</span>
-      <h2 class="section-title">Visit Bavarchi in Diu</h2>
+      <h2 class="section-title">Visit Bawarchi in Diu</h2>
       <p class="section-subtitle">We're located in the heart of the island — easy to find, impossible to forget.</p>
     </div>
     <div class="contact-grid">
@@ -1130,22 +1343,36 @@
           <div class="contact-card-icon"><i class="fas fa-map-marker-alt"></i></div>
           <div>
             <h4>Address</h4>
-            <p>Bavarchi - The Indian Cuisine Restaurant<br>Diu, Daman &amp; Diu – 362520<br>India</p>
+            <p>Bawarchi - The Indian Cuisine Restaurant<br>Diu, Daman &amp; Diu – 362520<br>India</p>
           </div>
         </div>
         <div class="contact-card">
           <div class="contact-card-icon"><i class="fas fa-phone"></i></div>
           <div>
             <h4>Phone</h4>
-            <a href="tel:+917574033599">+91 75740 33599</a>
-            <a href="https://wa.me/917574033599" target="_blank" rel="noopener" style="margin-top:4px"><i class="fab fa-whatsapp" style="margin-right:4px"></i>WhatsApp Us</a>
+            <a href="tel:+918320977752">+91 83209 77752</a>
+            <a href="https://wa.me/918320977752" target="_blank" rel="noopener" style="margin-top:4px"><i class="fab fa-whatsapp" style="margin-right:4px"></i>WhatsApp Us</a>
           </div>
         </div>
         <div class="contact-card">
           <div class="contact-card-icon"><i class="fas fa-envelope"></i></div>
           <div>
             <h4>Email</h4>
-            <a href="mailto:hello@seacafediu.com">hello@seacafediu.com</a>
+            <a href="mailto:ruchitpatel.8866@gmail.com">ruchitpatel.8866@gmail.com</a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-card-icon"><i class="fab fa-instagram"></i></div>
+          <div>
+            <h4>Instagram</h4>
+            <a href="https://www.instagram.com/kankeshwari2?igsh=MTJvZ2FqcG5kaWFicw==" target="_blank" rel="noopener">@kankeshwari2</a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-card-icon"><i class="fab fa-facebook-f"></i></div>
+          <div>
+            <h4>Facebook</h4>
+            <a href="https://www.facebook.com/share/1CZP5mct5c/" target="_blank" rel="noopener">Bawarchi on Facebook</a>
           </div>
         </div>
         <div class="contact-card">
@@ -1153,7 +1380,7 @@
           <div>
             <h4>Opening Hours</h4>
             <p>Monday – Sunday</p>
-            <p style="color:var(--ocean);font-weight:600;margin-top:4px">11:00 AM – 11:00 PM</p>
+            <p style="color:var(--ocean);font-weight:600;margin-top:4px">9:00 AM – 3:00 AM</p>
           </div>
         </div>
       </div>
@@ -1162,7 +1389,7 @@
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14931.91540697899!2d70.9284!3d20.7144!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be28e8e3bc0f5b7%3A0x9a97c01cb4f85b6a!2sDiu!5e0!3m2!1sen!2sin!4v1680000000000"
           allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-          title="Bavarchi Location Map"
+          title="Bawarchi Location Map"
         ></iframe>
       </div>
     </div>
@@ -1174,15 +1401,14 @@
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <div class="footer-brand-name">Bavarchi <span class="veg-symbol" style="vertical-align:middle;margin-left:6px;width:18px;height:18px;"></span></div>
+        <div class="footer-brand-name">Bawarchi <span class="veg-symbol" style="vertical-align:middle;margin-left:6px;width:18px;height:18px;"></span></div>
         <div class="footer-brand-sub">The Indian Cuisine Restaurant · Diu · Pure Veg</div>
         <p>A pure vegetarian haven for food lovers. Fresh ingredients, warm hospitality, and unforgettable flavours on the beautiful island of Diu.</p>
         <div class="footer-social">
-          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-          <a href="https://wa.me/917574033599" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-          <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-          <a href="#" aria-label="Google"><i class="fab fa-google"></i></a>
+          <a href="https://www.instagram.com/kankeshwari2?igsh=MTJvZ2FqcG5kaWFicw==" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.facebook.com/share/1CZP5mct5c/" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://wa.me/918320977752" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          <a href="mailto:ruchitpatel.8866@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
         </div>
       </div>
       <div class="footer-col">
@@ -1192,7 +1418,7 @@
           <li><a href="#specialties">Specialties</a></li>
           <li><a href="javascript:void(0)" onclick="openMenuModal()">Our Menu</a></li>
           <li><a href="#gallery">Gallery</a></li>
-
+          <li><a href="#party-hall">Party Hall</a></li>
           <li><a href="#reservation">Reserve a Table</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
@@ -1211,9 +1437,7 @@
       <div class="footer-col">
         <h4>Opening Hours</h4>
         <div class="footer-hours">
-          <div class="footer-hour-row"><strong>Mon – Fri</strong><span>11 AM – 11 PM</span></div>
-          <div class="footer-hour-row"><strong>Saturday</strong><span>11 AM – 11:30 PM</span></div>
-          <div class="footer-hour-row"><strong>Sunday</strong><span>10 AM – 11:30 PM</span></div>
+          <div class="footer-hour-row"><strong>Mon – Sun</strong><span>9 AM – 3 AM</span></div>
           <div style="margin-top:12px;padding:10px 14px;background:rgba(255,255,255,0.06);border-radius:8px;font-size:0.8rem;color:rgba(255,255,255,0.5);">
             <i class="fas fa-info-circle" style="color:var(--sunset-warm);margin-right:6px"></i>
             Last order 30 min before closing
@@ -1221,9 +1445,18 @@
         </div>
       </div>
     </div>
+    <div class="footer-tnc">
+      <h4>Terms &amp; Conditions</h4>
+      <ul>
+        <li><i class="fas fa-leaf"></i> Jain Preparation Available</li>
+        <li><i class="fas fa-clock"></i> Please allow min. 30 Minutes to process your order.</li>
+        <li><i class="fas fa-palette"></i> We do not use any type of food colours.</li>
+        <li><i class="fas fa-utensils"></i> Only available items will be served.</li>
+      </ul>
+    </div>
     <div class="footer-bottom">
-      <p>&copy; 2025 Bavarchi - The Indian Cuisine Restaurant, Diu. All rights reserved.</p>
-      <p>Designed with <i class="fas fa-heart" style="color:var(--sunset)"></i> for the love of good food &amp; pure vegetarian living</p>
+      <p>&copy; 2025 Bawarchi - The Indian Cuisine Restaurant, Diu. All rights reserved.</p>
+      <p>Designed with <i class="fas fa-heart" style="color:var(--sunset)"></i> for the love of good food &amp; pure vegetarian living · <a href="/admin" style="font-size:0.75rem;opacity:0.5;color:rgba(255,255,255,0.5);">Admin Panel</a></p>
     </div>
   </div>
 </footer>
@@ -1234,7 +1467,7 @@
     <!-- Header -->
     <div class="menu-modal-close">
       <div>
-        <h2>Bavarchi Menu <span class="veg-symbol" style="vertical-align:middle;margin-left:6px;width:18px;height:18px;border-color:#81c784;"></span></h2>
+        <h2>Bawarchi Menu <span class="veg-symbol" style="vertical-align:middle;margin-left:6px;width:18px;height:18px;border-color:#81c784;"></span></h2>
         <div class="tagline">The Flavors of Diu</div>
         <span class="menu-veg-badge"><i class="fas fa-leaf" style="margin-right:4px"></i> 100% Pure Vegetarian</span>
       </div>
@@ -1458,11 +1691,48 @@
     </div>
     <div class="cart-drawer-footer" id="cartDrawerFooter">
       <div class="cart-bill-row"><span>Subtotal</span><span id="drawerSubtotal">₹0</span></div>
-      <div class="cart-bill-row"><span>GST (5%)</span><span id="drawerGst">₹0</span></div>
+      <div class="cart-bill-row"><span>GST (<span id="drawerGstLabel">5</span>%)</span><span id="drawerGst">₹0</span></div>
+      <div class="cart-bill-row"><span>Packaging</span><span id="drawerPkg">₹0</span></div>
+      <div class="cart-bill-row"><span>Delivery</span><span id="drawerDel">₹0</span></div>
+      <div class="cart-bill-row discount-row" id="drawerDiscountRow" style="display:none;color:#16a34a"><span><i class="fas fa-tag"></i> Coupon <span id="drawerCouponLabel"></span></span><span id="drawerDiscount">-₹0</span></div>
       <div class="cart-bill-row grand-total"><span>Total</span><span id="drawerTotal">₹0</span></div>
-      <button class="order-btn" style="width:100%;justify-content:center;margin-top:14px" onclick="sendOrderToWhatsApp()">
-        <i class="fab fa-whatsapp"></i> Confirm Order on WhatsApp
+
+      <!-- Coupon Section -->
+      <div class="coupon-section" id="couponSection">
+        <div class="coupon-offers-title"><i class="fas fa-tags"></i> Available Offers</div>
+        <div class="coupon-chips" id="couponChips">
+          <span class="coupon-chips-empty">Loading offers...</span>
+        </div>
+        <div class="coupon-input-wrap">
+          <input type="text" id="couponInput" placeholder="Enter coupon code" maxlength="20" />
+          <button class="coupon-apply-btn" id="couponApplyBtn" onclick="applyCoupon()">Apply</button>
+        </div>
+        <div class="coupon-msg" id="couponMsg"></div>
+      </div>
+
+      <button class="order-btn" style="width:100%;justify-content:center;margin-top:14px" onclick="proceedToPayment()">
+        <i class="fas fa-credit-card"></i> Proceed to Pay
       </button>
+
+      <!-- Payment Step -->
+      <div class="payment-step" id="paymentStep">
+        <div class="payment-upi-box">
+          <div class="upi-icon"><i class="fas fa-mobile-screen-button"></i></div>
+          <div>Pay via UPI</div>
+          <div class="upi-amount" id="upiAmount">₹0</div>
+          <div class="upi-id" id="upiIdDisplay">Loading...</div>
+          <div class="upi-order-id" id="upiOrderId"></div>
+          <button class="pay-upi-btn" id="payUpiBtn" onclick="openUPIApp()">
+            <i class="fas fa-arrow-up-right-from-square"></i> Open UPI App & Pay
+          </button>
+        </div>
+        <div class="payment-divider">After completing payment</div>
+        <button class="confirm-paid-btn" id="confirmPaidBtn" onclick="confirmPaymentAndOrder()">
+          <i class="fas fa-check-circle"></i> I've Completed Payment
+        </button>
+        <p class="payment-note">Click "Open UPI App & Pay" to pay via Google Pay, PhonePe, Paytm or any UPI app. After payment, click "I've Completed Payment" to confirm your order.</p>
+      </div>
+
       <button class="cart-clear-btn" onclick="clearCart()" style="width:100%;text-align:center;margin-top:8px">
         <i class="fas fa-trash-alt" style="margin-right:4px"></i> Clear Cart
       </button>
@@ -1471,7 +1741,10 @@
 </div>
 
 <!-- ─── FLOATING BUTTONS ───────────────────────────────── -->
-<a href="https://wa.me/917574033599" id="whatsapp-btn" target="_blank" rel="noopener" aria-label="WhatsApp us">
+<a href="/admin" id="admin-btn" title="Admin Panel" aria-label="Admin Panel">
+  <i class="fas fa-cog"></i>
+</a>
+<a href="https://wa.me/918320977752" id="whatsapp-btn" target="_blank" rel="noopener" aria-label="WhatsApp us">
   <i class="fab fa-whatsapp"></i>
 </a>
 <button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">
@@ -1491,6 +1764,17 @@
     }, 1800);
   });
 
+  /* ── Hero Slideshow ── */
+  (function() {
+    const slides = document.querySelectorAll('.hero-slide');
+    let current = 0;
+    setInterval(function() {
+      slides[current].classList.remove('active');
+      current = (current + 1) % slides.length;
+      slides[current].classList.add('active');
+    }, 5000);
+  })();
+
   /* ── Navbar scroll ── */
   const navbar = document.getElementById('navbar');
   window.addEventListener('scroll', () => {
@@ -1501,10 +1785,136 @@
 
   /* ── Menu modal ── */
   const menuModal = document.getElementById('menuModal');
+  var menuDataLoaded = false;
+  var menuDataLoading = false;
+
+  function renderMenuFromAPI(categories) {
+    // Render category nav
+    var navInner = menuModal.querySelector('.menu-nav-inner');
+    var navHtml = '';
+    for (var i = 0; i < categories.length; i++) {
+      var cat = categories[i];
+      navHtml += '<a class="menu-nav-link" onclick="menuScrollTo(\'' + cat.slug + '\')">' + cat.icon + ' ' + cat.name + '</a>';
+    }
+    navInner.innerHTML = navHtml;
+
+    // Render menu body
+    var menuBody = menuModal.querySelector('.menu-body');
+    var bodyHtml = '';
+    for (var i = 0; i < categories.length; i++) {
+      var cat = categories[i];
+      bodyHtml += '<div class="menu-section" id="' + cat.slug + '">';
+      bodyHtml += '<h2 class="menu-cat-title"><span class="icon">' + cat.icon + '</span> ' + cat.name + '</h2>';
+      bodyHtml += '<div class="menu-grid">';
+      for (var j = 0; j < cat.items.length; j++) {
+        var item = cat.items[j];
+        if (!item.isAvailable) continue; // Skip unavailable items
+        var badgeHtml = '';
+        if (item.badge) {
+          var badgeClass = item.badge;
+          var badgeLabel = item.badge.split('-').map(function(w){return w.charAt(0).toUpperCase()+w.slice(1)}).join(' ');
+          badgeHtml = ' <span class="badge ' + badgeClass + '">' + badgeLabel + '</span>';
+        }
+        var variantHtml = '';
+        if (item.variantTag) {
+          variantHtml = ' <span class="variant-tag">' + item.variantTag + '</span>';
+        }
+        if (item.description) {
+          // Fix Meal style: detailed layout
+          bodyHtml += '<div class="menu-item" style="flex-direction:column;align-items:flex-start;gap:6px;padding:14px 12px;">';
+          bodyHtml += '<div style="display:flex;justify-content:space-between;width:100%;align-items:center">';
+          bodyHtml += '<span class="item-name" style="font-weight:700;">' + item.name + badgeHtml + '</span>';
+          bodyHtml += '<div style="display:flex;align-items:center;gap:10px">';
+          bodyHtml += '<span class="item-price">₹' + item.price + '</span>';
+          bodyHtml += '<div class="item-actions" data-key="' + item.name + '||' + item.price + '"><button class="add-btn" data-key="' + item.name + '||' + item.price + '" data-name="' + item.name.replace(/"/g,'&quot;') + '" data-price="' + item.price + '" onclick="addToCart(this)">ADD</button></div>';
+          bodyHtml += '</div></div>';
+          bodyHtml += '<div class="variant-tags"><span class="variant-tag">' + item.description + '</span></div>';
+          bodyHtml += '</div>';
+        } else {
+          bodyHtml += '<div class="menu-item">';
+          bodyHtml += '<span class="item-name">' + item.name + badgeHtml + variantHtml + '</span>';
+          bodyHtml += '<div style="display:flex;align-items:center;gap:8px;">';
+          bodyHtml += '<span class="item-price">₹' + item.price + '</span>';
+          bodyHtml += '<div class="item-actions" data-key="' + item.name + '||' + item.price + '"><button class="add-btn" data-key="' + item.name + '||' + item.price + '" data-name="' + item.name.replace(/"/g,'&quot;') + '" data-price="' + item.price + '" onclick="addToCart(this)">ADD</button></div>';
+          bodyHtml += '</div></div>';
+        }
+      }
+      bodyHtml += '</div></div>';
+    }
+    menuBody.innerHTML = bodyHtml;
+
+    // Re-initialize cart buttons for the new items
+    initCartButtons();
+
+    // Re-attach scroll highlighting
+    attachMenuScrollHighlight();
+  }
+
+  function attachMenuScrollHighlight() {
+    var menuBox = menuModal.querySelector('.menu-modal-box');
+    // Remove old scroll listener by cloning
+    var newMenuBox = menuBox.cloneNode(true);
+    menuBox.parentNode.replaceChild(newMenuBox, menuBox);
+    menuBox = newMenuBox;
+    // Re-attach close on click outside
+    menuModal.addEventListener('click', function(e) {
+      if (e.target === menuModal) closeMenuModal();
+    });
+    menuBox.addEventListener('scroll', function() {
+      var menuSections = menuModal.querySelectorAll('.menu-section');
+      var menuNavLinks = menuModal.querySelectorAll('.menu-nav-link');
+      var current = '';
+      menuSections.forEach(function(sec) {
+        var top = sec.offsetTop - menuBox.offsetTop - 120;
+        if (menuBox.scrollTop >= top) current = sec.getAttribute('id');
+      });
+      menuNavLinks.forEach(function(link) {
+        link.classList.remove('active');
+        var onclick = link.getAttribute('onclick') || '';
+        if (onclick.includes(current)) {
+          link.classList.add('active');
+        }
+      });
+    });
+  }
+
+  // Preload menu from API on page load
+  (function preloadMenu() {
+    fetch('/api/menu')
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (data && data.length > 0) {
+          renderMenuFromAPI(data);
+          menuDataLoaded = true;
+        }
+      })
+      .catch(function(err) {
+        console.warn('Failed to preload menu from API, will use fallback:', err);
+      });
+  })();
+
   function openMenuModal() {
     menuModal.classList.add('open');
     document.body.style.overflow = 'hidden';
     menuModal.scrollTop = 0;
+    // Try to fetch menu from API if not already loaded
+    if (!menuDataLoaded && !menuDataLoading) {
+      menuDataLoading = true;
+      fetch('/api/menu')
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+          if (data && data.length > 0) {
+            renderMenuFromAPI(data);
+            menuDataLoaded = true;
+          }
+          menuDataLoading = false;
+        })
+        .catch(function(err) {
+          console.warn('Failed to fetch menu from API, using fallback:', err);
+          menuDataLoading = false;
+          // Fallback: the hardcoded HTML is already in the page
+        });
+    }
   }
   function closeMenuModal() {
     menuModal.classList.remove('open');
@@ -1520,24 +1930,24 @@
   });
   // Scroll to category inside modal
   function menuScrollTo(id) {
-    const el = document.getElementById(id);
+    var el = document.getElementById(id);
     if (el) {
-      const box = menuModal.querySelector('.menu-modal-box');
-      const offset = el.offsetTop - box.offsetTop - 120;
+      var box = menuModal.querySelector('.menu-modal-box');
+      var offset = el.offsetTop - box.offsetTop - 120;
       box.scrollTo({ top: offset, behavior: 'smooth' });
     }
   }
   // Highlight active category nav on scroll inside modal
-  const menuSections = menuModal.querySelectorAll('.menu-section');
-  const menuNavLinks = menuModal.querySelectorAll('.menu-nav-link');
-  const menuBox = menuModal.querySelector('.menu-modal-box');
-  menuBox.addEventListener('scroll', () => {
-    let current = '';
-    menuSections.forEach(sec => {
-      const top = sec.offsetTop - menuBox.offsetTop - 120;
+  var menuSections = menuModal.querySelectorAll('.menu-section');
+  var menuNavLinks = menuModal.querySelectorAll('.menu-nav-link');
+  var menuBox = menuModal.querySelector('.menu-modal-box');
+  menuBox.addEventListener('scroll', function() {
+    var current = '';
+    menuSections.forEach(function(sec) {
+      var top = sec.offsetTop - menuBox.offsetTop - 120;
       if (menuBox.scrollTop >= top) current = sec.getAttribute('id');
     });
-    menuNavLinks.forEach(link => {
+    menuNavLinks.forEach(function(link) {
       link.classList.remove('active');
       if (link.getAttribute('onclick') && link.getAttribute('onclick').includes(current)) {
         link.classList.add('active');
@@ -1596,7 +2006,7 @@
       return;
     }
     /* Build WhatsApp message */
-    let msg = `🍽️ *Table Reservation – Bavarchi (Pure Veg)*\n\n`;
+    let msg = `🍽️ *Table Reservation – Bawarchi (Pure Veg)*\n\n`;
     msg += `👤 Name: ${name}\n`;
     msg += `📞 Phone: ${phone}\n`;
     msg += `📅 Date: ${date}\n`;
@@ -1604,7 +2014,7 @@
     msg += `👥 Guests: ${guests}\n`;
     if (notes) msg += `📝 Notes: ${notes}\n`;
     msg += `\nThank you!`;
-    const waUrl = `https://wa.me/917574033599?text=${encodeURIComponent(msg)}`;
+    const waUrl = `https://wa.me/918320977752?text=${encodeURIComponent(msg)}`;
     window.open(waUrl, '_blank');
     document.getElementById('formSuccess').classList.add('show');
     setTimeout(() => document.getElementById('formSuccess').classList.remove('show'), 6000);
@@ -1704,6 +2114,30 @@
     updateCartDrawer();
   }
 
+  /* ── Charges & Coupon State ────────────────────────── */
+  var chargeSettings = { packaging: 20, delivery: 30, gstPercent: 5 };
+  var appliedCoupon = null; // { code, discount, type }
+
+  // Fetch settings from API
+  function fetchSettings() {
+    fetch('/api/settings')
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (data.success && data.settings) {
+          for (var i = 0; i < data.settings.length; i++) {
+            var s = data.settings[i];
+            if (s.key === 'packaging_charge') chargeSettings.packaging = parseInt(s.value) || 0;
+            if (s.key === 'delivery_charge') chargeSettings.delivery = parseInt(s.value) || 0;
+            if (s.key === 'gst_percent') chargeSettings.gstPercent = parseFloat(s.value) || 5;
+          }
+          updateCartDrawer();
+          updateCartBar();
+        }
+      })
+      .catch(function() {});
+  }
+  fetchSettings();
+
   function getCartTotals() {
     var subtotal = 0;
     var totalItems = 0;
@@ -1711,9 +2145,23 @@
       subtotal += cart[k].price * cart[k].qty;
       totalItems += cart[k].qty;
     }
-    var gst = Math.round(subtotal * 0.05);
-    var grand = subtotal + gst;
-    return { subtotal: subtotal, gst: gst, grand: grand, totalItems: totalItems };
+    var discount = 0;
+    if (appliedCoupon) {
+      if (appliedCoupon.type === 'PERCENT') {
+        discount = Math.round(subtotal * appliedCoupon.discount / 100);
+      } else {
+        discount = appliedCoupon.discount;
+      }
+      if (discount > subtotal) discount = subtotal;
+    }
+    var afterDiscount = subtotal - discount;
+    var gst = Math.round(afterDiscount * chargeSettings.gstPercent / 100);
+    var grand = afterDiscount + gst + chargeSettings.packaging + chargeSettings.delivery;
+    return {
+      subtotal: subtotal, discount: discount, afterDiscount: afterDiscount,
+      gst: gst, packaging: chargeSettings.packaging, delivery: chargeSettings.delivery,
+      grand: grand, totalItems: totalItems, gstPercent: chargeSettings.gstPercent
+    };
   }
 
   function updateCartBar() {
@@ -1767,7 +2215,19 @@
     }
     var t = getCartTotals();
     document.getElementById('drawerSubtotal').textContent = '₹' + t.subtotal;
+    document.getElementById('drawerGstLabel').textContent = t.gstPercent;
     document.getElementById('drawerGst').textContent = '₹' + t.gst;
+    document.getElementById('drawerPkg').textContent = '₹' + t.packaging;
+    document.getElementById('drawerDel').textContent = '₹' + t.delivery;
+    // Discount row
+    var discountRow = document.getElementById('drawerDiscountRow');
+    if (t.discount > 0) {
+      discountRow.style.display = 'flex';
+      document.getElementById('drawerCouponLabel').textContent = '(' + appliedCoupon.code + ')';
+      document.getElementById('drawerDiscount').textContent = '-₹' + t.discount;
+    } else {
+      discountRow.style.display = 'none';
+    }
     document.getElementById('drawerTotal').textContent = '₹' + t.grand;
   }
 
@@ -1786,6 +2246,10 @@
 
   function clearCart() {
     for (var k in cart) delete cart[k];
+    appliedCoupon = null;
+    document.getElementById('couponInput').value = '';
+    document.getElementById('couponMsg').textContent = '';
+    document.getElementById('couponMsg').className = 'coupon-msg';
     // Reset all menu-item UIs
     document.querySelectorAll('.item-actions').forEach(function(el) {
       var key = el.getAttribute('data-key');
@@ -1795,13 +2259,234 @@
     updateCartDrawer();
   }
 
-  function sendOrderToWhatsApp() {
+  /* ── Coupon Logic ───────────────────────────────── */
+  // Fetch available coupons and display as clickable chips
+  var availableCoupons = [];
+
+  function fetchAvailableCoupons() {
+    fetch('/api/coupons/available')
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (data.success && data.coupons) {
+          availableCoupons = data.coupons;
+          renderCouponChips();
+        } else {
+          renderCouponChipsEmpty();
+        }
+      })
+      .catch(function() {
+        renderCouponChipsEmpty();
+      });
+  }
+
+  function renderCouponChips() {
+    var container = document.getElementById('couponChips');
+    if (!availableCoupons || availableCoupons.length === 0) {
+      container.innerHTML = '<span class="coupon-chips-empty">No offers available right now</span>';
+      return;
+    }
+    var html = '';
+    for (var i = 0; i < availableCoupons.length; i++) {
+      var c = availableCoupons[i];
+      var discountLabel = c.type === 'PERCENT' ? c.discount + '% OFF' : '₹' + c.discount + ' OFF';
+      var minLabel = c.minOrder > 0 ? ' (min ₹' + c.minOrder + ')' : '';
+      html += '<div class="coupon-chip" onclick="clickCouponChip(\'' + c.code.replace(/'/g, "\\'") + '\')" title="Click to apply">';
+      html += '<i class="fas fa-tag"></i> ';
+      html += '<span>' + c.code + '</span>';
+      html += ' <span class="chip-discount">' + discountLabel + minLabel + '</span>';
+      html += '</div>';
+    }
+    container.innerHTML = html;
+  }
+
+  function renderCouponChipsEmpty() {
+    var container = document.getElementById('couponChips');
+    container.innerHTML = '<span class="coupon-chips-empty">No offers available right now</span>';
+  }
+
+  function clickCouponChip(code) {
+    // If a coupon is already applied, remove it first
+    if (appliedCoupon) {
+      removeCoupon();
+    }
+    // Set the code in the input and apply
+    document.getElementById('couponInput').value = code;
+    applyCoupon();
+  }
+
+  // Fetch available coupons on page load
+  fetchAvailableCoupons();
+
+  function applyCoupon() {
+    var code = document.getElementById('couponInput').value.trim();
+    var msgEl = document.getElementById('couponMsg');
+    if (!code) {
+      msgEl.textContent = 'Please enter a coupon code';
+      msgEl.className = 'coupon-msg error';
+      return;
+    }
+    var t = getCartTotals();
+    var btn = document.getElementById('couponApplyBtn');
+    btn.disabled = true;
+    btn.textContent = 'Checking...';
+
+    fetch('/api/coupons/validate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code: code, subtotal: t.subtotal })
+    })
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      btn.disabled = false;
+      btn.textContent = 'Apply';
+      if (data.valid) {
+        appliedCoupon = data.coupon;
+        msgEl.innerHTML = 'Coupon applied! You save ₹' + '<span id="couponRemoveBtn" class="coupon-remove-btn" onclick="removeCoupon()">Remove</span>';
+        msgEl.className = 'coupon-msg success';
+        document.getElementById('couponInput').disabled = true;
+        btn.style.display = 'none';
+        updateCartBar();
+        updateCartDrawer();
+      } else {
+        appliedCoupon = null;
+        msgEl.textContent = data.error || 'Invalid coupon';
+        msgEl.className = 'coupon-msg error';
+        updateCartBar();
+        updateCartDrawer();
+      }
+    })
+    .catch(function() {
+      btn.disabled = false;
+      btn.textContent = 'Apply';
+      msgEl.textContent = 'Failed to validate coupon';
+      msgEl.className = 'coupon-msg error';
+    });
+  }
+
+  function removeCoupon() {
+    appliedCoupon = null;
+    document.getElementById('couponInput').value = '';
+    document.getElementById('couponInput').disabled = false;
+    document.getElementById('couponApplyBtn').style.display = '';
+    document.getElementById('couponMsg').textContent = '';
+    document.getElementById('couponMsg').className = 'coupon-msg';
+    updateCartBar();
+    updateCartDrawer();
+  }
+
+  /* ── UPI Payment Flow ───────────────────────────────── */
+  var currentOrderData = null;
+
+  function proceedToPayment() {
     var t = getCartTotals();
     if (t.totalItems === 0) {
       alert('Your cart is empty! Please add items to your order.');
       return;
     }
-    var msg = '🛒 *Food Order – Bavarchi (Pure Veg)*\n\n';
+
+    // Build items array for API
+    var items = [];
+    for (var k in cart) {
+      var item = cart[k];
+      items.push({ name: item.name, price: item.price, quantity: item.qty });
+    }
+
+    // Show payment step immediately with loading state
+    document.getElementById('paymentStep').classList.add('active');
+    document.getElementById('upiAmount').textContent = '₹' + t.grand;
+    document.getElementById('upiIdDisplay').textContent = 'Creating order...';
+    document.getElementById('upiOrderId').textContent = '';
+    document.getElementById('payUpiBtn').disabled = true;
+    document.getElementById('payUpiBtn').style.opacity = '0.6';
+    document.getElementById('confirmPaidBtn').disabled = true;
+    document.getElementById('confirmPaidBtn').style.opacity = '0.6';
+
+    // Create order on server
+    fetch('/api/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items: items, couponCode: appliedCoupon ? appliedCoupon.code : null })
+    })
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      if (!data.success) {
+        alert('Error creating order: ' + (data.error || 'Unknown error'));
+        document.getElementById('paymentStep').classList.remove('active');
+        return;
+      }
+      currentOrderData = data;
+      var pay = data.payment;
+      var order = data.order;
+
+      document.getElementById('upiAmount').textContent = '₹' + order.grandTotal;
+      document.getElementById('upiIdDisplay').textContent = pay.upiId;
+      document.getElementById('upiOrderId').textContent = 'Order: ' + order.orderId;
+      document.getElementById('payUpiBtn').disabled = false;
+      document.getElementById('payUpiBtn').style.opacity = '1';
+      document.getElementById('confirmPaidBtn').disabled = false;
+      document.getElementById('confirmPaidBtn').style.opacity = '1';
+
+      // Store UPI link for the pay button
+      document.getElementById('payUpiBtn').setAttribute('data-upi-link', pay.upiLink);
+    })
+    .catch(function(err) {
+      console.error('Order creation failed:', err);
+      alert('Failed to create order. Please check your internet connection and try again.');
+      document.getElementById('paymentStep').classList.remove('active');
+    });
+  }
+
+  function openUPIApp() {
+    var upiLink = document.getElementById('payUpiBtn').getAttribute('data-upi-link');
+    if (!upiLink) {
+      alert('Order not created yet. Please wait...');
+      return;
+    }
+    // Open UPI intent link — this will open GPay/PhonePe/Paytm on mobile
+    window.location.href = upiLink;
+  }
+
+  function confirmPaymentAndOrder() {
+    if (!currentOrderData) {
+      alert('No order found. Please try again.');
+      return;
+    }
+
+    var orderId = currentOrderData.order.orderId;
+    var btn = document.getElementById('confirmPaidBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Confirming...';
+
+    // Confirm payment on server
+    fetch('/api/orders/' + orderId + '/confirm', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({})
+    })
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      if (!data.success && data.error && data.error.indexOf('already been confirmed') === -1) {
+        alert('Error: ' + data.error);
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-check-circle"></i> I\'ve Completed Payment';
+        return;
+      }
+
+      // Send order to WhatsApp after payment confirmation
+      sendOrderToWhatsApp(orderId);
+    })
+    .catch(function(err) {
+      console.error('Payment confirmation failed:', err);
+      // Still send to WhatsApp even if confirmation fails
+      sendOrderToWhatsApp(orderId);
+    });
+  }
+
+  function sendOrderToWhatsApp(orderId) {
+    var t = getCartTotals();
+    var msg = '🛒 *Food Order – Bawarchi (Pure Veg)*\n';
+    msg += '🧾 *Order ID: ' + (orderId || 'N/A') + '*\n';
+    msg += '✅ *Payment: UPI Paid*\n\n';
     var idx = 1;
     for (var k in cart) {
       var item = cart[k];
@@ -1810,11 +2495,22 @@
     }
     msg += '\n───────────────\n';
     msg += '📦 Subtotal: ₹' + t.subtotal + '\n';
-    msg += '📋 GST (5%): ₹' + t.gst + '\n';
+    if (t.discount > 0) {
+      msg += '🏷️ Coupon (' + (appliedCoupon ? appliedCoupon.code : '') + '): -₹' + t.discount + '\n';
+    }
+    msg += '📋 GST (' + t.gstPercent + '%): ₹' + t.gst + '\n';
+    msg += '📦 Packaging: ₹' + t.packaging + '\n';
+    msg += '🚚 Delivery: ₹' + t.delivery + '\n';
     msg += '💰 *Total: ₹' + t.grand + '*\n';
-    msg += '\nPlease confirm my order. Thank you! 🙏';
-    var waUrl = 'https://wa.me/917574033599?text=' + encodeURIComponent(msg);
+    msg += '\n✅ UPI Payment completed. Please confirm my order. Thank you! 🙏';
+    var waUrl = 'https://wa.me/918320977752?text=' + encodeURIComponent(msg);
     window.open(waUrl, '_blank');
+
+    // Reset UI
+    document.getElementById('paymentStep').classList.remove('active');
+    currentOrderData = null;
+    clearCart();
+    closeCartDrawer();
   }
 
   /* Initialize cart buttons on load */

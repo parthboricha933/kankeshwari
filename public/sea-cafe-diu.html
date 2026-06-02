@@ -601,6 +601,25 @@
 
     /* Coupon Section */
     .coupon-section { margin-top:10px; }
+    .coupon-offers-title { font-size:0.75rem; font-weight:600; color:var(--ocean); margin-bottom:6px; display:flex; align-items:center; gap:5px; }
+    .coupon-chips { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px; }
+    .coupon-chip {
+      display:inline-flex; align-items:center; gap:4px;
+      background:linear-gradient(135deg, #fff7ed 0%, #fef3c7 100%);
+      border:1.5px dashed var(--sunset);
+      border-radius:8px; padding:5px 10px;
+      font-size:0.72rem; font-weight:700; color:var(--coral);
+      cursor:pointer; transition:var(--transition);
+      user-select:none;
+    }
+    .coupon-chip:hover {
+      background:var(--sunset); color:#fff; border-style:solid;
+      transform:translateY(-1px); box-shadow:0 3px 12px rgba(224,123,57,0.3);
+    }
+    .coupon-chip i { font-size:0.7rem; }
+    .coupon-chip .chip-discount { color:var(--ocean); font-weight:800; }
+    .coupon-chip:hover .chip-discount { color:#fff; }
+    .coupon-chips-empty { font-size:0.72rem; color:var(--text-light); font-style:italic; }
     .coupon-input-wrap { display:flex; gap:6px; }
     .coupon-input-wrap input {
       flex:1; padding:8px 12px; border:1.5px solid rgba(10,79,110,0.15);
@@ -1680,6 +1699,10 @@
 
       <!-- Coupon Section -->
       <div class="coupon-section" id="couponSection">
+        <div class="coupon-offers-title"><i class="fas fa-tags"></i> Available Offers</div>
+        <div class="coupon-chips" id="couponChips">
+          <span class="coupon-chips-empty">Loading offers...</span>
+        </div>
         <div class="coupon-input-wrap">
           <input type="text" id="couponInput" placeholder="Enter coupon code" maxlength="20" />
           <button class="coupon-apply-btn" id="couponApplyBtn" onclick="applyCoupon()">Apply</button>
@@ -2237,6 +2260,63 @@
   }
 
   /* ── Coupon Logic ───────────────────────────────── */
+  // Fetch available coupons and display as clickable chips
+  var availableCoupons = [];
+
+  function fetchAvailableCoupons() {
+    fetch('/api/coupons/available')
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (data.success && data.coupons) {
+          availableCoupons = data.coupons;
+          renderCouponChips();
+        } else {
+          renderCouponChipsEmpty();
+        }
+      })
+      .catch(function() {
+        renderCouponChipsEmpty();
+      });
+  }
+
+  function renderCouponChips() {
+    var container = document.getElementById('couponChips');
+    if (!availableCoupons || availableCoupons.length === 0) {
+      container.innerHTML = '<span class="coupon-chips-empty">No offers available right now</span>';
+      return;
+    }
+    var html = '';
+    for (var i = 0; i < availableCoupons.length; i++) {
+      var c = availableCoupons[i];
+      var discountLabel = c.type === 'PERCENT' ? c.discount + '% OFF' : '₹' + c.discount + ' OFF';
+      var minLabel = c.minOrder > 0 ? ' (min ₹' + c.minOrder + ')' : '';
+      html += '<div class="coupon-chip" onclick="clickCouponChip(\'' + c.code.replace(/'/g, "\\'") + '\')" title="Click to apply">';
+      html += '<i class="fas fa-tag"></i> ';
+      html += '<span>' + c.code + '</span>';
+      html += ' <span class="chip-discount">' + discountLabel + minLabel + '</span>';
+      html += '</div>';
+    }
+    container.innerHTML = html;
+  }
+
+  function renderCouponChipsEmpty() {
+    var container = document.getElementById('couponChips');
+    container.innerHTML = '<span class="coupon-chips-empty">No offers available right now</span>';
+  }
+
+  function clickCouponChip(code) {
+    // If a coupon is already applied, remove it first
+    if (appliedCoupon) {
+      removeCoupon();
+    }
+    // Set the code in the input and apply
+    document.getElementById('couponInput').value = code;
+    applyCoupon();
+  }
+
+  // Fetch available coupons on page load
+  fetchAvailableCoupons();
+
   function applyCoupon() {
     var code = document.getElementById('couponInput').value.trim();
     var msgEl = document.getElementById('couponMsg');

@@ -90,3 +90,35 @@ Stage Summary:
 - UPI Payment API: Working correctly with UPI ID ruchitpatel.8866-5@oksbi
 - All env vars properly set in both my-project and kankeshwari Vercel projects
 - Production URL: https://my-project-rho-eight-58.vercel.app
+---
+Task ID: 3
+Agent: Main Agent
+Task: Add packaging/delivery charges and coupon system
+
+Work Log:
+- Added RestaurantSetting and Coupon models to Prisma schema
+- Added packagingCharge, deliveryCharge, discount, couponCode fields to Order model
+- Pushed schema to Neon database
+- Seeded default settings: packaging=₹20, delivery=₹30, GST=5%
+- Created sample coupon: WELCOME50 (₹50 off, min order ₹200)
+- Created API routes:
+  - GET/PUT /api/settings (public GET, admin PUT)
+  - GET/POST /api/coupons (admin only)
+  - PUT/DELETE /api/coupons/[id] (admin only)
+  - POST /api/coupons/validate (public)
+- Updated POST /api/orders to fetch settings from DB, calculate charges, validate coupons
+- Updated frontend (sea-cafe-diu.html):
+  - Added charges display in cart drawer (Packaging, Delivery, GST %)
+  - Added coupon input with Apply/Remove functionality
+  - Updated WhatsApp message to include all charges
+  - Fetches settings from API on page load
+- Updated admin panel:
+  - Added Settings tab (⚙️) for managing packaging/delivery/GST charges
+  - Added Coupons tab (🏷️) for CRUD coupon management
+  - Added sidebar navigation for new tabs
+
+Stage Summary:
+- All APIs tested and working on production
+- Order with coupon WELCOME50: ₹209 subtotal → ₹50 discount → ₹8 GST → ₹20 pkg → ₹30 del = ₹217 total
+- Order without coupon: ₹120 subtotal → ₹6 GST → ₹20 pkg → ₹30 del = ₹176 total
+- Production URL: https://my-project-rho-eight-58.vercel.app

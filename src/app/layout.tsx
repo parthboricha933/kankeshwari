@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Bawarchi Restaurant Diu | Best Pure Veg Restaurant Near Me | Diu",
-  description: "Bawarchi Restaurant Diu – Best pure veg restaurant in Diu. Indian, Chinese, Paneer, Tandoor, Thalis & more. Restaurant near me in Diu. Grand Party Hall for 900+ guests. Open 9 AM - 3 AM. Order online!",
-  keywords: ["bawarchi restaurant diu", "restaurant in diu", "restaurant near me", "restaurant", "bawarchi diu", "pure veg restaurant diu", "vegetarian restaurant diu", "best veg restaurant diu", "best restaurant in diu", "veg restaurant near me", "indian restaurant diu", "veg food diu", "thali diu", "paneer diu", "party hall diu", "chinese restaurant diu", "tandoor diu", "food diu", "diu restaurant", "diu food", "family restaurant diu", "online food order diu", "veg thali diu", "restaurant near diu beach", "diu tourism food"],
+  description: "Bawarchi Restaurant Diu – Best pure veg restaurant near Mahalaxmi Temple, Vijay Chowk, Diu. Indian, Chinese, Paneer, Tandoor, Thalis & more. Restaurant near me in Diu. Grand Party Hall for 900+ guests. Open 9 AM - 3 AM. Order online!",
+  keywords: ["bawarchi restaurant diu", "restaurant in diu", "restaurant near me", "restaurant", "bawarchi diu", "pure veg restaurant diu", "vegetarian restaurant diu", "best veg restaurant diu", "best restaurant in diu", "veg restaurant near me", "indian restaurant diu", "veg food diu", "thali diu", "paneer diu", "party hall diu", "chinese restaurant diu", "tandoor diu", "food diu", "diu restaurant", "diu food", "family restaurant diu", "online food order diu", "veg thali diu", "restaurant near diu beach", "diu tourism food", "restaurant near mahalaxmi temple diu", "vijay chowk diu restaurant"],
   icons: {
     icon: "/favicon.ico",
   },

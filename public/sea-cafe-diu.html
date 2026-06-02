@@ -555,6 +555,37 @@
     }
     .cart-clear-btn:hover { border-color:var(--coral); color:var(--coral); }
 
+    /* ─── Payment Step UI ──────────────────────────────── */
+    .payment-step { display:none; padding:16px 0; }
+    .payment-step.active { display:block; }
+    .payment-upi-box {
+      background:linear-gradient(135deg,#f0f9ff 0%,#e0f2fe 100%);
+      border:2px solid #7dd3fc; border-radius:14px; padding:20px;
+      text-align:center; margin-bottom:16px;
+    }
+    .payment-upi-box .upi-icon { font-size:2rem; color:var(--ocean); margin-bottom:8px; }
+    .payment-upi-box .upi-amount { font-family:var(--font-display); font-size:2rem; font-weight:700; color:var(--ocean); }
+    .payment-upi-box .upi-id { font-size:0.82rem; color:var(--text-light); margin-top:4px; font-family:monospace; }
+    .payment-upi-box .upi-order-id { font-size:0.75rem; color:var(--sunset); margin-top:6px; font-weight:600; }
+    .pay-upi-btn {
+      display:inline-flex; align-items:center; gap:8px; padding:14px 28px;
+      border-radius:50px; background:var(--ocean); color:#fff;
+      font-size:0.95rem; font-weight:700; cursor:pointer; border:none;
+      transition:var(--transition); font-family:var(--font-body); margin-top:14px;
+    }
+    .pay-upi-btn:hover { background:var(--ocean-mid); transform:translateY(-2px); box-shadow:0 8px 24px rgba(10,79,110,0.3); }
+    .payment-divider { display:flex; align-items:center; gap:12px; margin:14px 0; color:var(--text-light); font-size:0.78rem; }
+    .payment-divider::before, .payment-divider::after { content:''; flex:1; height:1px; background:rgba(10,79,110,0.12); }
+    .confirm-paid-btn {
+      display:inline-flex; align-items:center; gap:8px; padding:12px 24px;
+      border-radius:50px; background:#2e7d32; color:#fff;
+      font-size:0.9rem; font-weight:700; cursor:pointer; border:none;
+      transition:var(--transition); font-family:var(--font-body); width:100%; justify-content:center;
+    }
+    .confirm-paid-btn:hover { background:#388e3c; transform:translateY(-1px); box-shadow:0 6px 20px rgba(46,125,50,0.4); }
+    .confirm-paid-btn:disabled { background:#9e9e9e; cursor:not-allowed; transform:none; box-shadow:none; }
+    .payment-note { font-size:0.75rem; color:var(--text-light); text-align:center; margin-top:10px; line-height:1.5; }
+
     @media (max-width:600px) {
       .menu-modal-box { margin:10px 0; border-radius:14px; }
       .menu-body { padding:16px 16px 40px; }
@@ -1592,9 +1623,29 @@
       <div class="cart-bill-row"><span>Subtotal</span><span id="drawerSubtotal">₹0</span></div>
       <div class="cart-bill-row"><span>GST (5%)</span><span id="drawerGst">₹0</span></div>
       <div class="cart-bill-row grand-total"><span>Total</span><span id="drawerTotal">₹0</span></div>
-      <button class="order-btn" style="width:100%;justify-content:center;margin-top:14px" onclick="sendOrderToWhatsApp()">
-        <i class="fab fa-whatsapp"></i> Confirm Order on WhatsApp
+      <button class="order-btn" style="width:100%;justify-content:center;margin-top:14px" onclick="proceedToPayment()">
+        <i class="fas fa-credit-card"></i> Proceed to Pay
       </button>
+
+      <!-- Payment Step -->
+      <div class="payment-step" id="paymentStep">
+        <div class="payment-upi-box">
+          <div class="upi-icon"><i class="fas fa-mobile-screen-button"></i></div>
+          <div>Pay via UPI</div>
+          <div class="upi-amount" id="upiAmount">₹0</div>
+          <div class="upi-id" id="upiIdDisplay">Loading...</div>
+          <div class="upi-order-id" id="upiOrderId"></div>
+          <button class="pay-upi-btn" id="payUpiBtn" onclick="openUPIApp()">
+            <i class="fas fa-arrow-up-right-from-square"></i> Open UPI App & Pay
+          </button>
+        </div>
+        <div class="payment-divider">After completing payment</div>
+        <button class="confirm-paid-btn" id="confirmPaidBtn" onclick="confirmPaymentAndOrder()">
+          <i class="fas fa-check-circle"></i> I've Completed Payment
+        </button>
+        <p class="payment-note">Click "Open UPI App & Pay" to pay via Google Pay, PhonePe, Paytm or any UPI app. After payment, click "I've Completed Payment" to confirm your order.</p>
+      </div>
+
       <button class="cart-clear-btn" onclick="clearCart()" style="width:100%;text-align:center;margin-top:8px">
         <i class="fas fa-trash-alt" style="margin-right:4px"></i> Clear Cart
       </button>
@@ -2067,13 +2118,121 @@
     updateCartDrawer();
   }
 
-  function sendOrderToWhatsApp() {
+  /* ── UPI Payment Flow ───────────────────────────────── */
+  var currentOrderData = null;
+
+  function proceedToPayment() {
     var t = getCartTotals();
     if (t.totalItems === 0) {
       alert('Your cart is empty! Please add items to your order.');
       return;
     }
-    var msg = '🛒 *Food Order – Bawarchi (Pure Veg)*\n\n';
+
+    // Build items array for API
+    var items = [];
+    for (var k in cart) {
+      var item = cart[k];
+      items.push({ name: item.name, price: item.price, quantity: item.qty });
+    }
+
+    var t = getCartTotals();
+
+    // Show payment step immediately with loading state
+    document.getElementById('paymentStep').classList.add('active');
+    document.getElementById('upiAmount').textContent = '₹' + t.grand;
+    document.getElementById('upiIdDisplay').textContent = 'Creating order...';
+    document.getElementById('upiOrderId').textContent = '';
+    document.getElementById('payUpiBtn').disabled = true;
+    document.getElementById('payUpiBtn').style.opacity = '0.6';
+    document.getElementById('confirmPaidBtn').disabled = true;
+    document.getElementById('confirmPaidBtn').style.opacity = '0.6';
+
+    // Create order on server
+    fetch('/api/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items: items })
+    })
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      if (!data.success) {
+        alert('Error creating order: ' + (data.error || 'Unknown error'));
+        document.getElementById('paymentStep').classList.remove('active');
+        return;
+      }
+      currentOrderData = data;
+      var pay = data.payment;
+      var order = data.order;
+
+      document.getElementById('upiAmount').textContent = '₹' + order.grandTotal;
+      document.getElementById('upiIdDisplay').textContent = pay.upiId;
+      document.getElementById('upiOrderId').textContent = 'Order: ' + order.orderId;
+      document.getElementById('payUpiBtn').disabled = false;
+      document.getElementById('payUpiBtn').style.opacity = '1';
+      document.getElementById('confirmPaidBtn').disabled = false;
+      document.getElementById('confirmPaidBtn').style.opacity = '1';
+
+      // Store UPI link for the pay button
+      document.getElementById('payUpiBtn').setAttribute('data-upi-link', pay.upiLink);
+    })
+    .catch(function(err) {
+      console.error('Order creation failed:', err);
+      alert('Failed to create order. Please check your internet connection and try again.');
+      document.getElementById('paymentStep').classList.remove('active');
+    });
+  }
+
+  function openUPIApp() {
+    var upiLink = document.getElementById('payUpiBtn').getAttribute('data-upi-link');
+    if (!upiLink) {
+      alert('Order not created yet. Please wait...');
+      return;
+    }
+    // Open UPI intent link — this will open GPay/PhonePe/Paytm on mobile
+    window.location.href = upiLink;
+  }
+
+  function confirmPaymentAndOrder() {
+    if (!currentOrderData) {
+      alert('No order found. Please try again.');
+      return;
+    }
+
+    var orderId = currentOrderData.order.orderId;
+    var btn = document.getElementById('confirmPaidBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Confirming...';
+
+    // Confirm payment on server
+    fetch('/api/orders/' + orderId + '/confirm', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({})
+    })
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      if (!data.success && data.error && data.error.indexOf('already been confirmed') === -1) {
+        alert('Error: ' + data.error);
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-check-circle"></i> I\'ve Completed Payment';
+        return;
+      }
+
+      // Send order to WhatsApp after payment confirmation
+      sendOrderToWhatsApp(orderId);
+    })
+    .catch(function(err) {
+      console.error('Payment confirmation failed:', err);
+      // Still send to WhatsApp even if confirmation fails
+      sendOrderToWhatsApp(orderId);
+    });
+  }
+
+  function sendOrderToWhatsApp(orderId) {
+    var t = getCartTotals();
+    var msg = '🛒 *Food Order – Bawarchi (Pure Veg)*\n';
+    msg += '🧾 *Order ID: ' + (orderId || 'N/A') + '*\n';
+    msg += '✅ *Payment: UPI Paid*\n\n';
     var idx = 1;
     for (var k in cart) {
       var item = cart[k];
@@ -2084,9 +2243,15 @@
     msg += '📦 Subtotal: ₹' + t.subtotal + '\n';
     msg += '📋 GST (5%): ₹' + t.gst + '\n';
     msg += '💰 *Total: ₹' + t.grand + '*\n';
-    msg += '\nPlease confirm my order. Thank you! 🙏';
+    msg += '\n✅ UPI Payment completed. Please confirm my order. Thank you! 🙏';
     var waUrl = 'https://wa.me/918320977752?text=' + encodeURIComponent(msg);
     window.open(waUrl, '_blank');
+
+    // Reset UI
+    document.getElementById('paymentStep').classList.remove('active');
+    currentOrderData = null;
+    clearCart();
+    closeCartDrawer();
   }
 
   /* Initialize cart buttons on load */

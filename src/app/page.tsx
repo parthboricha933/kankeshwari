@@ -12,7 +12,7 @@ export default function Home() {
         padding: 0,
         display: 'block',
       }}
-      title="Bavarchi - The Indian Cuisine Restaurant, Diu"
+      title="Bawarchi - The Indian Cuisine Restaurant, Diu"
     />
   )
 }

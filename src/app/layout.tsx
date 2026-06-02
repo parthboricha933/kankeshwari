@@ -14,9 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Bavarchi - The Indian Cuisine Restaurant | Diu",
-  description: "Bavarchi - The Indian Cuisine Restaurant, Diu. Experience authentic Indian vegetarian cuisine with Chinese, Paneer, Tandoor, Thalis and more.",
-  keywords: ["Bavarchi", "Indian Restaurant", "Diu", "Indian Cuisine", "Vegetarian Food"],
+  title: "Bawarchi - The Indian Cuisine Restaurant | Diu",
+  description: "Bawarchi - The Indian Cuisine Restaurant, Diu. Experience authentic Indian vegetarian cuisine with Chinese, Paneer, Tandoor, Thalis and more.",
+  keywords: ["Bawarchi", "Indian Restaurant", "Diu", "Indian Cuisine", "Vegetarian Food"],
   icons: {
     icon: "/favicon.ico",
   },

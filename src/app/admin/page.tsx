@@ -433,7 +433,7 @@ export default function AdminPage() {
               <ChefHat className="w-8 h-8 text-white" />
             </div>
             <CardTitle className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-green-600 bg-clip-text text-transparent">
-              Bavarchi Admin
+              Bawarchi Admin
             </CardTitle>
             <p className="text-sm text-gray-500 mt-1">The Indian Cuisine Restaurant, Diu</p>
           </CardHeader>
@@ -509,7 +509,7 @@ export default function AdminPage() {
                   <ChefHat className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h1 className="font-bold text-gray-900 text-sm">Bavarchi Admin</h1>
+                  <h1 className="font-bold text-gray-900 text-sm">Bawarchi Admin</h1>
                   <p className="text-xs text-gray-500">Menu Management</p>
                 </div>
               </div>

@@ -428,6 +428,109 @@
     .check-yes { color:#2e7d32; font-size:1rem; }
     .check-no { color:#ccc; font-size:1rem; }
 
+    /* ─── GST Banner ──────────────────────────────── */
+    .gst-banner-section {
+      padding:60px 0;
+      background:var(--off-white);
+    }
+    .gst-banner {
+      max-width:900px;
+      margin:0 auto;
+      background:linear-gradient(135deg, var(--ocean) 0%, var(--ocean-mid) 100%);
+      border-radius:20px;
+      padding:40px 48px;
+      display:flex;
+      align-items:center;
+      gap:28px;
+      position:relative;
+      overflow:hidden;
+      box-shadow:0 12px 40px rgba(10,79,110,0.25);
+    }
+    .gst-banner::before {
+      content:'';
+      position:absolute;
+      top:-30px; right:-30px;
+      width:140px; height:140px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.06);
+    }
+    .gst-banner::after {
+      content:'';
+      position:absolute;
+      bottom:-40px; right:60px;
+      width:180px; height:180px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.04);
+    }
+    .gst-banner-icon {
+      width:70px; height:70px;
+      background:rgba(255,255,255,0.15);
+      border-radius:18px;
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.8rem;
+      color:var(--sunset-warm);
+      flex-shrink:0;
+      backdrop-filter:blur(8px);
+      border:1px solid rgba(255,255,255,0.1);
+      position:relative;
+      z-index:1;
+      animation:gstPulse 2.5s ease-in-out infinite;
+    }
+    @keyframes gstPulse {
+      0%,100% { transform:scale(1); }
+      50% { transform:scale(1.06); }
+    }
+    .gst-banner-content {
+      position:relative;
+      z-index:1;
+    }
+    .gst-banner-title {
+      font-family:var(--font-display);
+      font-size:1.6rem;
+      font-weight:700;
+      color:var(--white);
+      line-height:1.2;
+    }
+    .gst-banner-title em {
+      font-style:italic;
+      color:var(--sunset-warm);
+    }
+    .gst-banner-text {
+      font-size:0.95rem;
+      color:rgba(255,255,255,0.8);
+      margin-top:8px;
+      line-height:1.6;
+    }
+    .gst-banner-badge {
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      margin-top:14px;
+      padding:8px 20px;
+      background:rgba(224,123,57,0.25);
+      border:1px solid rgba(224,123,57,0.4);
+      border-radius:50px;
+      font-size:0.82rem;
+      font-weight:700;
+      color:var(--sunset-warm);
+      letter-spacing:0.05em;
+    }
+    .gst-banner-badge i {
+      font-size:0.9rem;
+    }
+    @media (max-width:768px) {
+      .gst-banner {
+        flex-direction:column;
+        text-align:center;
+        padding:32px 28px;
+      }
+      .gst-banner-icon {
+        width:60px; height:60px;
+        font-size:1.5rem;
+      }
+      .gst-banner-title { font-size:1.35rem; }
+    }
+
     /* ─── GST & Notes Section ──────────────────────── */
     .notes-section {
       padding:0 0 80px;
@@ -915,6 +1018,25 @@
           </tr>
         </tbody>
       </table>
+    </div>
+  </div>
+</section>
+
+<!-- ─── GST BANNER ──────────────────────────────────────── -->
+<section class="gst-banner-section">
+  <div class="container">
+    <div class="gst-banner reveal">
+      <div class="gst-banner-icon">
+        <i class="fas fa-receipt"></i>
+      </div>
+      <div class="gst-banner-content">
+        <h3 class="gst-banner-title">GST is <em>Applicable</em> on All Packages</h3>
+        <p class="gst-banner-text">Government Goods & Services Tax (GST) will be charged additionally on all party package prices as per applicable rates.</p>
+        <div class="gst-banner-badge">
+          <i class="fas fa-info-circle"></i>
+          All prices shown are exclusive of GST
+        </div>
+      </div>
     </div>
   </div>
 </section>

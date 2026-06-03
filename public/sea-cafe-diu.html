@@ -2053,6 +2053,8 @@
 
     // Re-attach scroll highlighting
     attachMenuScrollHighlight();
+    // Re-initialize search after DOM cloning
+    initMenuSearch();
   }
 
   function attachMenuScrollHighlight() {
@@ -2143,91 +2145,111 @@
     }
   }
 
-  /* ── Menu Search ── */
-  var menuSearchInput = document.getElementById('menuSearchInput');
-  var menuSearchClear = document.getElementById('menuSearchClear');
-  var menuSearchCount = document.getElementById('menuSearchCount');
-  var menuNoResults = document.getElementById('menuNoResults');
-  var menuNavBar = menuModal.querySelector('.menu-nav-bar');
+  /* ── Menu Search (uses event delegation for resilience) ── */
+  function initMenuSearch() {
+    var searchInput = menuModal.querySelector('#menuSearchInput');
+    var searchClear = menuModal.querySelector('#menuSearchClear');
+    var searchCount = menuModal.querySelector('#menuSearchCount');
+    var noResults = menuModal.querySelector('#menuNoResults');
+    var navBar = menuModal.querySelector('.menu-nav-bar');
+    if (!searchInput) return;
 
-  menuSearchInput.addEventListener('input', function() {
-    var query = this.value.trim().toLowerCase();
-    var sections = menuModal.querySelectorAll('.menu-section');
-    var totalVisible = 0;
+    // Remove old listener by cloning input
+    var newInput = searchInput.cloneNode(true);
+    searchInput.parentNode.replaceChild(newInput, searchInput);
+    searchInput = newInput;
 
-    // Toggle clear button and count visibility
-    if (query.length > 0) {
-      menuSearchClear.classList.add('visible');
-      menuNavBar.style.display = 'none'; // Hide category nav during search
-    } else {
-      menuSearchClear.classList.remove('visible');
-      menuSearchCount.classList.remove('visible');
-      menuNavBar.style.display = ''; // Show category nav
-      menuNoResults.classList.remove('visible');
-      // Show all items and sections
+    searchInput.addEventListener('input', function() {
+      var query = this.value.trim().toLowerCase();
+      var sections = menuModal.querySelectorAll('.menu-section');
+      var totalVisible = 0;
+
+      var clearBtn = menuModal.querySelector('#menuSearchClear');
+      var countEl = menuModal.querySelector('#menuSearchCount');
+      var noResEl = menuModal.querySelector('#menuNoResults');
+      var nav = menuModal.querySelector('.menu-nav-bar');
+
+      if (query.length > 0) {
+        if (clearBtn) clearBtn.classList.add('visible');
+        if (nav) nav.style.display = 'none';
+      } else {
+        if (clearBtn) clearBtn.classList.remove('visible');
+        if (countEl) countEl.classList.remove('visible');
+        if (nav) nav.style.display = '';
+        if (noResEl) noResEl.classList.remove('visible');
+        sections.forEach(function(sec) {
+          sec.classList.remove('search-hidden');
+          var items = sec.querySelectorAll('.menu-item');
+          items.forEach(function(item) { item.classList.remove('search-hidden'); });
+        });
+        return;
+      }
+
       sections.forEach(function(sec) {
-        sec.classList.remove('search-hidden');
         var items = sec.querySelectorAll('.menu-item');
-        items.forEach(function(item) { item.classList.remove('search-hidden'); });
-      });
-      return;
-    }
-
-    // Filter items
-    sections.forEach(function(sec) {
-      var items = sec.querySelectorAll('.menu-item');
-      var visibleInSection = 0;
-      items.forEach(function(item) {
-        var nameEl = item.querySelector('.item-name');
-        var text = nameEl ? nameEl.textContent.toLowerCase() : '';
-        if (text.includes(query)) {
-          item.classList.remove('search-hidden');
-          visibleInSection++;
-          totalVisible++;
+        var visibleInSection = 0;
+        items.forEach(function(item) {
+          var nameEl = item.querySelector('.item-name');
+          var text = nameEl ? nameEl.textContent.toLowerCase() : '';
+          if (text.includes(query)) {
+            item.classList.remove('search-hidden');
+            visibleInSection++;
+            totalVisible++;
+          } else {
+            item.classList.add('search-hidden');
+          }
+        });
+        if (visibleInSection === 0) {
+          sec.classList.add('search-hidden');
         } else {
-          item.classList.add('search-hidden');
+          sec.classList.remove('search-hidden');
         }
       });
-      // Hide entire section if no items match
-      if (visibleInSection === 0) {
-        sec.classList.add('search-hidden');
+
+      if (totalVisible > 0) {
+        if (countEl) {
+          countEl.textContent = totalVisible + ' item' + (totalVisible > 1 ? 's' : '');
+          countEl.classList.add('visible');
+        }
+        if (noResEl) noResEl.classList.remove('visible');
       } else {
-        sec.classList.remove('search-hidden');
+        if (countEl) countEl.classList.remove('visible');
+        if (noResEl) noResEl.classList.add('visible');
       }
     });
 
-    // Update count
-    if (totalVisible > 0) {
-      menuSearchCount.textContent = totalVisible + ' item' + (totalVisible > 1 ? 's' : '');
-      menuSearchCount.classList.add('visible');
-      menuNoResults.classList.remove('visible');
-    } else {
-      menuSearchCount.classList.remove('visible');
-      menuNoResults.classList.add('visible');
-    }
-  });
+    // Clear button — use delegation since it might get cloned
+    menuModal.addEventListener('click', function(e) {
+      if (e.target.closest('#menuSearchClear')) {
+        var inp = menuModal.querySelector('#menuSearchInput');
+        if (inp) { inp.value = ''; inp.dispatchEvent(new Event('input')); inp.focus(); }
+      }
+    });
+  }
 
-  menuSearchClear.addEventListener('click', function() {
-    menuSearchInput.value = '';
-    menuSearchInput.dispatchEvent(new Event('input'));
-    menuSearchInput.focus();
-  });
+  // Initialize search on first load
+  initMenuSearch();
 
-  // Clear search when menu modal is closed
-  var originalCloseMenuModal = closeMenuModal;
+  // Patch closeMenuModal to clear search
+  var _origCloseMenu = closeMenuModal;
   closeMenuModal = function() {
-    menuSearchInput.value = '';
-    menuSearchClear.classList.remove('visible');
-    menuSearchCount.classList.remove('visible');
-    menuNoResults.classList.remove('visible');
-    menuNavBar.style.display = '';
+    var inp = menuModal.querySelector('#menuSearchInput');
+    if (inp) inp.value = '';
+    var clearBtn = menuModal.querySelector('#menuSearchClear');
+    if (clearBtn) clearBtn.classList.remove('visible');
+    var countEl = menuModal.querySelector('#menuSearchCount');
+    if (countEl) countEl.classList.remove('visible');
+    var noResEl = menuModal.querySelector('#menuNoResults');
+    if (noResEl) noResEl.classList.remove('visible');
+    var nav = menuModal.querySelector('.menu-nav-bar');
+    if (nav) nav.style.display = '';
     var sections = menuModal.querySelectorAll('.menu-section');
     sections.forEach(function(sec) {
       sec.classList.remove('search-hidden');
       var items = sec.querySelectorAll('.menu-item');
       items.forEach(function(item) { item.classList.remove('search-hidden'); });
     });
-    originalCloseMenuModal();
+    _origCloseMenu();
   };
   // Highlight active category nav on scroll inside modal
   var menuSections = menuModal.querySelectorAll('.menu-section');

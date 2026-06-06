@@ -6,7 +6,7 @@ export async function GET() {
   try {
     const categoryCount = await db.menuCategory.count()
 
-    if (categoryCount > 1) {
+    if (categoryCount >= 8) {
       return NextResponse.json({
         success: true,
         message: 'Menu already seeded',

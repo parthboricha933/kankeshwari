@@ -8,7 +8,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 
     const auth = await requireAdmin(request)
     if (!auth.authorized) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Unauthorized - please log in again' }, { status: 401 })
     }
 
     const { id } = await params
@@ -28,7 +28,8 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     return NextResponse.json(category)
   } catch (error) {
     console.error('Error updating category:', error)
-    return NextResponse.json({ error: 'Failed to update category' }, { status: 400 })
+    const message = error instanceof Error ? error.message : 'Failed to update category'
+    return NextResponse.json({ error: message.includes('Record to update not found') ? 'Category not found' : 'Failed to update category' }, { status: 400 })
   }
 }
 
@@ -38,7 +39,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
 
     const auth = await requireAdmin(request)
     if (!auth.authorized) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Unauthorized - please log in again' }, { status: 401 })
     }
 
     const { id } = await params
@@ -50,6 +51,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error('Error deleting category:', error)
-    return NextResponse.json({ error: 'Failed to delete category' }, { status: 400 })
+    const message = error instanceof Error ? error.message : 'Failed to delete category'
+    return NextResponse.json({ error: message.includes('Record to delete not found') ? 'Category not found' : 'Failed to delete category' }, { status: 400 })
   }
 }

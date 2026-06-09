@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
 
     const auth = await requireAdmin(request)
     if (!auth.authorized) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Unauthorized - please log in again' }, { status: 401 })
     }
 
     const body = await request.json()
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(category, { status: 201 })
   } catch (error: unknown) {
     console.error('Error creating category:', error)
-    const message = error instanceof Error && error.message.includes('Unique') ? 'Slug already exists' : 'Failed to create category'
+    const message = error instanceof Error && error.message.includes('Unique') ? 'Slug already exists - use a different slug' : 'Failed to create category'
     return NextResponse.json({ error: message }, { status: 400 })
   }
 }

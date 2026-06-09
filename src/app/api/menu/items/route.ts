@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
 
     const auth = await requireAdmin(request)
     if (!auth.authorized) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Unauthorized - please log in again' }, { status: 401 })
     }
 
     const body = await request.json()

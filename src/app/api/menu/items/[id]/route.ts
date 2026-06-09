@@ -8,7 +8,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 
     const auth = await requireAdmin(request)
     if (!auth.authorized) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Unauthorized - please log in again' }, { status: 401 })
     }
 
     const { id } = await params
@@ -32,7 +32,8 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     return NextResponse.json(item)
   } catch (error) {
     console.error('Error updating item:', error)
-    return NextResponse.json({ error: 'Failed to update item' }, { status: 400 })
+    const message = error instanceof Error ? error.message : 'Failed to update item'
+    return NextResponse.json({ error: message.includes('Record to update not found') ? 'Item not found' : 'Failed to update item' }, { status: 400 })
   }
 }
 
@@ -42,7 +43,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
 
     const auth = await requireAdmin(request)
     if (!auth.authorized) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Unauthorized - please log in again' }, { status: 401 })
     }
 
     const { id } = await params
@@ -54,6 +55,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error('Error deleting item:', error)
-    return NextResponse.json({ error: 'Failed to delete item' }, { status: 400 })
+    const message = error instanceof Error ? error.message : 'Failed to delete item'
+    return NextResponse.json({ error: message.includes('Record to delete not found') ? 'Item not found' : 'Failed to delete item' }, { status: 400 })
   }
 }

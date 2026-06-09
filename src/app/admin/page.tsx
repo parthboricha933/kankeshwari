@@ -464,41 +464,51 @@ export default function AdminPage() {
     }
 
     try {
+      let res: Response
       if (editingCategory) {
-        await fetch(`/api/menu/categories/${editingCategory.id}`, {
+        res = await fetch(`/api/menu/categories/${editingCategory.id}`, {
           method: 'PUT',
           headers: authHeaders(),
           body: JSON.stringify({ name: catName, slug: catSlug, icon: catIcon, order: catOrder }),
         })
-        toast.success('Category updated')
       } else {
-        await fetch('/api/menu/categories', {
+        res = await fetch('/api/menu/categories', {
           method: 'POST',
           headers: authHeaders(),
           body: JSON.stringify({ name: catName, slug: catSlug, icon: catIcon, order: catOrder }),
         })
-        toast.success('Category created')
       }
-      setCategoryDialogOpen(false)
-      fetchMenu()
+      const data = await res.json()
+      if (res.ok) {
+        toast.success(editingCategory ? 'Category updated' : 'Category created')
+        setCategoryDialogOpen(false)
+        fetchMenu()
+      } else {
+        toast.error(data.error || 'Failed to save category')
+      }
     } catch {
-      toast.error('Failed to save category')
+      toast.error('Network error - failed to save category')
     }
   }
 
   const deleteCategory = async (id: string) => {
     try {
-      await fetch(`/api/menu/categories/${id}`, {
+      const res = await fetch(`/api/menu/categories/${id}`, {
         method: 'DELETE',
         headers: authHeaders(),
       })
-      toast.success('Category deleted')
-      if (selectedCategoryId === id) {
-        setSelectedCategoryId(categories[0]?.id || null)
+      const data = await res.json()
+      if (res.ok) {
+        toast.success('Category deleted')
+        if (selectedCategoryId === id) {
+          setSelectedCategoryId(categories[0]?.id || null)
+        }
+        fetchMenu()
+      } else {
+        toast.error(data.error || 'Failed to delete category')
       }
-      fetchMenu()
     } catch {
-      toast.error('Failed to delete category')
+      toast.error('Network error - failed to delete category')
     }
   }
 
@@ -513,7 +523,7 @@ export default function AdminPage() {
     const cat2 = categories[swapIndex]
 
     try {
-      await Promise.all([
+      const results = await Promise.all([
         fetch(`/api/menu/categories/${cat1.id}`, {
           method: 'PUT',
           headers: authHeaders(),
@@ -525,9 +535,14 @@ export default function AdminPage() {
           body: JSON.stringify({ order: cat1.order }),
         }),
       ])
-      fetchMenu()
+      const allOk = results.every(r => r.ok)
+      if (allOk) {
+        fetchMenu()
+      } else {
+        toast.error('Failed to reorder categories')
+      }
     } catch {
-      toast.error('Failed to reorder categories')
+      toast.error('Network error - failed to reorder categories')
     }
   }
 
@@ -566,8 +581,9 @@ export default function AdminPage() {
     }
 
     try {
+      let res: Response
       if (editingItem) {
-        await fetch(`/api/menu/items/${editingItem.id}`, {
+        res = await fetch(`/api/menu/items/${editingItem.id}`, {
           method: 'PUT',
           headers: authHeaders(),
           body: JSON.stringify({
@@ -581,9 +597,8 @@ export default function AdminPage() {
             isAvailable: itemIsAvailable,
           }),
         })
-        toast.success('Item updated')
       } else {
-        await fetch('/api/menu/items', {
+        res = await fetch('/api/menu/items', {
           method: 'POST',
           headers: authHeaders(),
           body: JSON.stringify({
@@ -597,38 +612,53 @@ export default function AdminPage() {
             isAvailable: itemIsAvailable,
           }),
         })
-        toast.success('Item created')
       }
-      setItemDialogOpen(false)
-      fetchMenu()
+      const data = await res.json()
+      if (res.ok) {
+        toast.success(editingItem ? 'Item updated' : 'Item created')
+        setItemDialogOpen(false)
+        fetchMenu()
+      } else {
+        toast.error(data.error || 'Failed to save item')
+      }
     } catch {
-      toast.error('Failed to save item')
+      toast.error('Network error - failed to save item')
     }
   }
 
   const deleteItem = async (id: string) => {
     try {
-      await fetch(`/api/menu/items/${id}`, {
+      const res = await fetch(`/api/menu/items/${id}`, {
         method: 'DELETE',
         headers: authHeaders(),
       })
-      toast.success('Item deleted')
-      fetchMenu()
+      const data = await res.json()
+      if (res.ok) {
+        toast.success('Item deleted')
+        fetchMenu()
+      } else {
+        toast.error(data.error || 'Failed to delete item')
+      }
     } catch {
-      toast.error('Failed to delete item')
+      toast.error('Network error - failed to delete item')
     }
   }
 
   const toggleItemAvailability = async (item: MenuItem) => {
     try {
-      await fetch(`/api/menu/items/${item.id}`, {
+      const res = await fetch(`/api/menu/items/${item.id}`, {
         method: 'PUT',
         headers: authHeaders(),
         body: JSON.stringify({ isAvailable: !item.isAvailable }),
       })
-      fetchMenu()
+      if (res.ok) {
+        fetchMenu()
+      } else {
+        const data = await res.json()
+        toast.error(data.error || 'Failed to toggle availability')
+      }
     } catch {
-      toast.error('Failed to toggle availability')
+      toast.error('Network error - failed to toggle availability')
     }
   }
 
@@ -647,7 +677,7 @@ export default function AdminPage() {
     const item2 = items[swapIndex]
 
     try {
-      await Promise.all([
+      const results = await Promise.all([
         fetch(`/api/menu/items/${item1.id}`, {
           method: 'PUT',
           headers: authHeaders(),
@@ -659,9 +689,14 @@ export default function AdminPage() {
           body: JSON.stringify({ order: item1.order }),
         }),
       ])
-      fetchMenu()
+      const allOk = results.every(r => r.ok)
+      if (allOk) {
+        fetchMenu()
+      } else {
+        toast.error('Failed to reorder items')
+      }
     } catch {
-      toast.error('Failed to reorder items')
+      toast.error('Network error - failed to reorder items')
     }
   }
 

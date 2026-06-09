@@ -19,6 +19,13 @@ function generateOrderId(): string {
   return `BWR-${dateStr}-${timeStr}-${rand}`;
 }
 
+// Default settings fallback (used if DB query fails)
+const DEFAULT_CHARGES = {
+  packagingCharge: 20,
+  deliveryCharge: 30,
+  gstPercent: 5,
+};
+
 // POST /api/orders — Create a new order and return UPI payment link
 export async function POST(request: NextRequest) {
   try {
@@ -50,16 +57,23 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // ── Fetch settings from DB ─────────────────────────────
-    const settings = await db.restaurantSetting.findMany();
-    const settingsMap: Record<string, string> = {};
-    for (const s of settings) {
-      settingsMap[s.key] = s.value;
-    }
+    // ── Fetch settings from DB with fallback ──────────────────
+    let packagingCharge = DEFAULT_CHARGES.packagingCharge;
+    let deliveryCharge = DEFAULT_CHARGES.deliveryCharge;
+    let gstPercent = DEFAULT_CHARGES.gstPercent;
 
-    const packagingCharge = parseInt(settingsMap.packaging_charge || "0") || 0;
-    const deliveryCharge = parseInt(settingsMap.delivery_charge || "0") || 0;
-    const gstPercent = parseFloat(settingsMap.gst_percent || "5") || 5;
+    try {
+      const settings = await db.restaurantSetting.findMany();
+      const settingsMap: Record<string, string> = {};
+      for (const s of settings) {
+        settingsMap[s.key] = s.value;
+      }
+      packagingCharge = parseInt(settingsMap.packaging_charge || "0") || DEFAULT_CHARGES.packagingCharge;
+      deliveryCharge = parseInt(settingsMap.delivery_charge || "0") || DEFAULT_CHARGES.deliveryCharge;
+      gstPercent = parseFloat(settingsMap.gst_percent || "5") || DEFAULT_CHARGES.gstPercent;
+    } catch (settingsError) {
+      console.error("[POST /api/orders] Settings fetch failed, using defaults:", settingsError);
+    }
 
     // ── Calculate subtotal ─────────────────────────────────
     const subtotal = items.reduce(
@@ -73,25 +87,29 @@ export async function POST(request: NextRequest) {
     let appliedCouponCode: string | null = null;
 
     if (couponCode) {
-      const coupon = await db.coupon.findUnique({
-        where: { code: couponCode.toUpperCase().trim() },
-      });
+      try {
+        const coupon = await db.coupon.findUnique({
+          where: { code: couponCode.toUpperCase().trim() },
+        });
 
-      if (coupon && coupon.isActive) {
-        const isExpired = coupon.expiresAt && coupon.expiresAt < new Date();
-        const isMaxedOut = coupon.maxUses > 0 && coupon.usedCount >= coupon.maxUses;
-        const meetsMinOrder = !coupon.minOrder || subtotal >= coupon.minOrder;
+        if (coupon && coupon.isActive) {
+          const isExpired = coupon.expiresAt && coupon.expiresAt < new Date();
+          const isMaxedOut = coupon.maxUses > 0 && coupon.usedCount >= coupon.maxUses;
+          const meetsMinOrder = !coupon.minOrder || subtotal >= coupon.minOrder;
 
-        if (!isExpired && !isMaxedOut && meetsMinOrder) {
-          if (coupon.type === "PERCENT") {
-            discount = Math.round(subtotal * coupon.discount / 100);
-          } else {
-            discount = coupon.discount;
+          if (!isExpired && !isMaxedOut && meetsMinOrder) {
+            if (coupon.type === "PERCENT") {
+              discount = Math.round(subtotal * coupon.discount / 100);
+            } else {
+              discount = coupon.discount;
+            }
+            // Discount cannot exceed subtotal
+            if (discount > subtotal) discount = subtotal;
+            appliedCouponCode = coupon.code;
           }
-          // Discount cannot exceed subtotal
-          if (discount > subtotal) discount = subtotal;
-          appliedCouponCode = coupon.code;
         }
+      } catch (couponError) {
+        console.error("[POST /api/orders] Coupon validation failed:", couponError);
       }
     }
 
@@ -141,10 +159,14 @@ export async function POST(request: NextRequest) {
 
     // ── Increment coupon usage if applied ──────────────────
     if (appliedCouponCode) {
-      await db.coupon.update({
-        where: { code: appliedCouponCode },
-        data: { usedCount: { increment: 1 } },
-      });
+      try {
+        await db.coupon.update({
+          where: { code: appliedCouponCode },
+          data: { usedCount: { increment: 1 } },
+        });
+      } catch (couponUpdateError) {
+        console.error("[POST /api/orders] Coupon usage increment failed:", couponUpdateError);
+      }
     }
 
     // ── Generate UPI payment link ──────────────────────────
@@ -198,6 +220,8 @@ export async function POST(request: NextRequest) {
 // GET /api/orders — List recent orders (admin only)
 export async function GET(request: NextRequest) {
   try {
+    await ensureDatabaseInitialized();
+
     const authHeader = request.headers.get("authorization");
     if (!authHeader) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

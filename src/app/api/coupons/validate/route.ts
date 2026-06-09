@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import { db, ensureDatabaseInitialized } from "@/lib/db";
 
 // POST /api/coupons/validate — Public: validate a coupon code
 export async function POST(request: NextRequest) {
   try {
+    await ensureDatabaseInitialized();
+
     const body = await request.json();
     const { code, subtotal } = body;
 
@@ -65,8 +67,8 @@ export async function POST(request: NextRequest) {
   } catch (error: unknown) {
     console.error("[POST /api/coupons/validate] Error:", error);
     return NextResponse.json(
-      { error: "Failed to validate coupon" },
-      { status: 500 }
+      { valid: false, error: "Failed to validate coupon" },
+      { status: 200 }
     );
   }
 }

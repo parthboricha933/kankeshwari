@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import { db, ensureDatabaseInitialized } from "@/lib/db";
 import { verifyToken } from "@/lib/admin-auth";
 
 // PUT /api/coupons/[id] — Admin: update a coupon
@@ -8,6 +8,8 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await ensureDatabaseInitialized();
+
     const { id } = await params;
     const authHeader = request.headers.get("authorization");
     if (!authHeader) {
@@ -55,6 +57,8 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await ensureDatabaseInitialized();
+
     const { id } = await params;
     const authHeader = request.headers.get("authorization");
     if (!authHeader) {

@@ -167,7 +167,7 @@ export default function AdminPage() {
         // Populate individual fields
         const pack = data.settings.find((s: SettingItem) => s.key === 'packaging_charge')
         const del = data.settings.find((s: SettingItem) => s.key === 'delivery_charge')
-        const gst = data.settings.find((s: SettingItem) => s.key === 'gst_percentage')
+        const gst = data.settings.find((s: SettingItem) => s.key === 'gst_percent')
         setPackagingCharge(pack?.value || '0')
         setDeliveryCharge(del?.value || '0')
         setGstPercentage(gst?.value || '0')
@@ -191,7 +191,7 @@ export default function AdminPage() {
           settings: [
             { key: 'packaging_charge', value: packagingCharge, label: 'Packaging Charge' },
             { key: 'delivery_charge', value: deliveryCharge, label: 'Delivery Charge' },
-            { key: 'gst_percentage', value: gstPercentage, label: 'GST Percentage' },
+            { key: 'gst_percent', value: gstPercentage, label: 'GST Percentage' },
           ],
         }),
       })

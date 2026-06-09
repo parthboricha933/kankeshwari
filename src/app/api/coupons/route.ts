@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import { db, ensureDatabaseInitialized } from "@/lib/db";
 import { verifyToken } from "@/lib/admin-auth";
 
 // GET /api/coupons — Admin: list all coupons
 export async function GET(request: NextRequest) {
   try {
+    await ensureDatabaseInitialized();
+
     const authHeader = request.headers.get("authorization");
     if (!authHeader) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -33,6 +35,8 @@ export async function GET(request: NextRequest) {
 // POST /api/coupons — Admin: create a new coupon
 export async function POST(request: NextRequest) {
   try {
+    await ensureDatabaseInitialized();
+
     const authHeader = request.headers.get("authorization");
     if (!authHeader) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

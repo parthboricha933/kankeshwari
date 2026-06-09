@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { db, ensureDatabaseInitialized } from "@/lib/db";
 
 // GET /api/coupons/available — Public: list active, non-expired coupons
-// Returns limited info (code, discount, type, minOrder) for customer display
 export async function GET() {
   try {
     await ensureDatabaseInitialized();
@@ -41,9 +40,6 @@ export async function GET() {
     return NextResponse.json({ success: true, coupons: availableCoupons });
   } catch (error: unknown) {
     console.error("[GET /api/coupons/available] Error:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch available coupons" },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: true, coupons: [] });
   }
 }

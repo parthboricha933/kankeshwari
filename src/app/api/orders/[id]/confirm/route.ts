@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import { db, ensureDatabaseInitialized } from "@/lib/db";
 
-// POST /api/orders/[id]/confirm — Confirm payment for an order (customer self-confirms or admin)
+// POST /api/orders/[id]/confirm — Confirm payment for an order
 export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await ensureDatabaseInitialized();
+
     const { id } = await params;
     const body = await request.json();
     const { upiTransactionRef, customerName, customerPhone } = body;

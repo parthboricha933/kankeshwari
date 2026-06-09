@@ -1,5 +1,4 @@
-import { db } from '@/lib/db'
-import { ensureDatabaseInitialized } from '@/lib/db'
+import { db, ensureDatabaseInitialized } from '@/lib/db'
 import { hashPassword, verifyPassword, createToken } from '@/lib/admin-auth'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -73,6 +72,6 @@ export async function POST(request: NextRequest) {
     return response
   } catch (error) {
     console.error('Error logging in:', error)
-    return NextResponse.json({ error: 'Login failed' }, { status: 500 })
+    return NextResponse.json({ error: 'Login failed. Please try again.' }, { status: 500 })
   }
 }

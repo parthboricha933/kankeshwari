@@ -68,7 +68,7 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: "Settings array is required" }, { status: 400 });
     }
 
-    const results = [];
+    const results: { id: string; key: string; value: string; label: string; createdAt: Date; updatedAt: Date }[] = [];
     for (const s of settings) {
       const updated = await db.restaurantSetting.upsert({
         where: { key: s.key },

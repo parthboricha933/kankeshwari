@@ -1,5 +1,4 @@
-import { db } from '@/lib/db'
-import { ensureDatabaseInitialized } from '@/lib/db'
+import { db, ensureDatabaseInitialized } from '@/lib/db'
 import { NextResponse } from 'next/server'
 
 export async function GET() {
@@ -18,6 +17,7 @@ export async function GET() {
     return NextResponse.json(categories)
   } catch (error) {
     console.error('Error fetching menu:', error)
-    return NextResponse.json({ error: 'Failed to fetch menu' }, { status: 500 })
+    // Return empty array as fallback so the site doesn't crash
+    return NextResponse.json([])
   }
 }

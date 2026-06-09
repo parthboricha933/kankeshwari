@@ -1,9 +1,11 @@
-import { db } from '@/lib/db'
+import { db, ensureDatabaseInitialized } from '@/lib/db'
 import { requireAdmin } from '@/lib/admin-auth'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET() {
   try {
+    await ensureDatabaseInitialized()
+
     const categories = await db.menuCategory.findMany({
       orderBy: { order: 'asc' },
     })
@@ -16,6 +18,8 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
+    await ensureDatabaseInitialized()
+
     const auth = await requireAdmin(request)
     if (!auth.authorized) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })

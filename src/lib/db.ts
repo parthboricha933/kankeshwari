@@ -1,8 +1,9 @@
 import { PrismaClient } from '@prisma/client'
+import { Pool } from 'pg'
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
-  dbInitialized: boolean | undefined
+  dbInitPromise: Promise<void> | undefined
 }
 
 export const db =
@@ -14,178 +15,247 @@ export const db =
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = db
 
-// SQL statements to create all required tables if they don't exist
-const CREATE_TABLES_SQL = `
-CREATE TABLE IF NOT EXISTS "MenuCategory" (
-  "id" TEXT NOT NULL,
-  "name" TEXT NOT NULL,
-  "slug" TEXT NOT NULL,
-  "icon" TEXT NOT NULL,
-  "order" INTEGER NOT NULL,
-  "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT "MenuCategory_pkey" PRIMARY KEY ("id"),
-  CONSTRAINT "MenuCategory_slug_key" UNIQUE ("slug")
-);
+// ─── Direct connection pool for DDL operations (bypasses pgbouncer) ───
+let ddlPool: Pool | null = null
 
-CREATE TABLE IF NOT EXISTS "MenuItem" (
-  "id" TEXT NOT NULL,
-  "name" TEXT NOT NULL,
-  "price" INTEGER NOT NULL,
-  "badge" TEXT,
-  "variantTag" TEXT,
-  "description" TEXT,
-  "categoryId" TEXT NOT NULL,
-  "order" INTEGER NOT NULL,
-  "isAvailable" BOOLEAN NOT NULL DEFAULT true,
-  "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT "MenuItem_pkey" PRIMARY KEY ("id")
-);
+function getDdlPool(): Pool {
+  if (!ddlPool) {
+    // Prefer DIRECT_URL, fall back to DATABASE_URL
+    // For Neon: derive direct URL from pooled URL if DIRECT_URL not set
+    let url = process.env.DIRECT_URL || process.env.DATABASE_URL || ''
+    // If using Neon pooled URL but no DIRECT_URL, try to derive direct URL
+    if (!process.env.DIRECT_URL && url.includes('-pooler.')) {
+      url = url.replace('-pooler.', '.')
+      console.log('[DB Init] Derived direct URL from pooled URL')
+    }
+    const isNeon = url.includes('neon.tech')
+    ddlPool = new Pool({
+      connectionString: url,
+      ssl: isNeon ? { rejectUnauthorized: false } : undefined,
+      max: 2,
+      connectionTimeoutMillis: 15000,
+    })
+  }
+  return ddlPool
+}
 
-CREATE TABLE IF NOT EXISTS "Admin" (
-  "id" TEXT NOT NULL,
-  "username" TEXT NOT NULL,
-  "password" TEXT NOT NULL,
-  "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT "Admin_pkey" PRIMARY KEY ("id"),
-  CONSTRAINT "Admin_username_key" UNIQUE ("username")
-);
+// ─── Individual DDL statements (each is complete, standalone SQL) ───
+const DDL_STATEMENTS = [
+  `CREATE TABLE IF NOT EXISTS "MenuCategory" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "slug" TEXT NOT NULL,
+    "icon" TEXT NOT NULL,
+    "order" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "MenuCategory_pkey" PRIMARY KEY ("id"),
+    CONSTRAINT "MenuCategory_slug_key" UNIQUE ("slug")
+  )`,
 
-CREATE TABLE IF NOT EXISTS "AdminToken" (
-  "id" TEXT NOT NULL,
-  "adminId" TEXT NOT NULL,
-  "token" TEXT NOT NULL,
-  "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  "expiresAt" TIMESTAMP(3) NOT NULL,
-  CONSTRAINT "AdminToken_pkey" PRIMARY KEY ("id"),
-  CONSTRAINT "AdminToken_token_key" UNIQUE ("token")
-);
+  `CREATE TABLE IF NOT EXISTS "MenuItem" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "price" INTEGER NOT NULL,
+    "badge" TEXT,
+    "variantTag" TEXT,
+    "description" TEXT,
+    "categoryId" TEXT NOT NULL,
+    "order" INTEGER NOT NULL,
+    "isAvailable" BOOLEAN NOT NULL DEFAULT true,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "MenuItem_pkey" PRIMARY KEY ("id")
+  )`,
 
-CREATE TABLE IF NOT EXISTS "Order" (
-  "id" TEXT NOT NULL,
-  "orderId" TEXT NOT NULL,
-  "customerName" TEXT,
-  "customerPhone" TEXT,
-  "subtotal" INTEGER NOT NULL,
-  "gst" INTEGER NOT NULL,
-  "packagingCharge" INTEGER NOT NULL DEFAULT 0,
-  "deliveryCharge" INTEGER NOT NULL DEFAULT 0,
-  "discount" INTEGER NOT NULL DEFAULT 0,
-  "couponCode" TEXT,
-  "grandTotal" INTEGER NOT NULL,
-  "status" TEXT NOT NULL DEFAULT 'PENDING',
-  "paymentMethod" TEXT NOT NULL DEFAULT 'UPI',
-  "upiTransactionRef" TEXT,
-  "notes" TEXT,
-  "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT "Order_pkey" PRIMARY KEY ("id"),
-  CONSTRAINT "Order_orderId_key" UNIQUE ("orderId")
-);
+  `CREATE TABLE IF NOT EXISTS "Admin" (
+    "id" TEXT NOT NULL,
+    "username" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "Admin_pkey" PRIMARY KEY ("id"),
+    CONSTRAINT "Admin_username_key" UNIQUE ("username")
+  )`,
 
-CREATE TABLE IF NOT EXISTS "OrderItem" (
-  "id" TEXT NOT NULL,
-  "orderId" TEXT NOT NULL,
-  "name" TEXT NOT NULL,
-  "price" INTEGER NOT NULL,
-  "quantity" INTEGER NOT NULL,
-  "total" INTEGER NOT NULL,
-  CONSTRAINT "OrderItem_pkey" PRIMARY KEY ("id")
-);
+  `CREATE TABLE IF NOT EXISTS "AdminToken" (
+    "id" TEXT NOT NULL,
+    "adminId" TEXT NOT NULL,
+    "token" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "expiresAt" TIMESTAMP(3) NOT NULL,
+    CONSTRAINT "AdminToken_pkey" PRIMARY KEY ("id"),
+    CONSTRAINT "AdminToken_token_key" UNIQUE ("token")
+  )`,
 
-CREATE TABLE IF NOT EXISTS "RestaurantSetting" (
-  "id" TEXT NOT NULL,
-  "key" TEXT NOT NULL,
-  "value" TEXT NOT NULL,
-  "label" TEXT NOT NULL,
-  "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT "RestaurantSetting_pkey" PRIMARY KEY ("id"),
-  CONSTRAINT "RestaurantSetting_key_key" UNIQUE ("key")
-);
+  `CREATE TABLE IF NOT EXISTS "Order" (
+    "id" TEXT NOT NULL,
+    "orderId" TEXT NOT NULL,
+    "customerName" TEXT,
+    "customerPhone" TEXT,
+    "subtotal" INTEGER NOT NULL,
+    "gst" INTEGER NOT NULL,
+    "packagingCharge" INTEGER NOT NULL DEFAULT 0,
+    "deliveryCharge" INTEGER NOT NULL DEFAULT 0,
+    "discount" INTEGER NOT NULL DEFAULT 0,
+    "couponCode" TEXT,
+    "grandTotal" INTEGER NOT NULL,
+    "status" TEXT NOT NULL DEFAULT 'PENDING',
+    "paymentMethod" TEXT NOT NULL DEFAULT 'UPI',
+    "upiTransactionRef" TEXT,
+    "notes" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "Order_pkey" PRIMARY KEY ("id"),
+    CONSTRAINT "Order_orderId_key" UNIQUE ("orderId")
+  )`,
 
-CREATE TABLE IF NOT EXISTS "Coupon" (
-  "id" TEXT NOT NULL,
-  "code" TEXT NOT NULL,
-  "discount" INTEGER NOT NULL,
-  "type" TEXT NOT NULL DEFAULT 'FLAT',
-  "minOrder" INTEGER NOT NULL DEFAULT 0,
-  "maxUses" INTEGER NOT NULL DEFAULT 0,
-  "usedCount" INTEGER NOT NULL DEFAULT 0,
-  "isActive" BOOLEAN NOT NULL DEFAULT true,
-  "expiresAt" TIMESTAMP(3),
-  "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT "Coupon_pkey" PRIMARY KEY ("id"),
-  CONSTRAINT "Coupon_code_key" UNIQUE ("code")
-);
+  `CREATE TABLE IF NOT EXISTS "OrderItem" (
+    "id" TEXT NOT NULL,
+    "orderId" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "price" INTEGER NOT NULL,
+    "quantity" INTEGER NOT NULL,
+    "total" INTEGER NOT NULL,
+    CONSTRAINT "OrderItem_pkey" PRIMARY KEY ("id")
+  )`,
 
-DO $$ BEGIN
-  ALTER TABLE "MenuItem" ADD CONSTRAINT "MenuItem_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "MenuCategory"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-EXCEPTION WHEN duplicate_object THEN null;
-END $$;
+  `CREATE TABLE IF NOT EXISTS "RestaurantSetting" (
+    "id" TEXT NOT NULL,
+    "key" TEXT NOT NULL,
+    "value" TEXT NOT NULL,
+    "label" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "RestaurantSetting_pkey" PRIMARY KEY ("id"),
+    CONSTRAINT "RestaurantSetting_key_key" UNIQUE ("key")
+  )`,
 
-DO $$ BEGIN
-  ALTER TABLE "AdminToken" ADD CONSTRAINT "AdminToken_adminId_fkey" FOREIGN KEY ("adminId") REFERENCES "Admin"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-EXCEPTION WHEN duplicate_object THEN null;
-END $$;
+  `CREATE TABLE IF NOT EXISTS "Coupon" (
+    "id" TEXT NOT NULL,
+    "code" TEXT NOT NULL,
+    "discount" INTEGER NOT NULL,
+    "type" TEXT NOT NULL DEFAULT 'FLAT',
+    "minOrder" INTEGER NOT NULL DEFAULT 0,
+    "maxUses" INTEGER NOT NULL DEFAULT 0,
+    "usedCount" INTEGER NOT NULL DEFAULT 0,
+    "isActive" BOOLEAN NOT NULL DEFAULT true,
+    "expiresAt" TIMESTAMP(3),
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "Coupon_pkey" PRIMARY KEY ("id"),
+    CONSTRAINT "Coupon_code_key" UNIQUE ("code")
+  )`,
+]
 
-DO $$ BEGIN
-  ALTER TABLE "OrderItem" ADD CONSTRAINT "OrderItem_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Order"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-EXCEPTION WHEN duplicate_object THEN null;
-END $$;
+// Foreign key statements — executed individually, errors caught
+const FK_STATEMENTS = [
+  `ALTER TABLE "MenuItem" ADD CONSTRAINT "MenuItem_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "MenuCategory"("id") ON DELETE CASCADE ON UPDATE CASCADE`,
+  `ALTER TABLE "AdminToken" ADD CONSTRAINT "AdminToken_adminId_fkey" FOREIGN KEY ("adminId") REFERENCES "Admin"("id") ON DELETE CASCADE ON UPDATE CASCADE`,
+  `ALTER TABLE "OrderItem" ADD CONSTRAINT "OrderItem_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Order"("id") ON DELETE CASCADE ON UPDATE CASCADE`,
+]
 
-CREATE INDEX IF NOT EXISTS "MenuItem_categoryId_idx" ON "MenuItem"("categoryId");
-CREATE INDEX IF NOT EXISTS "AdminToken_adminId_idx" ON "AdminToken"("adminId");
-CREATE INDEX IF NOT EXISTS "OrderItem_orderId_idx" ON "OrderItem"("orderId");
-`
+const INDEX_STATEMENTS = [
+  `CREATE INDEX IF NOT EXISTS "MenuItem_categoryId_idx" ON "MenuItem"("categoryId")`,
+  `CREATE INDEX IF NOT EXISTS "AdminToken_adminId_idx" ON "AdminToken"("adminId")`,
+  `CREATE INDEX IF NOT EXISTS "OrderItem_orderId_idx" ON "OrderItem"("orderId")`,
+]
 
-// Auto-initialize database: create tables if they don't exist
-export async function ensureDatabaseInitialized() {
-  if (globalForPrisma.dbInitialized) return
-
+// ─── Create tables using direct connection (bypasses pgbouncer) ───
+async function createTablesViaDirectConnection(): Promise<boolean> {
   try {
-    // Quick check if a core table exists
-    await db.admin.findFirst()
-    globalForPrisma.dbInitialized = true
-  } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : String(error)
-    if (msg.includes('does not exist') || msg.includes('table') || msg.includes('relation') || msg.includes('invalid')) {
-      console.log('[DB Init] Tables missing, creating with raw SQL...')
-      try {
-        // Execute each statement separately for better error handling
-        const statements = CREATE_TABLES_SQL
-          .split(';')
-          .map(s => s.trim())
-          .filter(s => s.length > 0 && !s.startsWith('--'))
+    const pool = getDdlPool()
+    const client = await pool.connect()
 
-        for (const stmt of statements) {
-          try {
-            await db.$executeRawUnsafe(stmt + ';')
-          } catch (execError: unknown) {
-            const execMsg = execError instanceof Error ? execError.message : String(execError)
-            // Ignore "already exists" errors
-            if (!execMsg.includes('already exists') && !execMsg.includes('duplicate')) {
-              console.error('[DB Init] SQL Error:', execMsg.substring(0, 200))
-            }
+    try {
+      // Create all tables
+      for (const sql of DDL_STATEMENTS) {
+        try {
+          await client.query(sql)
+        } catch (e) {
+          const msg = String(e)
+          if (!msg.includes('already exists')) {
+            console.error('[DB Init] Table creation error:', msg.substring(0, 200))
           }
         }
-
-        console.log('[DB Init] Tables created, seeding defaults...')
-        await seedDefaults()
-        globalForPrisma.dbInitialized = true
-        console.log('[DB Init] Database initialized successfully')
-      } catch (pushError) {
-        console.error('[DB Init] Failed to create tables:', pushError)
       }
-    } else {
-      console.error('[DB Init] Unexpected error:', msg.substring(0, 200))
+
+      // Add foreign keys
+      for (const sql of FK_STATEMENTS) {
+        try {
+          await client.query(sql)
+        } catch (e) {
+          const msg = String(e)
+          if (!msg.includes('already exists') && !msg.includes('duplicate')) {
+            console.error('[DB Init] FK error:', msg.substring(0, 200))
+          }
+        }
+      }
+
+      // Create indexes
+      for (const sql of INDEX_STATEMENTS) {
+        try {
+          await client.query(sql)
+        } catch (e) {
+          // Ignore index creation errors
+        }
+      }
+
+      console.log('[DB Init] Tables created via direct connection')
+      return true
+    } finally {
+      client.release()
     }
+  } catch (error) {
+    console.error('[DB Init] Direct connection failed:', String(error).substring(0, 300))
+    return false
   }
 }
 
+// ─── Fallback: create tables via Prisma $executeRawUnsafe ───
+async function createTablesViaPrisma(): Promise<boolean> {
+  try {
+    for (const sql of DDL_STATEMENTS) {
+      try {
+        await db.$executeRawUnsafe(sql)
+      } catch (e) {
+        const msg = String(e)
+        if (!msg.includes('already exists')) {
+          console.error('[DB Init] Prisma DDL error:', msg.substring(0, 200))
+        }
+      }
+    }
+
+    // Add foreign keys via Prisma (using individual DO blocks)
+    for (const sql of FK_STATEMENTS) {
+      try {
+        // Wrap in DO block to ignore "already exists" errors
+        await db.$executeRawUnsafe(
+          `DO $$ BEGIN ${sql}; EXCEPTION WHEN duplicate_object THEN null; END $$;`
+        )
+      } catch (e) {
+        // Ignore FK errors — they may already exist
+      }
+    }
+
+    // Create indexes
+    for (const sql of INDEX_STATEMENTS) {
+      try {
+        await db.$executeRawUnsafe(sql)
+      } catch (e) {
+        // Ignore index errors
+      }
+    }
+
+    console.log('[DB Init] Tables created via Prisma')
+    return true
+  } catch (error) {
+    console.error('[DB Init] Prisma fallback failed:', String(error).substring(0, 200))
+    return false
+  }
+}
+
+// ─── Seed default data ───
 async function seedDefaults() {
   try {
     const crypto = await import('crypto')
@@ -216,6 +286,52 @@ async function seedDefaults() {
       console.log('[DB Init] Default settings created')
     }
   } catch (seedError) {
-    console.error('[DB Init] Seed error:', seedError)
+    console.error('[DB Init] Seed error:', String(seedError).substring(0, 200))
+  }
+}
+
+// ─── Main initialization function ───
+export async function ensureDatabaseInitialized(): Promise<void> {
+  // Use a singleton promise to prevent concurrent initialization
+  if (!globalForPrisma.dbInitPromise) {
+    globalForPrisma.dbInitPromise = doInitialize()
+  }
+  return globalForPrisma.dbInitPromise
+}
+
+async function doInitialize() {
+  try {
+    // Quick check: can we query the Admin table?
+    await db.admin.findFirst()
+    // If we get here, tables exist — no need to create
+    return
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : String(error)
+    if (!msg.includes('does not exist') && !msg.includes('table') && !msg.includes('relation') && !msg.includes('invalid')) {
+      console.error('[DB Init] Unexpected error checking tables:', msg.substring(0, 200))
+      // For unexpected errors (connection issues, etc.), don't try to create tables
+      return
+    }
+
+    console.log('[DB Init] Tables missing, creating...')
+
+    // Reset the init promise so we can retry later if needed
+    globalForPrisma.dbInitPromise = undefined
+
+    // Try direct connection first (most reliable for DDL)
+    const directOk = await createTablesViaDirectConnection()
+
+    // Fallback to Prisma if direct connection failed
+    if (!directOk) {
+      await createTablesViaPrisma()
+    }
+
+    // Seed defaults
+    await seedDefaults()
+
+    console.log('[DB Init] Database initialized successfully')
+
+    // Set the promise to resolved so subsequent calls don't re-initialize
+    globalForPrisma.dbInitPromise = Promise.resolve()
   }
 }

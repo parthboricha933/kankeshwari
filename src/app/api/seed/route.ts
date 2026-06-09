@@ -28,11 +28,11 @@ export async function GET() {
       })
     }
 
-    // Clean existing menu data
+    // Clean existing menu data before seeding
     await db.menuItem.deleteMany()
     await db.menuCategory.deleteMany()
 
-    const categories = [
+    const categories: { name: string; slug: string; icon: string; order: number; items: { name: string; price: number; order: number; badge?: string; variantTag?: string; description?: string }[] }[] = [
       {
         name: "Chinese",
         slug: "chinese",

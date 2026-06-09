@@ -2438,9 +2438,12 @@
   // Fetch settings from API
   function fetchSettings() {
     fetch('/api/settings')
-      .then(function(res) { return res.json(); })
+      .then(function(res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
       .then(function(data) {
-        if (data.success && data.settings) {
+        if (data.success && data.settings && Array.isArray(data.settings)) {
           for (var i = 0; i < data.settings.length; i++) {
             var s = data.settings[i];
             if (s.key === 'packaging_charge') chargeSettings.packaging = parseInt(s.value) || 0;
@@ -2451,7 +2454,9 @@
           updateCartBar();
         }
       })
-      .catch(function() {});
+      .catch(function() {
+        // Use defaults already set in chargeSettings
+      });
   }
   fetchSettings();
 
@@ -2724,7 +2729,10 @@
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ items: items, couponCode: appliedCoupon ? appliedCoupon.code : null })
     })
-    .then(function(res) { return res.json(); })
+    .then(function(res) {
+      if (!res.ok) throw new Error('Server error: HTTP ' + res.status);
+      return res.json();
+    })
     .then(function(data) {
       if (!data.success) {
         alert('Error creating order: ' + (data.error || 'Unknown error'));

@@ -6,11 +6,25 @@ const globalForPrisma = globalThis as unknown as {
   dbInitPromise: Promise<void> | undefined
 }
 
+// Build datasource URL with Neon-optimized connection pooling params
+function buildDatasourceUrl(): string {
+  let url = process.env.DATABASE_URL || ''
+  if (!url) return url
+
+  // Add connection pooling params for Neon serverless if not already present
+  if (url.includes('neon.tech') && !url.includes('connection_limit')) {
+    const separator = url.includes('?') ? '&' : '?'
+    url = `${url}${separator}connection_limit=5&pool_timeout=10`
+  }
+
+  return url
+}
+
 export const db =
   globalForPrisma.prisma ??
   new PrismaClient({
     log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
-    datasourceUrl: process.env.DATABASE_URL,
+    datasourceUrl: buildDatasourceUrl(),
   })
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = db
@@ -34,6 +48,13 @@ function getDdlPool(): Pool {
       ssl: isNeon ? { rejectUnauthorized: false } : undefined,
       max: 2,
       connectionTimeoutMillis: 15000,
+      idleTimeoutMillis: 10000, // Close idle connections after 10s (Neon cuts at ~5s on free tier)
+      allowExitOnIdle: true, // Allow process to exit if pool is idle
+    })
+
+    // Handle pool-level errors to prevent uncaught exceptions
+    ddlPool.on('error', (err) => {
+      console.error('[DB Init] DDL pool error (idle connection):', String(err).substring(0, 200))
     })
   }
   return ddlPool
@@ -285,12 +306,70 @@ async function seedDefaults() {
       })
       console.log('[DB Init] Default settings created')
     }
+
+    // Clean up expired admin tokens (prevents table bloat over time)
+    try {
+      const deleted = await db.adminToken.deleteMany({
+        where: { expiresAt: { lt: new Date() } },
+      })
+      if (deleted.count > 0) {
+        console.log(`[DB Init] Cleaned up ${deleted.count} expired admin token(s)`)
+      }
+    } catch (tokenCleanupError) {
+      // Non-critical - don't block initialization
+      console.error('[DB Init] Token cleanup failed:', String(tokenCleanupError).substring(0, 100))
+    }
   } catch (seedError) {
     console.error('[DB Init] Seed error:', String(seedError).substring(0, 200))
   }
 }
 
+// ─── Retry wrapper for transient database errors ───
+const RETRYABLE_ERRORS = [
+  'ECONNRESET',
+  'ECONNREFUSED',
+  'ETIMEDOUT',
+  'connection',
+  'timeout',
+  'PGRST',
+  'serverless',
+  'pgbouncer',
+  'too many connections',
+  'connection_pool',
+  'rate limit',
+  '53300', // PostgreSQL: too many connections
+  '08006', // PostgreSQL: connection failure
+  '08003', // PostgreSQL: connection does not exist
+  '57P03', // PostgreSQL: cannot connect now
+]
+
+function isRetryableError(error: unknown): boolean {
+  const msg = error instanceof Error ? error.message : String(error)
+  return RETRYABLE_ERRORS.some(keyword => msg.toLowerCase().includes(keyword.toLowerCase()))
+}
+
+async function withRetry<T>(fn: () => Promise<T>, maxRetries = 2, delayMs = 1000): Promise<T> {
+  let lastError: unknown
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      return await fn()
+    } catch (error) {
+      lastError = error
+      if (attempt < maxRetries && isRetryableError(error)) {
+        console.log(`[DB] Retry attempt ${attempt + 1}/${maxRetries} after transient error: ${String(error).substring(0, 100)}`)
+        await new Promise(resolve => setTimeout(resolve, delayMs * (attempt + 1)))
+        continue
+      }
+      throw error
+    }
+  }
+  throw lastError
+}
+
 // ─── Main initialization function ───
+let initAttempts = 0
+const MAX_INIT_ATTEMPTS = 3
+
 export async function ensureDatabaseInitialized(): Promise<void> {
   // Use a singleton promise to prevent concurrent initialization
   if (!globalForPrisma.dbInitPromise) {
@@ -302,14 +381,25 @@ export async function ensureDatabaseInitialized(): Promise<void> {
 async function doInitialize() {
   try {
     // Quick check: can we query the Admin table?
-    await db.admin.findFirst()
+    await withRetry(() => db.admin.findFirst(), 1, 500)
     // If we get here, tables exist — no need to create
+    // Still clean up expired tokens occasionally (every ~10th call)
+    initAttempts++
+    if (initAttempts % 10 === 0) {
+      try {
+        await db.adminToken.deleteMany({ where: { expiresAt: { lt: new Date() } } })
+      } catch {
+        // Non-critical
+      }
+    }
     return
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error)
     if (!msg.includes('does not exist') && !msg.includes('table') && !msg.includes('relation') && !msg.includes('invalid')) {
       console.error('[DB Init] Unexpected error checking tables:', msg.substring(0, 200))
       // For unexpected errors (connection issues, etc.), don't try to create tables
+      // Reset promise so next request can retry
+      globalForPrisma.dbInitPromise = undefined
       return
     }
 
@@ -334,4 +424,29 @@ async function doInitialize() {
     // Set the promise to resolved so subsequent calls don't re-initialize
     globalForPrisma.dbInitPromise = Promise.resolve()
   }
+}
+
+// ─── Graceful shutdown: close DDL pool ───
+if (typeof process !== 'undefined') {
+  const shutdown = async () => {
+    if (ddlPool) {
+      try {
+        await ddlPool.end()
+        ddlPool = null
+        console.log('[DB Init] DDL pool closed')
+      } catch {
+        // Ignore
+      }
+    }
+    try {
+      await db.$disconnect()
+      console.log('[DB Init] Prisma disconnected')
+    } catch {
+      // Ignore
+    }
+  }
+
+  process.on('beforeExit', shutdown)
+  process.on('SIGTERM', shutdown)
+  process.on('SIGINT', shutdown)
 }

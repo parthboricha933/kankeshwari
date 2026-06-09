@@ -132,11 +132,13 @@ const MENU_DATA = [
 async function autoSeedMenu() {
   try {
     const categoryCount = await db.menuCategory.count()
-    if (categoryCount >= 8) return // Already seeded
+    // Only auto-seed when the database is completely empty (count = 0)
+    // This prevents accidental deletion of user-customized menu data
+    if (categoryCount > 0) return
 
     console.log('[Menu API] No categories found, auto-seeding menu data...')
 
-    // Clean existing menu data
+    // Clean existing menu data (only runs when count is 0, so nothing to clean)
     await db.menuItem.deleteMany()
     await db.menuCategory.deleteMany()
 

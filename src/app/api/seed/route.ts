@@ -20,15 +20,15 @@ export async function GET() {
 
     const categoryCount = await db.menuCategory.count()
 
-    if (categoryCount >= 8) {
+    if (categoryCount > 0) {
       return NextResponse.json({
         success: true,
-        message: 'Menu already seeded',
+        message: 'Menu already exists — use admin panel to manage categories',
         categories: categoryCount,
       })
     }
 
-    // Clean existing menu data before seeding
+    // Only seed when database is completely empty (prevents data loss)
     await db.menuItem.deleteMany()
     await db.menuCategory.deleteMany()
 

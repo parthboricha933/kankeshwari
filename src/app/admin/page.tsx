@@ -145,13 +145,17 @@ export default function AdminPage() {
   const fetchMenu = useCallback(async () => {
     try {
       const res = await fetch('/api/menu')
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const data = await res.json()
-      setCategories(data)
-      if (data.length > 0 && !selectedCategoryId) {
-        setSelectedCategoryId(data[0].id)
+      // Ensure data is an array
+      const categories = Array.isArray(data) ? data : []
+      setCategories(categories)
+      if (categories.length > 0 && !selectedCategoryId) {
+        setSelectedCategoryId(categories[0].id)
       }
     } catch (error) {
       console.error('Failed to fetch menu:', error)
+      setCategories([])
       toast.error('Failed to load menu data')
     }
   }, [selectedCategoryId])
@@ -377,18 +381,24 @@ export default function AdminPage() {
     if (!token) return
     let cancelled = false
     fetch('/api/menu')
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`)
+        return res.json()
+      })
       .then(data => {
         if (cancelled) return
-        setCategories(data)
-        if (data.length > 0) {
-          setSelectedCategoryId(prev => prev || data[0].id)
+        // Ensure data is an array (API might return error object on failure)
+        const categories = Array.isArray(data) ? data : []
+        setCategories(categories)
+        if (categories.length > 0) {
+          setSelectedCategoryId(prev => prev || categories[0].id)
         }
       })
       .catch(error => {
         if (cancelled) return
         console.error('Failed to fetch menu:', error)
-        toast.error('Failed to load menu data')
+        setCategories([]) // Reset to empty on error
+        toast.error('Failed to load menu data. Please refresh the page.')
       })
     return () => { cancelled = true }
   }, [token])
